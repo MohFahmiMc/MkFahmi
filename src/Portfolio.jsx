@@ -1,308 +1,362 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Mic, Grid, MapPin, Bot, Sparkles, Globe, ArrowUpRight, BookOpen, GraduationCap, Award } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, Github, Code2, Globe, Sparkles, Terminal } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Portfolio() {
-  const [searchValue, setSearchValue] = useState("Karya dan Profil MohFahmiMc");
-  const [isSearching, setIsSearching] = useState(false);
+  const [activePage, setActivePage] = useState('home');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Pewarnaan akurat ala Google
-  const googleColors = {
-    blue: "#4285F4",
-    red: "#EA4335",
-    yellow: "#FBBC05",
-    green: "#34A853"
+  // Initial Loader & Cursor Tracker
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1800);
+    
+    const handleMouseMove = (e) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+
+    if (window.innerWidth > 768) {
+      window.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const navigateTo = (page) => {
+    setActivePage(page);
+    setIsSidebarOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const nameLetters = [
-    { char: 'M', color: 'text-[#4285F4]' },
-    { char: 'o', color: 'text-[#EA4335]' },
-    { char: 'h', color: 'text-[#FBBC05]' },
-    { char: 'F', color: 'text-[#4285F4]' },
-    { char: 'a', color: 'text-[#34A853]' },
-    { char: 'h', color: 'text-[#EA4335]' },
-    { char: 'm', color: 'text-[#FBBC05]' },
-    { char: 'i', color: 'text-[#34A853]' },
-    { char: 'M', color: 'text-[#4285F4]' },
-    { char: 'c', color: 'text-[#EA4335]' }
+  const navItems = [
+    { id: 'home', label: 'Dashboard' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'services', label: 'Services' },
+    { id: 'links', label: 'Links' }
   ];
 
-  const education = [
+  // Data Projects (Zephyr & Services)
+  const projectsData = [
     {
-      level: "Sekolah Dasar",
-      school: "MI Al-Falah Tanjakan",
-      icon: <BookOpen className="w-5 h-5 text-white" />,
-      color: "bg-[#4285F4]"
-    },
-    {
-      level: "Sekolah Menengah Pertama",
-      school: "SMP 1 Atap 1 Krangkeng",
-      icon: <Award className="w-5 h-5 text-white" />,
-      color: "bg-[#EA4335]"
-    },
-    {
-      level: "Sekolah Menengah Kejuruan",
-      school: "SMK NU Kamplongan",
-      desc: "Krangkeng, Indramayu. Jurusan TKJ / TSM.",
-      icon: <GraduationCap className="w-5 h-5 text-white" />,
-      color: "bg-[#34A853]"
-    }
-  ];
-
-  const projects = [
-    {
-      title: "Zephyr Bot",
-      desc: "Discord bot multifungsi dengan fitur moderasi, sistem ekonomi, dan integrasi premium.",
+      title: "Zephyr Bot System",
+      desc: "An advanced multipurpose Discord bot featuring robust moderation, utility commands, precise logging, and premium automation capabilities.",
       url: "https://zephyr.mifahmi.my.id",
-      icon: <Bot className="w-8 h-8 text-[#4285F4]" />,
-      tags: ["Discord.js", "Node.js", "Server"],
-      hoverBorder: "hover:border-[#4285F4]",
-      hoverShadow: "hover:shadow-blue-100"
+      tags: ["Moderation", "Automation", "Premium", "70+ Commands"]
     },
     {
       title: "Zephyr AI Character",
-      desc: "Eksperimen kecerdasan buatan untuk interaksi karakter dinamis dan natural.",
+      desc: "Eksperimen kecerdasan buatan terintegrasi untuk interaksi karakter dinamis, natural, dan responsif. Mengeksplorasi batas LLM di ekosistem Discord.",
       url: "https://zephyr.mifahmi.my.id/ai/character",
-      icon: <Sparkles className="w-8 h-8 text-[#FBBC05]" />,
-      tags: ["AI", "Character", "Prompt"],
-      hoverBorder: "hover:border-[#FBBC05]",
-      hoverShadow: "hover:shadow-yellow-100"
+      tags: ["Artificial Intelligence", "Character AI", "Prompt Engineering"]
     },
     {
       title: "mifahmi.my.id Web Services",
-      desc: "Infrastruktur layanan web, hosting, dan optimasi SEO via Google Search Console.",
+      desc: "Infrastruktur layanan web portofolio tingkat lanjut, lengkap dengan hosting otomatisasi dan optimasi SEO via Google Search Console.",
       url: "https://mifahmi.my.id",
-      icon: <Globe className="w-8 h-8 text-[#34A853]" />,
-      tags: ["React", "Vercel", "SEO"],
-      hoverBorder: "hover:border-[#34A853]",
-      hoverShadow: "hover:shadow-green-100"
+      tags: ["React JS", "Vercel", "SEO Optimization"]
     }
   ];
 
-  const handleSearch = () => {
-    setIsSearching(true);
-    setTimeout(() => {
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-      setIsSearching(false);
-    }, 600);
-  };
-
   return (
-    <div className="min-h-screen bg-white text-[#202124] font-sans selection:bg-blue-100 overflow-x-hidden">
-      
-      {/* Top Navbar ala Google */}
-      <nav className="flex justify-end items-center p-4 gap-4 text-sm font-medium">
-        <a href="#results" className="hover:underline hidden sm:block">Penelusuran</a>
-        <a href="#education" className="hover:underline hidden sm:block">Pendidikan</a>
-        <motion.div whileHover={{ bg: "#f1f3f4" }} className="p-2 rounded-full cursor-pointer transition-colors">
-          <Grid className="w-5 h-5 text-gray-600" />
-        </motion.div>
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          className="w-8 h-8 bg-[#4285F4] text-white rounded-full flex items-center justify-center font-bold cursor-pointer shadow-sm"
-        >
-          M
-        </motion.div>
-      </nav>
+    <>
+      {/* Background Ornaments */}
+      <div className="fixed rounded-full blur-[120px] opacity-60 pointer-events-none -z-10 w-[400px] h-[400px] bg-[#2a1b54] -top-[100px] -right-[100px] animate-float1" />
+      <div className="fixed rounded-full blur-[120px] opacity-60 pointer-events-none -z-10 w-[350px] h-[350px] bg-[#113a4a] -bottom-[100px] -left-[100px] animate-float2" />
 
-      {/* Hero Section (Search Engine Style) */}
-      <section className="flex flex-col items-center justify-center mt-20 px-4 min-h-[50vh]">
-        
-        {/* Animated Google-style Logo */}
-        <motion.div 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, type: "spring" }}
-          className="flex justify-center text-6xl sm:text-7xl md:text-8xl font-bold tracking-tighter mb-8 select-none"
-        >
-          {nameLetters.map((item, index) => (
-            <motion.span 
-              key={index} 
-              className={item.color}
-              whileHover={{ y: -10, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              {item.char}
-            </motion.span>
-          ))}
-        </motion.div>
+      {/* Custom Cursor */}
+      <div 
+        className="cursor-dot hidden md:block"
+        style={{ left: cursorPos.x, top: cursorPos.y }}
+      />
+      <div 
+        className="cursor-outline hidden md:block"
+        style={{ 
+          left: cursorPos.x, top: cursorPos.y, 
+          width: isHovering ? '60px' : '40px', 
+          height: isHovering ? '60px' : '40px',
+          borderColor: isHovering ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)'
+        }}
+      />
 
-        {/* Search Bar Interactive */}
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="w-full max-w-2xl relative"
-        >
-          <div className="flex items-center w-full px-5 py-3.5 bg-white border border-[#dfe1e5] rounded-full hover:shadow-[0_1px_6px_rgba(32,33,36,0.28)] focus-within:shadow-[0_1px_6px_rgba(32,33,36,0.28)] focus-within:border-transparent transition-all duration-300 group">
-            <Search className="w-5 h-5 text-[#9aa0a6] mr-4" />
-            <input 
-              type="text" 
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="flex-1 bg-transparent outline-none text-[16px] text-[#202124]"
-            />
-            <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer ml-3">
-              <Mic className="w-5 h-5 text-[#4285F4]" />
-            </motion.div>
-          </div>
+      {/* Loader */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 bg-[#030305] z-[999999] flex flex-col items-center justify-center"
+          >
+            <div className="text-5xl md:text-6xl font-extrabold tracking-tighter bg-gradient-to-br from-white to-gray-500 bg-clip-text text-transparent animate-pulseText">
+              Mi Fahmi
+            </div>
+            <div className="w-[200px] h-1 bg-white/5 rounded-full mt-8 overflow-hidden">
+              <div className="h-full bg-white animate-loadFill" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Search Buttons */}
-          <div className="flex justify-center gap-3 mt-8">
-            <motion.button 
-              whileHover={{ border: "1px solid #dadce0", boxShadow: "0 1px 1px rgba(0,0,0,0.1)" }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSearch}
-              className="bg-[#f8f9fa] border border-[#f8f9fa] text-[#3c4043] px-6 py-2.5 rounded text-sm transition-all"
-            >
-              Penelusuran Project
-            </motion.button>
-            <motion.button 
-              whileHover={{ border: "1px solid #dadce0", boxShadow: "0 1px 1px rgba(0,0,0,0.1)" }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => document.getElementById('education').scrollIntoView({ behavior: 'smooth' })}
-              className="bg-[#f8f9fa] border border-[#f8f9fa] text-[#3c4043] px-6 py-2.5 rounded text-sm transition-all"
-            >
-              Saya Lagi Beruntung
-            </motion.button>
-          </div>
-        </motion.div>
-      </section>
+      {/* Mobile Menu Button */}
+      <button 
+        onClick={toggleSidebar}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        className="fixed top-6 left-6 w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md z-[5000] hover:bg-white/10 hover:border-white/20 transition-all hover:scale-105"
+      >
+        <Menu className="w-6 h-6 text-white" />
+      </button>
 
-      {/* Loading Bar Animation (Triggers on search) */}
-      {isSearching && (
-        <motion.div 
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 0.6 }}
-          className="h-1 bg-[#4285F4] fixed top-0 left-0 z-50"
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          onClick={toggleSidebar}
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[3500]"
         />
       )}
 
-      {/* Main Content Area (Results) */}
-      <div id="results" className="max-w-4xl mx-auto px-4 py-12 md:py-24">
+      {/* Sidebar Navigation */}
+      <nav className={`fixed top-0 left-0 w-[280px] h-full bg-[#0a0a0c]/80 border-r border-white/10 backdrop-blur-2xl p-6 pt-[100px] z-[4000] flex flex-col transition-transform duration-500 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => navigateTo(item.id)}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className={`flex items-center gap-4 px-5 py-4 rounded-xl mb-3 font-semibold text-sm transition-all relative overflow-hidden text-left ${activePage === item.id ? 'text-white bg-white/5 translate-x-1.5' : 'text-[#9494a0] hover:text-white hover:bg-white/5 hover:translate-x-1.5'}`}
+          >
+            {activePage === item.id && (
+              <span className="absolute left-0 top-0 h-full w-[3px] bg-white rounded-r-md" />
+            )}
+            {item.label}
+          </button>
+        ))}
         
-        <motion.p 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-[#70757a] text-sm mb-12"
-        >
-          Sekitar {projects.length + education.length} hasil (0,24 detik)
-        </motion.p>
+        <div className="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
+          <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="text-[#9494a0] hover:text-white text-sm font-semibold px-5 py-2">Github Profile</a>
+          <a href="https://jasa.mifahmi.my.id" target="_blank" rel="noreferrer" className="text-[#9494a0] hover:text-white text-sm font-semibold px-5 py-2">Order Services</a>
+        </div>
+      </nav>
 
-        {/* --- PROJECTS SECTION (Material 3 Cards) --- */}
-        <div className="mb-20">
-          <h2 className="text-2xl text-[#202124] mb-8 font-normal flex items-center gap-2">
-            <Search className="w-6 h-6 text-[#4285F4]" />
-            Hasil Penelusuran Web
-          </h2>
+      {/* Main Content Area */}
+      <main className="min-h-screen pt-[100px] px-5 md:px-[5%] pb-[60px] max-w-[1300px] mx-auto flex flex-col">
+        <AnimatePresence mode="wait">
           
-          <div className="flex flex-col gap-8">
-            {projects.map((project, index) => (
-              <motion.a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: index * 0.1 }}
-                className={`group block bg-white p-6 rounded-3xl border border-[#dadce0] shadow-sm transition-all duration-300 hover:-translate-y-1 ${project.hoverBorder} ${project.hoverShadow}`}
-              >
-                <div className="flex flex-col sm:flex-row gap-5 items-start">
-                  {/* Icon Box */}
-                  <div className="bg-[#f8f9fa] p-4 rounded-2xl group-hover:scale-105 transition-transform">
-                    {project.icon}
+          {/* ----- HOME DASHBOARD ----- */}
+          {activePage === 'home' && (
+            <motion.section 
+              key="home"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex-1 flex flex-col"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                {/* Hero Card */}
+                <div className="md:col-span-8 glass-card rounded-[32px] overflow-hidden">
+                  <div className="relative w-full h-[180px] md:h-[220px] overflow-hidden">
+                    <img src="/pp.png" alt="Hero BG" className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent" />
                   </div>
                   
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm text-[#202124]">{project.url.replace('https://', '')}</span>
-                      <ArrowUpRight className="w-4 h-4 text-[#70757a] group-hover:text-[#4285F4] transition-colors" />
+                  <div className="px-6 md:px-10 pb-10 -mt-12 relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-end gap-6">
+                      <img src="/Profile1.png" alt="Profile" className="w-[90px] h-[90px] md:w-[110px] md:h-[110px] rounded-2xl object-cover border-[3px] border-[#141418] shadow-2xl" />
+                      <div>
+                        <h1 className="text-4xl md:text-[2.8rem] font-extrabold tracking-tight bg-gradient-to-br from-white to-[#a1a1aa] bg-clip-text text-transparent mb-2">Mi Fahmi</h1>
+                        <p className="text-[#9494a0] text-sm md:text-base leading-relaxed max-w-xl">
+                          Autodidact Full-Stack Developer & Pelajar SMK (TKJ/TSM). Menjelajahi logika dari ekosistem Discord bot hingga automasi Android via Termux. Membangun sistem yang bekerja lebih cerdas.
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-xl text-[#1a0dab] group-hover:underline font-medium mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-[#4d5156] leading-relaxed mb-4 text-sm md:text-base">
-                      {project.desc}
-                    </p>
-                    
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, i) => (
-                        <span key={i} className="px-3 py-1 bg-[#f1f3f4] text-[#3c4043] text-xs font-medium rounded-full">
-                          {tag}
-                        </span>
-                      ))}
+
+                    <div className="flex flex-wrap gap-3 mt-7">
+                      <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[#d6d6d6] text-xs font-semibold backdrop-blur-md">Node.js</span>
+                      <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[#d6d6d6] text-xs font-semibold backdrop-blur-md">Full-Stack</span>
+                      <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[#d6d6d6] text-xs font-semibold backdrop-blur-md">Automation</span>
+                      <a href="https://jasa.mifahmi.my.id" target="_blank" className="px-5 py-2 rounded-full bg-white text-black text-xs font-bold hover:bg-gray-200 transition-colors">Hire Me</a>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                      <div className="p-5 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 transition-colors">
+                        <h2 className="text-xl md:text-2xl font-extrabold mb-1">Khoerul Fahmi</h2>
+                        <p className="text-[#9494a0] text-xs font-bold uppercase tracking-wider">Tech-Enthusiast</p>
+                      </div>
+                      <div className="p-5 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 transition-colors">
+                        <h2 className="text-xl md:text-2xl font-extrabold mb-1">Alumni</h2>
+                        <p className="text-[#9494a0] text-xs font-bold uppercase tracking-wider">MI Al-Falah & SMP 1 Atap</p>
+                      </div>
+                      <div className="p-5 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 transition-colors">
+                        <h2 className="text-xl md:text-2xl font-extrabold mb-1">Indramayu</h2>
+                        <p className="text-[#9494a0] text-xs font-bold uppercase tracking-wider">Jawa Barat</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </motion.a>
-            ))}
-          </div>
-        </div>
 
-        {/* --- EDUCATION TIMELINE (Knowledge Panel Style) --- */}
-        <div id="education" className="mb-10">
-          <h2 className="text-2xl text-[#202124] mb-8 font-normal flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-[#34A853]" />
-            Panel Pengetahuan: Pendidikan
-          </h2>
+                {/* Side Card (Discord Widget) */}
+                <div className="md:col-span-4 glass-card rounded-[32px] p-6 flex items-center justify-center min-h-[200px]">
+                  <img src="https://discord-catwidget.koyeb.app/widget/1099980838722088991.png" alt="Discord Widget" className="w-full max-w-[320px] rounded-2xl hover:scale-105 transition-transform duration-300" />
+                </div>
+              </div>
+            </motion.section>
+          )}
 
-          <div className="bg-white border border-[#dadce0] rounded-3xl p-6 md:p-10 shadow-sm">
-            <div className="space-y-0 relative before:absolute before:inset-0 before:ml-[28px] before:w-0.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:bg-[#f1f3f4]">
-              {education.map((edu, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active py-6"
-                >
-                  {/* Icon Timeline */}
-                  <div className={`flex items-center justify-center w-14 h-14 rounded-full border-4 border-white ${edu.color} shadow-sm shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 group-hover:scale-110 transition-transform z-10`}>
-                    {edu.icon}
-                  </div>
+          {/* ----- PROJECTS ----- */}
+          {activePage === 'projects' && (
+            <motion.section 
+              key="projects"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex-1 flex flex-col gap-8"
+            >
+              {projectsData.map((project, idx) => (
+                <div key={idx} className="glass-card rounded-[32px] p-6 md:p-10 w-full">
+                  <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">{project.title}</h2>
+                  <p className="text-[#9494a0] text-base md:text-lg max-w-3xl mb-6">{project.desc}</p>
                   
-                  {/* Card Content */}
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-4 rounded-2xl border border-transparent hover:border-[#dadce0] hover:bg-[#f8f9fa] transition-all cursor-default">
-                    <div className="flex flex-col mb-1">
-                      <span className="text-sm font-medium text-[#70757a] uppercase tracking-wider">{edu.level}</span>
-                    </div>
-                    <h3 className="text-lg font-medium text-[#202124]">{edu.school}</h3>
-                    {edu.desc && <p className="text-[#4d5156] mt-2 text-sm">{edu.desc}</p>}
+                  <div className="flex flex-wrap gap-3 mb-8">
+                    {project.tags.map((tag, i) => (
+                      <span key={i} className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white text-xs font-semibold">{tag}</span>
+                    ))}
                   </div>
-                </motion.div>
+
+                  {/* Browser Mockup */}
+                  <div className="border border-white/10 rounded-2xl overflow-hidden bg-[#0b0b0d] shadow-2xl">
+                    <div className="bg-white/5 px-4 py-3 flex items-center gap-2 border-b border-white/5">
+                      <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                      <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                      <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                      <div className="ml-3 px-4 py-1.5 rounded-md bg-white/5 border border-white/5 text-[#9494a0] text-xs font-mono w-full max-w-sm truncate text-center mx-auto flex-1">
+                        {project.url}
+                      </div>
+                    </div>
+                    <iframe src={project.url} title={project.title} className="w-full h-[400px] md:h-[520px] bg-[#030305] border-none" />
+                  </div>
+                </div>
               ))}
-            </div>
-          </div>
-        </div>
+            </motion.section>
+          )}
 
-      </div>
+          {/* ----- SERVICES ----- */}
+          {activePage === 'services' && (
+            <motion.section 
+              key="services"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex-1"
+            >
+              <div className="glass-card rounded-[32px] p-6 md:p-10 w-full">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Professional Services</h2>
+                <p className="text-[#9494a0] text-base md:text-lg max-w-2xl mb-10">High-quality custom development for Discord bots, portfolio websites, and backend systems tailored exactly to your needs.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="p-8 rounded-2xl bg-black/20 border border-white/5 hover:-translate-y-2 hover:bg-white/5 transition-all relative overflow-hidden group">
+                    <div className="absolute -top-12 -right-12 w-[150px] h-[150px] bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
+                    <h3 className="text-xl font-bold mb-4">Discord Bot Setup</h3>
+                    <div className="text-3xl font-extrabold text-white mb-4">Rp 200K+</div>
+                    <p className="text-[#9494a0] text-sm leading-relaxed mb-8">Custom-built Discord bots with moderation features, economy systems, and automated logging.</p>
+                    <a href="https://jasa.mifahmi.my.id" target="_blank" className="inline-flex px-6 py-3 bg-white text-black font-bold rounded-xl text-sm hover:bg-gray-200 transition-colors">Order Setup</a>
+                  </div>
 
-      {/* Footer ala Google */}
-      <footer className="bg-[#f2f2f2] text-[#70757a] text-sm">
-        <div className="px-6 py-3 border-b border-[#dadce0] flex items-center gap-2">
-          <MapPin className="w-4 h-4" />
-          <span className="font-medium">Krangkeng, Indramayu</span>
-          <span className="mx-2 text-[#dadce0]">|</span>
-          <span>Berdasarkan aktivitas Anda</span>
-        </div>
-        <div className="px-6 py-4 flex flex-col sm:flex-row justify-between gap-4">
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-[#3c4043]">Bantuan</a>
-            <a href="#" className="hover:text-[#3c4043]">Privasi</a>
-            <a href="#" className="hover:text-[#3c4043]">Persyaratan</a>
-          </div>
+                  <div className="p-8 rounded-2xl bg-black/20 border border-white/5 hover:-translate-y-2 hover:bg-white/5 transition-all relative overflow-hidden group">
+                    <div className="absolute -top-12 -right-12 w-[150px] h-[150px] bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
+                    <h3 className="text-xl font-bold mb-4">Portfolio Website</h3>
+                    <div className="text-3xl font-extrabold text-white mb-4">Rp 100K+</div>
+                    <p className="text-[#9494a0] text-sm leading-relaxed mb-8">Modern, responsive, and animated web portfolios using React & Tailwind. Fast and SEO friendly.</p>
+                    <a href="https://jasa.mifahmi.my.id" target="_blank" className="inline-flex px-6 py-3 bg-white text-black font-bold rounded-xl text-sm hover:bg-gray-200 transition-colors">Order Design</a>
+                  </div>
+
+                  <div className="p-8 rounded-2xl bg-black/20 border border-white/5 opacity-60 relative overflow-hidden">
+                    <h3 className="text-xl font-bold mb-4">Advanced System</h3>
+                    <div className="text-3xl font-extrabold text-white mb-4">Rp 1M+</div>
+                    <p className="text-[#9494a0] text-sm leading-relaxed mb-8">Complex full-stack web applications with database integrations. Currently in development.</p>
+                    <button className="inline-flex px-6 py-3 bg-transparent border border-white/20 text-white font-bold rounded-xl text-sm cursor-not-allowed">Coming Soon</button>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          )}
+
+          {/* ----- LINKS ----- */}
+          {activePage === 'links' && (
+            <motion.section 
+              key="links"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex-1"
+            >
+              <div className="glass-card rounded-[32px] p-6 md:p-10 w-full">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Connect & Socials</h2>
+                <p className="text-[#9494a0] text-base md:text-lg mb-10">Find my code, join my community, or see my content across these platforms.</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <a href="https://github.com/MohFahmiMc" target="_blank" className="flex items-center gap-5 p-6 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 hover:-translate-y-1 transition-all group">
+                    <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                      <Github className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">Github</h3>
+                      <p className="text-[#9494a0] text-sm mt-1">@MohFahmiMc</p>
+                    </div>
+                  </a>
+
+                  <a href="https://discord.gg/FkvM362RJu" target="_blank" className="flex items-center gap-5 p-6 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 hover:-translate-y-1 transition-all group">
+                    <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                      <Terminal className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">Discord</h3>
+                      <p className="text-[#9494a0] text-sm mt-1">Community Server</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
+
+        {/* Global Footer Mentok Bawah */}
+        <footer className="mt-auto pt-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-white/10 w-full">
           <div>
-            &copy; 2026 MohFahmiMc
+            <h3 className="font-bold text-lg">© 2026 MiFahmi</h3>
+            <p className="text-[#9494a0] text-sm mt-1">Full Stack Developer & Backend Systems</p>
           </div>
-        </div>
-      </footer>
-    </div>
+          <div className="flex flex-wrap gap-3">
+            <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#b0b0b0] text-xs font-semibold">JavaScript</span>
+            <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#b0b0b0] text-xs font-semibold">Node.js</span>
+            <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#b0b0b0] text-xs font-semibold">React Vite</span>
+          </div>
+        </footer>
+      </main>
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-[5000]">
+        <a 
+          href="https://github.com/MohFahmiMc" 
+          target="_blank" 
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-md hover:bg-white/20 hover:scale-110 transition-all shadow-xl"
+        >
+          <Github className="w-5 h-5 text-white" />
+        </a>
+      </div>
+    </>
   );
 }
