@@ -4,21 +4,21 @@
 
 @layer base {
   :root {
-    --bg: #030305;
-    --surface: rgba(20, 20, 24, 0.45);
-    --surface-hover: rgba(30, 30, 35, 0.6);
-    --border: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(255, 255, 255, 0.2);
-    --text-main: #ffffff;
-    --text-muted: #9494a0;
-    --accent: #ffffff;
+    --bg: #FAFAFA; /* Putih bersih */
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-hover: rgba(240, 240, 240, 0.8);
+    --border: rgba(0, 0, 0, 0.08); /* Border tipis hitam */
+    --border-glow: rgba(0, 0, 0, 0.2);
+    --text-main: #030305; /* Teks hitam pekat */
+    --text-muted: #666666; /* Abu-abu untuk teks sekunder */
+    --accent: #000000; /* Aksen hitam */
   }
 
   body {
     background-color: var(--bg);
     color: var(--text-main);
     overflow-x: hidden;
-    cursor: none; /* Menyembunyikan kursor bawaan untuk kursor custom */
+    cursor: none; 
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
 }
@@ -29,23 +29,23 @@
     border: 1px solid var(--border);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); /* Shadow lebih halus untuk tema terang */
     transition: all 0.4s ease;
   }
   .glass-card:hover {
     border-color: var(--border-glow);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
     transform: translateY(-4px);
   }
 }
 
-/* Custom Cursor */
+/* Custom Cursor (Dibalik jadi Hitam) */
 .cursor-dot {
   position: fixed;
   width: 6px;
   height: 6px;
   background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -56,7 +56,7 @@
   position: fixed;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -64,16 +64,16 @@
   z-index: 999998;
 }
 
-/* Scrollbar */
+/* Scrollbar Putih */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 999px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
 
-/* Background Animations */
+/* Background Animations - Tetap gunakan opacity rendah agar tidak mengganggu kontras */
 @keyframes float1 {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(-80px, 80px) scale(1.1); }
@@ -85,7 +85,7 @@
 .animate-float1 { animation: float1 15s infinite alternate ease-in-out; }
 .animate-float2 { animation: float2 18s infinite alternate ease-in-out; }
 
-/* Loader Animations */
+/* Loader Animations (Dibalik jadi Hitam) */
 @keyframes pulseText {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
