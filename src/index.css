@@ -2,6 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  :root {
+    --bg: #030305;
+    --surface: rgba(20, 20, 24, 0.45);
+    --surface-hover: rgba(30, 30, 35, 0.6);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(255, 255, 255, 0.2);
+    --text-main: #ffffff;
+    --text-muted: #9494a0;
+    --accent: #ffffff;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    overflow-x: hidden;
+    cursor: none; /* Menyembunyikan kursor bawaan untuk kursor custom */
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
 }
+
+@layer utilities {
+  .glass-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+  }
+  .glass-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+    transform: translateY(-4px);
+  }
+}
+
+/* Custom Cursor */
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 999999;
+}
+
+.cursor-outline {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s, border-color 0.15s;
+  z-index: 999998;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* Background Animations */
+@keyframes float1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-80px, 80px) scale(1.1); }
+}
+@keyframes float2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(80px, -80px) scale(1.1); }
+}
+.animate-float1 { animation: float1 15s infinite alternate ease-in-out; }
+.animate-float2 { animation: float2 18s infinite alternate ease-in-out; }
+
+/* Loader Animations */
+@keyframes pulseText {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes loadFill { to { width: 100%; } }
+.animate-pulseText { animation: pulseText 2s infinite; }
+.animate-loadFill { animation: loadFill 1.5s forwards cubic-bezier(0.8, 0, 0.2, 1); }
