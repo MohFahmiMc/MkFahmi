@@ -61,7 +61,6 @@ export default function Portfolio() {
   const { scrollYProgress: mainScroll } = useScroll();
   const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
 
-  // Animasi Progress untuk Jejak & Persenjataan (Timeline)
   const { scrollYProgress: timelineProgress } = useScroll({
     target: timelineRef,
     offset: ["start 80%", "end center"]
@@ -94,19 +93,39 @@ export default function Portfolio() {
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
-      {/* Floating Navbar */}
-      <nav className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 brutal-box rounded-full flex items-center gap-4 md:gap-10 w-[90%] md:w-auto justify-between md:justify-center bg-white">
-        <span className="font-black tracking-widest text-base md:text-lg text-black truncate max-w-[120px] md:max-w-none">M. KHOERUL FAHMI</span>
-        <div className="flex gap-4 md:gap-8 text-xs md:text-sm font-bold uppercase tracking-widest text-black shrink-0">
+      {/* Floating Navbar (Mobile: Top, Desktop: Right Sidebar) */}
+      {/* Mobile Navbar */}
+      <nav className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-3 brutal-box rounded-full flex items-center gap-4 w-[90%] justify-between bg-white">
+        <span className="font-black tracking-widest text-base text-black truncate">M.K.F</span>
+        <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
           <a href="#projects" className="hover:text-[#0055FF] transition-colors">Karya</a>
           <a href="#contact" className="hover:text-[#FF007F] transition-colors">Kontak</a>
         </div>
       </nav>
 
+      {/* Desktop Right Sidebar Navbar */}
+      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full">
+         <a href="#hero" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Hero</span>
+         </a>
+         <a href="#timeline" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Jejak</span>
+         </a>
+         <a href="#sandbox" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Sandbox</span>
+         </a>
+         <a href="#projects" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Karya</span>
+         </a>
+         <a href="#contact" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Kontak</span>
+         </a>
+      </nav>
+
       <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-40 pb-20 flex flex-col items-stretch overflow-hidden">
 
         {/* --- HERO SECTION --- */}
-        <section className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32">
+        <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -117,9 +136,8 @@ export default function Portfolio() {
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF]">
-              Mohamad <br />
-              Khoerul Fahmi.
+            <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF]">
+              M.K.F.
             </h1>
 
             <p className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed border-l-4 border-black pl-4 text-left">
@@ -139,7 +157,7 @@ export default function Portfolio() {
         <Marquee />
 
         {/* --- JEJAK & PERSENJATAAN (Timeline Progress Section) --- */}
-        <section ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative">
+        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -153,25 +171,24 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="relative">
-            {/* --- LINE ANIMATION --- */}
-            {/* Garis Latar (Desktop - Horizontal) */}
-            <div className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-gray-200 border-y-4 border-black z-0"></div>
-            {/* Garis Latar (Mobile - Vertikal) */}
+            {/* Garis Latar (Desktop) */}
+            <div className="hidden lg:block absolute top-[28px] left-8 right-[33%] h-4 bg-gray-200 border-y-4 border-black z-0"></div>
+            {/* Garis Latar (Mobile) */}
             <div className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
 
-            {/* Garis Progress Animasi (Desktop - Horizontal) */}
+            {/* Garis Progress Animasi (Desktop) */}
             <motion.div 
               style={{ scaleX: timelineProgress }} 
-              className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
+              className="hidden lg:block absolute top-[28px] left-8 right-[33%] h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
             />
-            {/* Garis Progress Animasi (Mobile - Vertikal) */}
+            {/* Garis Progress Animasi (Mobile) */}
             <motion.div 
               style={{ scaleY: timelineProgress }} 
               className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
             />
 
-            {/* Grid Container (4 Kolom) */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+            {/* Grid Container (3 Kolom karena SMK dihapus) */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 relative z-10">
               
               {/* 1. SD */}
               <motion.div 
@@ -193,7 +210,6 @@ export default function Portfolio() {
                 className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
               >
                 <div className="w-16 h-16 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10">
-                  {/* Ikon dipertegas dengan warna putih */}
                   <GraduationCap size={28} color="white" className="stroke-white" />
                 </div>
                 <div className="brutal-box p-5 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
@@ -203,23 +219,9 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 3. SMK */}
+              {/* 3. Senjata (Device) - Maju menggantikan SMK */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
-              >
-                <div className="w-16 h-16 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10">
-                  <GraduationCap size={28} className="text-gray-400" />
-                </div>
-                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full opacity-90 hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-lg uppercase mb-1 text-gray-600">SMK</h3>
-                  <p className="text-xs font-bold text-gray-500 uppercase">Status: Kosong / Belum Masuk.</p>
-                </div>
-              </motion.div>
-
-              {/* 4. Senjata (Device) */}
-              <motion.div 
-                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
                 className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
               >
                 <div className="w-16 h-16 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10">
@@ -239,6 +241,7 @@ export default function Portfolio() {
 
         {/* --- INTERACTIVE SANDBOX SECTION --- */}
         <motion.section 
+          id="sandbox"
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-100px" }}
           className="mb-24 md:mb-40"
         >
@@ -354,10 +357,11 @@ export default function Portfolio() {
               </a>
               <a 
                 href="https://support.scarily.my.id" target="_blank" rel="noreferrer"
-                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FF007F] text-white hover:bg-[#111111] hover:text-white rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors"
+                // Perbaikan warna text agar terlihat jelas, hitam sebelum di hover, putih saat hover
+                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FF007F] text-black hover:bg-[#111111] hover:text-white rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors group"
               >
-                <Heart size={20} color="white" className="fill-white stroke-white" /> 
-                <span className="text-white">Dukung / Donate</span>
+                <Heart size={20} className="fill-black stroke-black group-hover:fill-white group-hover:stroke-white transition-colors" /> 
+                <span>Dukung / Donate</span>
               </a>
             </motion.div>
 
