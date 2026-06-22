@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, MessageSquare, X, Send, Bot, User } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 // --- Elemen Running Text (Marquee) ---
 const Marquee = () => {
@@ -63,6 +63,7 @@ const AbstractHeroArt = () => {
 export default function Portfolio() {
   const sandboxRef = useRef(null);
   const timelineRef = useRef(null);
+  const chatScrollRef = useRef(null);
   
   const { scrollYProgress: mainScroll } = useScroll();
   const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
@@ -71,6 +72,66 @@ export default function Portfolio() {
     target: timelineRef,
     offset: ["start 80%", "end 20%"]
   });
+
+  // --- STATE UNTUK AI CHAT WIDGET ---
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { role: 'assistant', content: 'Halo! Aku asisten AI di portofolio M.K Fahmi. Ada pertanyaan tentang skill, proyek, atau perjalanan Fahmi?' }
+  ]);
+  const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Auto-scroll chat ke bawah saat ada pesan baru
+  useEffect(() => {
+    if (chatScrollRef.current) {
+      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+    }
+  }, [chatMessages, isTyping, isChatOpen]);
+
+  // Fungsi Kirim Pesan ke AI
+  const handleSendChat = async (e) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const newMessage = { role: 'user', content: chatInput };
+    setChatMessages((prev) => [...prev, newMessage]);
+    setChatInput('');
+    setIsTyping(true);
+
+    try {
+      const token = localStorage.getItem('zephyr_token'); // Mengambil token jika pengunjung sudah login di ekosistem Zephyr
+      
+      const response = await fetch('https://zephyr.mifahmi.my.id/api/external/ai-generate', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({
+          prompt: newMessage.content,
+          systemPrompt: "Kamu adalah asisten AI di portofolio Mohamad Khoerul Fahmi (MKF). Fahmi adalah pelajar SMP yang akan menuju SMK RPL. Dia belajar coding otodidak, menggunakan Termux di HP Vivo Y12 sebagai server utama. Dia mahir Node.js, Discord.js, React Vite, Python, dan Prompt Engineering. Jawablah dengan ramah, percaya diri, sedikit gaul, dan jangan terlalu panjang.",
+          history: chatMessages.filter(msg => msg.role !== 'system') // Kirim history
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setChatMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
+      } else {
+        // Handle jika belum login / token tidak valid
+        if (response.status === 401 || data.error?.includes("JWT")) {
+          setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ **Akses Ditolak**: Chat AI portofolio memerlukan integrasi Zephyr. Silakan login ke Dashboard Zephyr terlebih dahulu untuk menggunakan AI." }]);
+        } else {
+          setChatMessages((prev) => [...prev, { role: 'assistant', content: `⚠️ Error: ${data.error}` }]);
+        }
+      }
+    } catch (error) {
+      setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ Terjadi gangguan saat menghubungi server AI Fahmi." }]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
 
   const evolutionBlocks = [
     { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 10, y: 10, bg: 'bg-[#FFD700]', text: 'text-black' },
@@ -96,8 +157,92 @@ export default function Portfolio() {
 
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
+      
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
+
+      {/* --- AI CHAT FLOATING WIDGET --- */}
+      <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
+        <AnimatePresence>
+          {isChatOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              className="mb-4 w-[320px] md:w-[380px] h-[450px] md:h-[500px] brutal-box bg-gray-50 flex flex-col overflow-hidden shadow-[8px_8px_0_0_#111111] p-0"
+            >
+              {/* Header Chat */}
+              <div className="bg-black text-white p-4 border-b-4 border-black flex justify-between items-center shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#FFD700] flex items-center justify-center border-2 border-white">
+                    <Bot size={18} className="text-black" />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-sm uppercase tracking-widest">Fahmi's AI</h3>
+                    <div className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                      <span className="text-[10px] font-bold">ONLINE</span>
+                    </div>
+                  </div>
+                </div>
+                <button onClick={() => setIsChatOpen(false)} className="hover:bg-white/20 p-1 rounded transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Area Pesan */}
+              <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+                {chatMessages.map((msg, idx) => (
+                  <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[85%] brutal-box p-3 text-sm font-bold border-2 ${
+                      msg.role === 'user' 
+                      ? 'bg-[#FFD700] text-black rounded-br-none' 
+                      : 'bg-[#0055FF] text-white rounded-bl-none'
+                    }`}>
+                      {/* Render markdown simpel (bold) */}
+                      <span dangerouslySetInnerHTML={{__html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}}></span>
+                    </div>
+                  </div>
+                ))}
+                {isTyping && (
+                  <div className="flex w-full justify-start">
+                    <div className="brutal-box p-3 bg-gray-200 border-2 rounded-bl-none flex gap-1 items-center">
+                      <span className="w-2 h-2 bg-black rounded-full animate-bounce"></span>
+                      <span className="w-2 h-2 bg-black rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                      <span className="w-2 h-2 bg-black rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Input Chat */}
+              <form onSubmit={handleSendChat} className="p-3 bg-white border-t-4 border-black flex gap-2 shrink-0">
+                <input 
+                  type="text" 
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Tanya tentang Fahmi..." 
+                  className="flex-1 brutal-box border-2 px-3 py-2 text-sm font-bold outline-none focus:bg-gray-100"
+                />
+                <button type="submit" disabled={isTyping || !chatInput.trim()} className="brutal-box bg-[#FF007F] text-white border-2 px-4 py-2 hover:bg-black transition-colors disabled:opacity-50">
+                  <Send size={18} />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Tombol Floating */}
+        <motion.button 
+          whileHover={{ scale: 1.1, rotate: -10 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsChatOpen(!isChatOpen)} 
+          className={`w-14 h-14 md:w-16 md:h-16 brutal-box rounded-full border-4 flex items-center justify-center shadow-[4px_4px_0_0_#111111] transition-colors ${isChatOpen ? 'bg-black text-white' : 'bg-[#0055FF] text-white'}`}
+        >
+          {isChatOpen ? <X size={28} /> : <MessageSquare size={28} />}
+        </motion.button>
+      </div>
 
       {/* --- NAVBAR MOBILE --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
@@ -252,7 +397,7 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 4. Perangkat Utama (Teks Kontras & Rapi) */}
+              {/* 4. Perangkat Utama */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
                 className="flex items-center gap-6 md:gap-10"
