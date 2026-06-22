@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone } from 'lucide-react';
+import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // --- Elemen Running Text (Marquee) ---
@@ -19,6 +19,8 @@ const Marquee = () => {
             <span className="text-[#FF007F] font-black text-2xl">•</span>
             <span className="text-white font-black text-xl md:text-2xl uppercase tracking-widest">React Vite</span>
             <span className="text-[#0055FF] font-black text-2xl">•</span>
+            <span className="text-white font-black text-xl md:text-2xl uppercase tracking-widest">Discord.js</span>
+            <span className="text-[#FFD700] font-black text-2xl">•</span>
           </React.Fragment>
         ))}
       </motion.div>
@@ -54,8 +56,16 @@ const AbstractHeroArt = () => {
 
 export default function Portfolio() {
   const sandboxRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const timelineRef = useRef(null);
+  
+  const { scrollYProgress: mainScroll } = useScroll();
+  const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
+
+  // Animasi Progress untuk Jejak & Persenjataan (Timeline)
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 80%", "end center"]
+  });
 
   const evolutionBlocks = [
     { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 10, y: 10, bg: 'bg-[#FFD700]', text: 'text-black' },
@@ -82,7 +92,7 @@ export default function Portfolio() {
   return (
     <div className="relative min-h-screen">
       {/* Progress Bar Atas */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
+      <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
       {/* Floating Navbar */}
       <nav className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 brutal-box rounded-full flex items-center gap-4 md:gap-10 w-[90%] md:w-auto justify-between md:justify-center bg-white">
@@ -113,7 +123,7 @@ export default function Portfolio() {
             </h1>
 
             <p className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed border-l-4 border-black pl-4 text-left">
-              Belajar coding <span className="bg-[#FFD700] px-1">secara otodidak</span>. Berasal dari Indramayu, menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.
+              Belajar coding <span className="bg-[#FFD700] px-1">secara otodidak</span>. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.
             </p>
 
             <a href="#projects" className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full md:w-auto text-sm md:text-base">
@@ -128,66 +138,102 @@ export default function Portfolio() {
 
         <Marquee />
 
-        {/* --- JEJAK & PERSENJATAAN (Education & Device Section) --- */}
-        <section className="mb-24 md:mb-40 mt-20">
+        {/* --- JEJAK & PERSENJATAAN (Timeline Progress Section) --- */}
+        <section ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="mb-10"
+            className="mb-16 md:mb-20 text-center md:text-left"
           >
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-4">Jejak & <br/>Persenjataan.</h2>
-            <div className="h-2 w-32 bg-[#FF007F] border-2 border-black"></div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-4">Perjalanan <br/>& Senjata.</h2>
+            <p className="text-black font-bold max-w-sm mx-auto md:mx-0 border-l-4 border-black pl-4 text-sm md:text-base">
+              Scroll untuk melihat proses perjalanan dari sekolah dasar hingga sistem arsitektur saat ini.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* SD */}
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="brutal-box p-6 bg-white flex flex-col h-full hover:-translate-y-2 transition-transform"
-            >
-              <div className="w-12 h-12 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center mb-4">
-                <GraduationCap size={24} />
-              </div>
-              <h3 className="font-black text-lg uppercase mb-2">Sekolah Dasar</h3>
-              <p className="text-sm font-bold text-black/70 uppercase">MI-Alfalah Tanjakan, Krangkeng Indramayu.</p>
-            </motion.div>
+          <div className="relative">
+            {/* --- LINE ANIMATION --- */}
+            {/* Garis Latar (Desktop - Horizontal) */}
+            <div className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-gray-200 border-y-4 border-black z-0"></div>
+            {/* Garis Latar (Mobile - Vertikal) */}
+            <div className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
 
-            {/* SMP */}
+            {/* Garis Progress Animasi (Desktop - Horizontal) */}
             <motion.div 
-              initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="brutal-box p-6 bg-white flex flex-col h-full hover:-translate-y-2 transition-transform"
-            >
-              <div className="w-12 h-12 brutal-box bg-[#0055FF] text-white rounded-full flex items-center justify-center mb-4">
-                <GraduationCap size={24} />
-              </div>
-              <h3 className="font-black text-lg uppercase mb-2">SMP</h3>
-              <p className="text-sm font-bold text-black/70 uppercase">SMPN Satap 1 Krangkeng. <br/><span className="text-black bg-[#FFD700] px-1 mt-1 inline-block">Sudah Lulus</span></p>
-            </motion.div>
+              style={{ scaleX: timelineProgress }} 
+              className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
+            />
+            {/* Garis Progress Animasi (Mobile - Vertikal) */}
+            <motion.div 
+              style={{ scaleY: timelineProgress }} 
+              className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
+            />
 
-            {/* SMK */}
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-              className="brutal-box p-6 bg-gray-200 border-dashed flex flex-col h-full opacity-80 hover:-translate-y-2 transition-transform"
-            >
-              <div className="w-12 h-12 brutal-box bg-gray-300 rounded-full flex items-center justify-center mb-4">
-                <GraduationCap size={24} className="opacity-50" />
-              </div>
-              <h3 className="font-black text-lg uppercase mb-2 text-gray-500">SMK</h3>
-              <p className="text-sm font-bold text-gray-500 uppercase">Status: Kosong / Belum Masuk.</p>
-            </motion.div>
+            {/* Grid Container (4 Kolom) */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+              
+              {/* 1. SD */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+              >
+                <div className="w-16 h-16 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10">
+                  <GraduationCap size={28} className="text-black" />
+                </div>
+                <div className="brutal-box p-5 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-lg uppercase mb-1">Sekolah Dasar</h3>
+                  <p className="text-xs font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
+                </div>
+              </motion.div>
 
-            {/* Device Arsenal */}
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-              className="brutal-box p-6 bg-[#FF007F] text-white flex flex-col h-full hover:scale-105 transition-transform"
-            >
-              <div className="w-12 h-12 brutal-box bg-white text-black rounded-full flex items-center justify-center mb-4">
-                <Smartphone size={24} />
-              </div>
-              <h3 className="font-black text-lg uppercase mb-2">Senjata Utama</h3>
-              <p className="text-sm font-bold uppercase">Vivo Y12 <br/>RAM 3GB / 32GB ROM.<br/>(Mesin utama coding & server)</p>
-            </motion.div>
+              {/* 2. SMP */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+              >
+                <div className="w-16 h-16 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10">
+                  {/* Ikon dipertegas dengan warna putih */}
+                  <GraduationCap size={28} color="white" className="stroke-white" />
+                </div>
+                <div className="brutal-box p-5 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-lg uppercase mb-1">SMP</h3>
+                  <p className="text-xs font-bold text-black/70 uppercase mb-2">SMPN Satap 1 Krangkeng.</p>
+                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black">Sudah Lulus</span>
+                </div>
+              </motion.div>
+
+              {/* 3. SMK */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+              >
+                <div className="w-16 h-16 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10">
+                  <GraduationCap size={28} className="text-gray-400" />
+                </div>
+                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full opacity-90 hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-lg uppercase mb-1 text-gray-600">SMK</h3>
+                  <p className="text-xs font-bold text-gray-500 uppercase">Status: Kosong / Belum Masuk.</p>
+                </div>
+              </motion.div>
+
+              {/* 4. Senjata (Device) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+              >
+                <div className="w-16 h-16 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10">
+                  <Smartphone size={28} color="white" />
+                </div>
+                <div className="brutal-box p-5 bg-[#111111] text-white flex flex-col w-full hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
+                  <h3 className="font-black text-lg uppercase mb-1">Senjata Utama</h3>
+                  <p className="text-xs font-bold text-white/80 uppercase">
+                    Vivo Y12 <br/>RAM 3GB / 32GB ROM.<br/>(Mesin utama coding & server)
+                  </p>
+                </div>
+              </motion.div>
+
+            </div>
           </div>
         </section>
 
@@ -201,7 +247,7 @@ export default function Portfolio() {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
             </div>
             <p className="text-black font-bold max-w-sm text-left md:text-right mt-4 border-l-4 md:border-l-0 md:border-r-4 border-black pl-4 md:pr-4 text-sm md:text-base">
-              Geser balok keahlian di bawah. Dari HP Vivo Y12 menuju penguasaan sistem skala besar.
+              Geser balok keahlian di bawah. Berawal dari Vivo Y12 menuju penguasaan sistem skala besar.
             </p>
           </div>
           
@@ -295,7 +341,7 @@ export default function Portfolio() {
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16 md:mb-24 px-4">
             
-            {/* Bagian Tombol Order & Donasi */}
+            {/* Bagian Tombol Order & Donasi (Teks Tampil Jelas) */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="flex flex-col gap-4 w-full md:w-auto"
@@ -310,7 +356,8 @@ export default function Portfolio() {
                 href="https://support.scarily.my.id" target="_blank" rel="noreferrer"
                 className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FF007F] text-white hover:bg-[#111111] hover:text-white rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors"
               >
-                <Heart size={20} className="fill-white" /> Dukung / Donate
+                <Heart size={20} color="white" className="fill-white stroke-white" /> 
+                <span className="text-white">Dukung / Donate</span>
               </a>
             </motion.div>
 
@@ -343,7 +390,10 @@ export default function Portfolio() {
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-black tracking-widest uppercase border-t-4 border-black pt-6 md:pt-8 text-black">
             <p>© 2026 M.K FAHMI.</p>
-            <p>KRANGKENG, INDRAMAYU BASE</p>
+            <div className="flex items-center gap-1">
+              <MapPin size={14} />
+              <p>KRANGKENG, INDRAMAYU BASE</p>
+            </div>
           </div>
         </section>
 
