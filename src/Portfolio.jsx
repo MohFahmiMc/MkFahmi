@@ -69,7 +69,7 @@ export default function Portfolio() {
 
   const { scrollYProgress: timelineProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 80%", "end center"]
+    offset: ["start 80%", "end 20%"]
   });
 
   const evolutionBlocks = [
@@ -95,7 +95,7 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-white">
+    <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
@@ -142,7 +142,7 @@ export default function Portfolio() {
       <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-hidden">
 
         {/* --- HERO SECTION --- */}
-        <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32">
+        <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -182,8 +182,8 @@ export default function Portfolio() {
 
         <Marquee />
 
-        {/* --- JEJAK & PERSENJATAAN (Timeline Progress Section) --- */}
-        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative">
+        {/* --- JEJAK & PERSENJATAAN (Timeline Progress Section - VERTIKAL ALL SCREEN) --- */}
+        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -197,83 +197,76 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="relative">
-            {/* Garis Latar (Desktop) */}
-            <div className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-gray-200 border-y-4 border-black z-0"></div>
-            {/* Garis Latar (Mobile) */}
-            <div className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
-
-            {/* Garis Progress Animasi (Desktop) */}
-            <motion.div 
-              style={{ scaleX: timelineProgress }} 
-              className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
-            />
-            {/* Garis Progress Animasi (Mobile) */}
+            {/* Garis Latar Vertical (All Screens) */}
+            <div className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
+            
+            {/* Garis Progress Vertical Animasi */}
             <motion.div 
               style={{ scaleY: timelineProgress }} 
-              className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
+              className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
             />
 
-            {/* Grid Container (Diberikan items-stretch agar tinggi pembungkus sama rata) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10 items-stretch">
+            {/* Layout Vertikal (Berjejer kebawah) untuk Desktop dan Mobile */}
+            <div className="flex flex-col gap-10 md:gap-16 relative z-10">
               
               {/* 1. SD */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex items-center gap-6 md:gap-10"
               >
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <GraduationCap size={28} className="text-black" />
+                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
+                  <GraduationCap size={32} className="text-black" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-lg uppercase mb-1">Sekolah Dasar</h3>
-                  <p className="text-xs font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
+                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">Sekolah Dasar</h3>
+                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
                 </div>
               </motion.div>
 
               {/* 2. SMP */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex items-center gap-6 md:gap-10"
               >
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <GraduationCap size={28} className="text-white" />
+                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
+                  <GraduationCap size={32} className="text-white" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-lg uppercase mb-1">SMP</h3>
-                  <p className="text-xs font-bold text-black/70 uppercase mb-2">SMPN Satap 1 Krangkeng.</p>
-                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black mt-auto">Sudah Lulus</span>
+                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform relative overflow-hidden">
+                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">SMP</h3>
+                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">SMPN Satap 1 Krangkeng.</p>
+                  <span className="absolute top-6 right-6 text-black bg-[#FFD700] px-3 py-1 text-xs font-black uppercase border-2 border-black rotate-3">Lulus</span>
                 </div>
               </motion.div>
 
               {/* 3. SMK */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex items-center gap-6 md:gap-10"
               >
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <GraduationCap size={28} className="text-gray-400" />
+                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
+                  <GraduationCap size={32} className="text-gray-400" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full flex-1 opacity-90 hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-lg uppercase mb-1 text-gray-600">SMK</h3>
-                  <p className="text-xs font-bold text-gray-500 uppercase">Status: Belum Masuk.</p>
+                <div className="brutal-box p-6 md:p-8 bg-gray-100 border-dashed flex flex-col w-full opacity-90 hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2 text-gray-600">SMK</h3>
+                  <p className="text-sm md:text-base font-bold text-gray-500 uppercase">Status: Belum Masuk.</p>
                 </div>
               </motion.div>
 
-              {/* 4. Perangkat Utama (Dulu Senjata Utama - Diperbaiki total ke Putih Kontras & Sejajar) */}
+              {/* 4. Perangkat Utama (Teks Kontras & Rapi) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex items-center gap-6 md:gap-10"
               >
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <Smartphone size={28} className="text-white" />
+                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
+                  <Smartphone size={32} className="text-white" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-white text-black flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
-                  <h3 className="font-black text-lg uppercase mb-2">Perangkat Utama</h3>
-                  <p className="text-xs font-bold text-black/80 uppercase leading-relaxed">
-                    <span className="text-[#0055FF] font-black">Vivo Y12</span><br/>
+                <div className="brutal-box p-6 md:p-8 bg-white text-black flex flex-col w-full hover:-translate-y-2 transition-transform shadow-[6px_6px_0_0_#FF007F]">
+                  <h3 className="font-black text-xl md:text-2xl uppercase mb-4 text-[#FF007F]">Perangkat Utama</h3>
+                  <p className="text-sm md:text-lg font-black text-black uppercase leading-relaxed">
+                    <span className="bg-black text-white px-2 py-1 mr-2">Vivo Y12</span> <br className="md:hidden" />
                     RAM 3GB / 32GB ROM.<br/>
-                    <span className="text-[10px] text-black/60 font-bold tracking-tight normal-case mt-3 block border-t border-black/10 pt-2">
-                      (Mesin utama coding & server)
+                    <span className="text-xs md:text-sm font-bold text-gray-600 mt-4 block border-t-2 border-black/10 pt-4">
+                      (Mesin utama coding & kompilasi server)
                     </span>
                   </p>
                 </div>
@@ -290,7 +283,7 @@ export default function Portfolio() {
           whileInView={{ opacity: 1, scale: 1 }} 
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-24 md:mb-40"
+          className="mb-24 md:mb-40 relative z-10"
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10">
             <div>
@@ -323,7 +316,7 @@ export default function Portfolio() {
         </motion.section>
 
         {/* --- REAL WEB PROJECTS (IFRAME) SECTION --- */}
-        <section id="projects" className="mb-24 md:mb-40">
+        <section id="projects" className="mb-24 md:mb-40 relative z-10">
           <motion.h2 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-4xl md:text-6xl font-black tracking-tighter mb-12 md:mb-20 uppercase text-center text-black drop-shadow-[3px_3px_0_#FF007F]"
@@ -387,11 +380,11 @@ export default function Portfolio() {
         </section>
 
         {/* --- SERVICES, STATUS & CONTACT SECTION --- */}
-        <section id="contact" className="pt-16 md:pt-20 border-t-8 border-black text-center">
+        <section id="contact" className="pt-16 md:pt-20 border-t-8 border-black text-center relative z-10 bg-white/80 backdrop-blur-sm p-4 rounded-[2rem]">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
             <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 md:mb-8 uppercase text-black drop-shadow-[3px_3px_0_#FFD700]">Siap <br/>Membangun?</h2>
             <p className="text-black font-bold text-sm md:text-lg max-w-lg mx-auto mb-10 md:mb-16 px-4">
-              Mulai dari setup bot moderasi hingga pembuatan portfolio agensi profesional.
+              Mulai dari setup bot moderasi hingga pembuatan portfolio web profesional.
             </p>
           </motion.div>
 
