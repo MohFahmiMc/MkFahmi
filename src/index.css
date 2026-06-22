@@ -4,51 +4,49 @@
 
 @layer base {
   :root {
-    --bg: #fbfbfd;
-    --surface: rgba(255, 255, 255, 0.8);
-    --surface-hover: #ffffff;
-    --border: rgba(0, 0, 0, 0.06);
-    --border-strong: rgba(0, 0, 0, 0.15);
-    --text-main: #111111;
-    --text-muted: #6e6e73;
-    --accent: #000000;
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-muted: #888888;
+    --accent: #ffffff;
   }
 
   body {
     background-color: var(--bg);
     color: var(--text-main);
     overflow-x: hidden;
-    cursor: none; /* Mengaktifkan kursor kustom */
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: -0.01em;
+    cursor: none;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer utilities {
-  .dev-grid {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-  
-  .brutal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
 
-  .brutal-card:hover {
-    border-color: var(--border-strong);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  /* 3D Core Utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
   }
 }
 
 /* Custom Minimalist Cursor */
 .cursor-dot {
   position: fixed;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   background: var(--accent);
   border-radius: 50%;
   pointer-events: none;
@@ -58,9 +56,9 @@
 
 .cursor-outline {
   position: fixed;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -68,22 +66,16 @@
   z-index: 999998;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-/* Utility tambahan untuk interaksi drag */
-.cursor-grab:active {
-  cursor: grabbing !important;
+  background: rgba(255, 255, 255, 0.4);
 }
