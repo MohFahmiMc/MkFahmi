@@ -4,19 +4,15 @@
 
 @layer base {
   :root {
-    --bg-main: #ffffff;
-    --text-main: #000000;
-    --accent: #000000;
+    --bg-main: #fafafa; /* Putih tulang, tidak silau di mata */
+    --text-main: #111111;
   }
 
   body {
-    /* Background Light Premium dengan Grid Halus */
     background-color: var(--bg-main);
     background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
+      radial-gradient(#d1d1d1 1px, transparent 1px);
+    background-size: 32px 32px;
     color: var(--text-main);
     overflow-x: hidden;
     cursor: none;
@@ -25,21 +21,41 @@
 }
 
 @layer utilities {
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  /* Seni Neo-Brutalism: Kotak tajam, border tebal, shadow solid */
+  .brutal-card {
+    background-color: #ffffff;
+    border: 2px solid #111111;
+    box-shadow: 6px 6px 0px 0px #111111;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .brutal-card:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px #111111;
+  }
+
+  .brutal-btn {
+    background-color: #111111;
+    color: #ffffff;
+    border: 2px solid #111111;
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+  }
+
+  .brutal-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+    background-color: #ffffff;
+    color: #111111;
   }
 }
 
-/* Custom Minimalist Cursor - Warna Hitam */
+/* Kursor Kustom Minimalis Hitam */
 .cursor-dot {
   position: fixed;
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
+  width: 8px;
+  height: 8px;
+  background: #111111;
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -50,24 +66,21 @@
   position: fixed;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(17, 17, 17, 0.5);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: width 0.15s, height 0.15s, border-color 0.15s;
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
   z-index: 999998;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8f9fa;
+  background: #fafafa;
+  border-left: 2px solid #111;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);
+  background: #111111;
 }
