@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone } from 'lucide-react';
+import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // --- Elemen Running Text (Marquee) ---
@@ -107,28 +107,28 @@ export default function Portfolio() {
         </div>
       </nav>
 
-      {/* --- NAVBAR DESKTOP (Hanya tampil di Laptop/Monitor) --- */}
-      <nav className="hidden md:flex fixed top-8 left-1/2 -translate-x-1/2 z-50 px-8 py-4 brutal-box rounded-full items-center gap-10 bg-white w-full max-w-5xl justify-between shadow-[6px_6px_0_0_#111111]">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full hover:rotate-12 transition-transform">
-            <Terminal size={20} className="text-black" />
-          </div>
-          <span className="font-black tracking-widest text-xl text-black">MKF</span>
-        </div>
-        <div className="flex gap-8 text-sm font-bold uppercase tracking-widest text-black">
-          <a href="#timeline" className="flex items-center gap-2 hover:text-[#0055FF] transition-colors group">
-            <Compass size={18} className="group-hover:-translate-y-1 transition-transform" /> Jejak
-          </a>
-          <a href="#sandbox" className="flex items-center gap-2 hover:text-[#FF007F] transition-colors group">
-            <Box size={18} className="group-hover:-translate-y-1 transition-transform" /> Sandbox
-          </a>
-          <a href="#projects" className="flex items-center gap-2 hover:text-[#FFD700] transition-colors group">
-            <Briefcase size={18} className="group-hover:-translate-y-1 transition-transform" /> Karya
-          </a>
-          <a href="#contact" className="flex items-center gap-2 hover:text-[#0055FF] transition-colors group">
-            <Phone size={18} className="group-hover:-translate-y-1 transition-transform" /> Kontak
-          </a>
-        </div>
+      {/* --- NAVBAR DESKTOP (SIDEBAR KANAN) --- */}
+      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full shadow-[6px_6px_0_0_#111111]">
+         <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
+            <Home size={18} className="text-black" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Hero</span>
+         </a>
+         <a href="#timeline" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white">
+            <Compass size={18} className="text-black group-hover:text-white" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#0055FF] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Jejak</span>
+         </a>
+         <a href="#sandbox" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white">
+            <Box size={18} className="text-black group-hover:text-white" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Sandbox</span>
+         </a>
+         <a href="#projects" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
+            <Briefcase size={18} className="text-black" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FFD700] text-black text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Karya</span>
+         </a>
+         <a href="#contact" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white">
+            <Phone size={18} className="text-black group-hover:text-white" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Kontak</span>
+         </a>
       </nav>
 
       <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-hidden">
@@ -176,20 +176,20 @@ export default function Portfolio() {
           >
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-4">Perjalanan <br/>& Senjata.</h2>
             <p className="text-black font-bold max-w-sm mx-auto md:mx-0 border-l-4 border-black pl-4 text-sm md:text-base">
-              Scroll untuk melihat proses perjalanan dari sekolah dasar hingga sistem arsitektur saat ini.
+              Scroll untuk melihat proses perjalanan pendidikan hingga senjata arsitektur saat ini.
             </p>
           </motion.div>
 
           <div className="relative">
             {/* Garis Latar (Desktop) */}
-            <div className="hidden lg:block absolute top-[28px] left-8 right-[33%] h-4 bg-gray-200 border-y-4 border-black z-0"></div>
+            <div className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-gray-200 border-y-4 border-black z-0"></div>
             {/* Garis Latar (Mobile) */}
             <div className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
 
             {/* Garis Progress Animasi (Desktop) */}
             <motion.div 
               style={{ scaleX: timelineProgress }} 
-              className="hidden lg:block absolute top-[28px] left-8 right-[33%] h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
+              className="hidden lg:block absolute top-[28px] left-8 right-8 h-4 bg-[#FF007F] border-y-4 border-black origin-left z-0" 
             />
             {/* Garis Progress Animasi (Mobile) */}
             <motion.div 
@@ -197,18 +197,18 @@ export default function Portfolio() {
               className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
             />
 
-            {/* Grid Container (3 Kolom karena SMK dihapus) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 relative z-10">
+            {/* Grid Container (4 Kolom agar kotak Senjata tidak menggantung dan sejajar dengan SMK) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
               
               {/* 1. SD */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4 h-full"
               >
                 <div className="w-16 h-16 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10">
                   <GraduationCap size={28} className="text-black" />
                 </div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
+                <div className="brutal-box p-5 bg-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-lg uppercase mb-1">Sekolah Dasar</h3>
                   <p className="text-xs font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
                 </div>
@@ -217,27 +217,41 @@ export default function Portfolio() {
               {/* 2. SMP */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4 h-full"
               >
                 <div className="w-16 h-16 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10">
                   <GraduationCap size={28} color="white" className="stroke-white" />
                 </div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
+                <div className="brutal-box p-5 bg-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-lg uppercase mb-1">SMP</h3>
                   <p className="text-xs font-bold text-black/70 uppercase mb-2">SMPN Satap 1 Krangkeng.</p>
-                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black">Sudah Lulus</span>
+                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black mt-auto">Sudah Lulus</span>
                 </div>
               </motion.div>
 
-              {/* 3. Senjata (Device) */}
+              {/* 3. SMK */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4 h-full"
+              >
+                <div className="w-16 h-16 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10">
+                  <GraduationCap size={28} className="text-gray-400" />
+                </div>
+                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full h-full opacity-90 hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-lg uppercase mb-1 text-gray-600">SMK</h3>
+                  <p className="text-xs font-bold text-gray-500 uppercase mt-auto">Status: Kosong / Belum Masuk.</p>
+                </div>
+              </motion.div>
+
+              {/* 4. Senjata (Device) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+                className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4 h-full"
               >
                 <div className="w-16 h-16 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10">
                   <Smartphone size={28} color="white" />
                 </div>
-                <div className="brutal-box p-5 bg-[#111111] text-white flex flex-col w-full hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
+                <div className="brutal-box p-5 bg-[#111111] text-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
                   <h3 className="font-black text-lg uppercase mb-1">Senjata Utama</h3>
                   <p className="text-xs font-bold text-white/80 uppercase">
                     Vivo Y12 <br/>RAM 3GB / 32GB ROM.<br/>(Mesin utama coding & server)
