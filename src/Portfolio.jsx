@@ -10,22 +10,17 @@ const MinecraftCharacter = () => {
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // Inisialisasi SkinViewer
     const viewer = new SkinViewer({
       canvas: canvasRef.current,
       width: 280,
       height: 400,
-      // Pastikan gambar Fahmi.png ada di folder src/skins/
       skin: "/src/skins/Fahmi.png" 
     });
 
-    // Tambahkan animasi diam (naik turun nafas)
     viewer.animations.add(IdleAnimation);
     viewer.autoRotate = true;
     viewer.autoRotateSpeed = 0.5;
 
-    // Di skinview3d versi terbaru, controls sudah otomatis aktif
-    // Kita hanya perlu mematikan zoom agar tidak mengganggu scroll halaman
     if (viewer.controls) {
       viewer.controls.enableZoom = false;
     }
@@ -43,16 +38,16 @@ const MinecraftCharacter = () => {
       className="relative flex flex-col items-center justify-center"
     >
       {/* Glow Effect di belakang karakter */}
-      <div className="absolute inset-0 bg-white/10 blur-[60px] rounded-full z-0"></div>
+      <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full z-0"></div>
       
       <canvas 
         ref={canvasRef} 
-        className="z-10 cursor-grab active:cursor-grabbing outline-none drop-shadow-[0_10px_30px_rgba(255,255,255,0.2)]" 
+        className="z-10 cursor-grab active:cursor-grabbing outline-none drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]" 
       />
       
       {/* Gamertag UI */}
-      <div className="z-20 mt-2 px-6 py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-2 shadow-2xl">
-        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+      <div className="z-20 mt-2 px-6 py-2 bg-black/80 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-2 shadow-2xl">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
         <span className="font-mono text-sm tracking-widest font-bold text-white uppercase">MohFahmiMc</span>
       </div>
     </motion.div>
@@ -73,13 +68,12 @@ export default function Portfolio() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Data Evolusi untuk Interactive Sandbox
   const evolutionBlocks = [
     { id: '1', title: 'Prompt Eng.', icon: <Cpu size={18} />, desc: 'Logika & AI', style: 'bg-white text-black border-black/10', x: 20, y: 20 },
-    { id: '2', title: 'HTML, CSS, JS', icon: <Code2 size={18} />, desc: 'Front-End UI', style: 'bg-black text-white border-white/20', x: 220, y: 50 },
+    { id: '2', title: 'HTML, CSS, JS', icon: <Code2 size={18} />, desc: 'Front-End UI', style: 'bg-[#111] text-white border-white/10', x: 220, y: 50 },
     { id: '3', title: 'Python', icon: <Terminal size={18} />, desc: 'Skrip & Otomasi', style: 'bg-zinc-800 text-white border-white/10', x: 50, y: 150 },
     { id: '4', title: 'Node.js & API', icon: <Server size={18} />, desc: 'Termux Server', style: 'bg-white text-black border-black/10', x: 250, y: 200 },
-    { id: '5', title: 'GitHub', icon: <GitBranch size={18} />, desc: 'Version Control', style: 'bg-black text-white border-white/20', x: 120, y: 300 },
+    { id: '5', title: 'GitHub', icon: <GitBranch size={18} />, desc: 'Version Control', style: 'bg-[#111] text-white border-white/10', x: 120, y: 300 },
   ];
 
   const projectsData = [
@@ -100,7 +94,6 @@ export default function Portfolio() {
   return (
     <div className="relative min-h-screen selection:bg-white selection:text-black antialiased font-sans">
       
-      {/* Custom Cursor */}
       <div className="cursor-dot hidden md:block" style={{ left: cursorPos.x, top: cursorPos.y }} />
       <div 
         className="cursor-outline hidden md:block" 
@@ -132,17 +125,16 @@ export default function Portfolio() {
               <span className="text-xs font-mono tracking-widest uppercase text-white">Full-Stack Engineer</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[1] mb-8 drop-shadow-2xl">
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[1] mb-8">
               MOHAMAD <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">KHOERUL FAHMI</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-white/80 leading-relaxed font-light max-w-lg mb-8 drop-shadow-md">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-light max-w-lg mb-8">
               Pemimpin arsitektur digital. Mengambil kendali penuh dari ekosistem <strong className="text-white">Termux Android</strong> untuk merancang logika bot dan otomasi server, bersiap mendalami rekayasa perangkat lunak (RPL).
             </p>
           </div>
 
-          {/* Minecraft 3D Rendering */}
           <div className="flex-1 w-full flex justify-center lg:justify-end" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <MinecraftCharacter />
           </div>
@@ -193,7 +185,6 @@ export default function Portfolio() {
                 viewport={{ once: true, margin: "-100px" }}
                 className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center"
               >
-                {/* Project Info Block */}
                 <div className="w-full lg:w-1/3">
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.tags.map((tag, i) => (
@@ -202,8 +193,8 @@ export default function Portfolio() {
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-3xl font-black tracking-tight mb-4 drop-shadow-md text-white">{project.title}</h3>
-                  <p className="text-white/70 text-sm md:text-base leading-relaxed mb-6">{project.desc}</p>
+                  <h3 className="text-3xl font-black tracking-tight mb-4 text-white">{project.title}</h3>
+                  <p className="text-white/60 text-sm md:text-base leading-relaxed mb-6">{project.desc}</p>
                   <a 
                     href={project.url} target="_blank" rel="noreferrer"
                     onMouseEnter={() => setIsHovering(true)}
@@ -214,17 +205,14 @@ export default function Portfolio() {
                   </a>
                 </div>
 
-                {/* Real Web View (Iframe) */}
                 <div className="w-full lg:w-2/3 h-[400px] md:h-[550px] glass-panel p-2 rounded-[2rem] shadow-2xl">
                   <div className="w-full h-full rounded-[1.5rem] overflow-hidden relative bg-black">
-                    {/* Top Bar Web Browser Mockup */}
                     <div className="absolute top-0 w-full h-8 bg-white/10 backdrop-blur-md flex items-center px-4 gap-2 z-10 border-b border-white/10">
                       <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
                       <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
                       <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                       <div className="ml-4 text-[10px] font-mono text-white/50">{project.url.replace('https://', '')}</div>
                     </div>
-                    {/* Iframe Website Asli */}
                     <iframe 
                       src={project.url} 
                       className="w-full h-full pt-8 border-none" 
@@ -239,9 +227,9 @@ export default function Portfolio() {
         </section>
 
         {/* --- FOOTER / CONTACT SECTION --- */}
-        <footer id="contact" className="pt-20 border-t border-white/20 text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 drop-shadow-lg text-black">Let's <span className="text-gray-800">Collaborate.</span></h2>
-          <p className="text-gray-800 font-medium text-base md:text-lg max-w-lg mx-auto mb-10">
+        <footer id="contact" className="pt-20 border-t border-white/10 text-center relative z-10">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 text-white">Let's <span className="text-white/40">Collaborate.</span></h2>
+          <p className="text-white/60 font-medium text-base md:text-lg max-w-lg mx-auto mb-10">
             Kirimkan pesan untuk kolaborasi arsitektur sistem, pengembangan bot, atau pembuatan portofolio digital.
           </p>
           
@@ -250,23 +238,23 @@ export default function Portfolio() {
               href="mailto:contact@mifahmi.my.id"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-black text-white rounded-full hover:scale-105 transition-transform duration-300 font-bold tracking-widest shadow-2xl"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black rounded-full hover:scale-105 transition-transform duration-300 font-bold tracking-widest shadow-2xl"
             >
               <Mail size={20} />
               contact@mifahmi.my.id
             </a>
 
             <div className="flex gap-4">
-              <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-xl">
+              <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
                 <Github size={20} />
               </a>
-              <a href="https://discord.gg/FkvM362RJu" target="_blank" rel="noreferrer" className="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-xl">
+              <a href="https://discord.gg/FkvM362RJu" target="_blank" rel="noreferrer" className="w-12 h-12 glass-panel rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
                 <Globe size={20} />
               </a>
             </div>
           </div>
 
-          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-mono text-gray-800 tracking-widest uppercase font-bold">
+          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-mono text-white/40 tracking-widest uppercase font-bold">
             <p>© 2026 M.K FAHMI.</p>
             <p>INDRAMAYU, WEST JAVA</p>
           </div>
