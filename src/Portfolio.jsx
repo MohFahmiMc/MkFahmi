@@ -1,7 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { SkinViewer, IdleAnimation } from 'skinview3d';
 
 // --- Elemen Running Text (Marquee) ---
 const Marquee = () => {
@@ -27,42 +26,27 @@ const Marquee = () => {
   );
 };
 
-// --- Komponen 3D Minecraft (FIXED BUG REACT 18) ---
-const MinecraftCharacter = () => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Inisialisasi SkinViewer
-    const viewer = new SkinViewer({
-      width: 260,
-      height: 380,
-      skin: "/src/skins/Fahmi.png" // Pastikan file ini ada!
-    });
-
-    // Pasang ke dalam div (bukan mereferensi canvas langsung agar tidak crash)
-    containerRef.current.appendChild(viewer.canvas);
-    viewer.animations.add(IdleAnimation);
-    viewer.autoRotate = true;
-    viewer.autoRotateSpeed = 0.5;
-
-    return () => {
-      viewer.dispose();
-      if (containerRef.current) containerRef.current.innerHTML = '';
-    };
-  }, []);
-
+// --- Abstrak Art untuk Hero (Pengganti 3D Skin) ---
+const AbstractHeroArt = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-      animate={{ opacity: 1, scale: 1, rotate: -2 }}
-      transition={{ duration: 0.8, type: "spring" }}
-      className="relative brutal-box bg-[#FFD700] p-4 flex flex-col items-center justify-center rounded-[2rem] w-full max-w-[320px] mx-auto md:mr-0 mt-10 md:mt-0"
+    <motion.div 
+      initial={{ opacity: 0, rotate: -10 }}
+      animate={{ opacity: 1, rotate: 0 }}
+      transition={{ duration: 1 }}
+      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0"
     >
-      <div ref={containerRef} className="cursor-grab active:cursor-grabbing outline-none drop-shadow-[6px_6px_0_rgba(0,0,0,1)]" />
-      <div className="absolute bottom-6 px-6 py-2 bg-black text-white font-black uppercase tracking-widest border-2 border-black rounded-full shadow-[4px_4px_0_0_#ffffff]">
-        MohFahmiMc
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[80%] h-[80%] border-4 border-dashed border-black rounded-full"
+      />
+      <motion.div 
+        animate={{ rotate: -360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[60%] h-[60%] border-[6px] border-black rounded-3xl"
+      />
+      <div className="brutal-box w-[45%] h-[45%] flex items-center justify-center rotate-12 z-10 bg-[#FFD700]">
+        <span className="text-3xl md:text-5xl font-black text-black tracking-tighter">MKF</span>
       </div>
     </motion.div>
   );
@@ -138,7 +122,7 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="flex-1 w-full flex justify-center md:justify-end">
-            <MinecraftCharacter />
+            <AbstractHeroArt />
           </div>
         </section>
 
@@ -160,7 +144,7 @@ export default function Portfolio() {
             {/* SD */}
             <motion.div 
               initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="brutal-box p-6 bg-white flex flex-col h-full"
+              className="brutal-box p-6 bg-white flex flex-col h-full hover:-translate-y-2 transition-transform"
             >
               <div className="w-12 h-12 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center mb-4">
                 <GraduationCap size={24} />
@@ -172,7 +156,7 @@ export default function Portfolio() {
             {/* SMP */}
             <motion.div 
               initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="brutal-box p-6 bg-white flex flex-col h-full"
+              className="brutal-box p-6 bg-white flex flex-col h-full hover:-translate-y-2 transition-transform"
             >
               <div className="w-12 h-12 brutal-box bg-[#0055FF] text-white rounded-full flex items-center justify-center mb-4">
                 <GraduationCap size={24} />
@@ -184,7 +168,7 @@ export default function Portfolio() {
             {/* SMK */}
             <motion.div 
               initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-              className="brutal-box p-6 bg-gray-200 border-dashed flex flex-col h-full opacity-80"
+              className="brutal-box p-6 bg-gray-200 border-dashed flex flex-col h-full opacity-80 hover:-translate-y-2 transition-transform"
             >
               <div className="w-12 h-12 brutal-box bg-gray-300 rounded-full flex items-center justify-center mb-4">
                 <GraduationCap size={24} className="opacity-50" />
