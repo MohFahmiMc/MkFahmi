@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Layers, Cpu, GitBranch, Blocks } from 'lucide-react';
+import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, GitBranch } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { SkinViewer, IdleAnimation, createOrbitControls } from 'skinview3d';
+import { SkinViewer, IdleAnimation } from 'skinview3d';
 
 // --- Komponen 3D Minecraft Skin ---
 const MinecraftCharacter = () => {
@@ -24,9 +24,11 @@ const MinecraftCharacter = () => {
     viewer.autoRotate = true;
     viewer.autoRotateSpeed = 0.5;
 
-    // Mengizinkan interaksi (Bisa digeser/diputar dengan mouse)
-    const control = createOrbitControls(viewer);
-    control.enableZoom = false;
+    // Di skinview3d versi terbaru, controls sudah otomatis aktif
+    // Kita hanya perlu mematikan zoom agar tidak mengganggu scroll halaman
+    if (viewer.controls) {
+      viewer.controls.enableZoom = false;
+    }
 
     return () => {
       viewer.dispose();
@@ -112,7 +114,7 @@ export default function Portfolio() {
 
       {/* Floating Navbar */}
       <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-8 py-3 glass-panel rounded-full flex items-center gap-8 shadow-2xl">
-        <span className="font-black tracking-widest text-sm">M.K.F</span>
+        <span className="font-black tracking-widest text-sm text-white">M.K.F</span>
         <div className="flex gap-6 text-xs font-bold uppercase tracking-wider text-white/70">
           <a href="#about" className="hover:text-white transition-colors">Hero</a>
           <a href="#projects" className="hover:text-white transition-colors">Projects</a>
@@ -127,7 +129,7 @@ export default function Portfolio() {
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md mb-8">
               <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-              <span className="text-xs font-mono tracking-widest uppercase">Full-Stack Engineer</span>
+              <span className="text-xs font-mono tracking-widest uppercase text-white">Full-Stack Engineer</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[1] mb-8 drop-shadow-2xl">
@@ -148,7 +150,7 @@ export default function Portfolio() {
 
         {/* --- INTERACTIVE SANDBOX SECTION --- */}
         <section className="mb-32">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-4">Interactive <span className="text-white/50">Sandbox.</span></h2>
+          <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-4 text-white">Interactive <span className="text-white/50">Sandbox.</span></h2>
           <p className="text-white/60 mb-8 max-w-2xl text-sm md:text-base">
             Geser dan mainkan balok keahlian di bawah ini. Ruang ini mewakili evolusi teknikal dari rekayasa perintah hingga pengelolaan basis data skala penuh.
           </p>
@@ -200,7 +202,7 @@ export default function Portfolio() {
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-3xl font-black tracking-tight mb-4 drop-shadow-md">{project.title}</h3>
+                  <h3 className="text-3xl font-black tracking-tight mb-4 drop-shadow-md text-white">{project.title}</h3>
                   <p className="text-white/70 text-sm md:text-base leading-relaxed mb-6">{project.desc}</p>
                   <a 
                     href={project.url} target="_blank" rel="noreferrer"
