@@ -1,245 +1,210 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, ExternalLink, ArrowDown, Move, Cpu, Layers, GitBranch, Blocks } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { Github, Code2, Globe, Terminal, Server, ExternalLink, Mail, Move, Sparkles, Bot } from 'lucide-react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 
-// Komponen Pembungkus Efek Kemiringan 3D saat Hover
-const TiltContainer = ({ children, className }) => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  
+// --- Komponen 3D Interaktif (Bisa di drag & berputar mengikuti kursor) ---
+const Interactive3DCore = ({ containerRef }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
   const handleMouseMove = (e) => {
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    setTilt({ x: x / 15, y: y / 15 });
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
   };
 
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <motion.div
+      drag
+      dragConstraints={containerRef}
+      whileDrag={{ scale: 1.1, cursor: 'grabbing' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ rotateX: -tilt.y, rotateY: tilt.x }}
-      transition={{ type: "spring", stiffness: 150, damping: 15 }}
-      style={{ transformStyle: "preserve-3d" }}
-      className={className}
+      className="absolute top-[10%] right-[5%] md:right-[15%] w-48 h-48 md:w-64 md:h-64 cursor-grab perspective-1000 z-40 hidden lg:flex items-center justify-center"
     >
-      {children}
+      <motion.div
+        style={{ rotateX, rotateY }}
+        className="w-full h-full preserve-3d relative"
+      >
+        {/* Layer Belakang (Bayangan/Glow) */}
+        <div className="absolute inset-0 bg-emerald-500/20 blur-[50px] rounded-full transform translate-z-[-50px]"></div>
+        
+        {/* Layer Utama (Kartu Kaca) */}
+        <div className="absolute inset-0 bg-white/5 border border-white/10 backdrop-blur-md rounded-3xl p-6 flex flex-col justify-between shadow-2xl transform-style-preserve-3d" style={{ transform: 'translateZ(0px)' }}>
+          <div className="flex justify-between items-center text-white/50">
+            <Bot size={24} />
+            <span className="text-[10px] font-mono tracking-widest uppercase">Zephyr Core</span>
+          </div>
+          <div className="space-y-2" style={{ transform: 'translateZ(30px)' }}>
+            <div className="h-1.5 w-1/2 bg-white/20 rounded-full"></div>
+            <div className="h-1.5 w-3/4 bg-white/10 rounded-full"></div>
+            <div className="h-1.5 w-full bg-white/5 rounded-full"></div>
+          </div>
+        </div>
+
+        {/* Layer Depan (Teks Mengambang) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ transform: 'translateZ(60px)' }}>
+          <h2 className="text-2xl font-black tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+            SYSTEM.<br/>ONLINE
+          </h2>
+        </div>
+      </motion.div>
     </motion.div>
   );
 };
 
 export default function Portfolio() {
-  const [isLoading, setIsLoading] = useState(true);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const sandboxRef = useRef(null);
+  const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll();
   const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scaleHero = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+  const yHero = useTransform(scrollYProgress, [0, 0.2], [0, 50]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
     const handleMouseMove = (e) => setCursorPos({ x: e.clientX, y: e.clientY });
-
     window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
-  // Data Evolusi Skill Teknikal dari HTML dasar hingga Fullstack Architecture
-  const evolutionJourney = [
-    { id: 'step1', title: 'Prompt Eng.', desc: 'Dasar logika AI & rekayasa instruksi otomasi otomatis.', color: 'bg-stone-100 text-stone-800', icon: <Cpu size={16} />, x: 40, y: 30 },
-    { id: 'step2', title: 'HTML, CSS, JS', desc: 'Membangun fungsionalitas dasar rekayasa web interface.', color: 'bg-zinc-100 text-zinc-900', icon: <Code2 size={16} />, x: 260, y: 50 },
-    { id: 'step3', title: 'GitHub Ecosystem', desc: 'Repositori manajemen kode & kontrol versi tim.', color: 'bg-neutral-900 text-white', icon: <GitBranch size={16} />, x: 120, y: 160 },
-    { id: 'step4', title: 'Python Engine', desc: 'Skrip logika backend & manipulasi data otomatis.', color: 'bg-slate-100 text-slate-800', icon: <Terminal size={16} />, x: 300, y: 220 },
-    { id: 'step5', title: 'Node.js & REST API', desc: 'Pondasi bot sistem, routing endpoint, & arsitektur server.', color: 'bg-gray-100 text-black', icon: <Server size={16} />, x: 50, y: 290 },
-    { id: 'step6', title: 'Full-Stack Integration', desc: 'Penyatuan frontend React modern dengan backend modular Termux.', color: 'bg-black text-white border border-white/20', icon: <Layers size={16} />, x: 200, y: 360 }
-  ];
 
   const projectsData = [
     {
       title: "Zephyr Bot System",
-      desc: "Infrastruktur bot Discord skala premium dengan 64+ command modular berorientasi objek. Dibangun di atas Node.js dan dikendalikan penuh secara independen via Termux.",
-      url: "https://zephyr.mifahmi.my.id",
-      tags: ["Node.js", "Discord.js", "REST API", "Termux Server"],
-      img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop"
+      desc: "Infrastruktur bot Discord skala premium dengan 64+ command modular berorientasi objek. Dibangun di atas Node.js dan dikendalikan penuh secara independen.",
+      url: "https://zephyr.mifahmi.my.id/",
+      tags: ["Node.js", "Discord.js", "Termux Architecture"],
+      img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" // Abstract 3D
     },
     {
-      title: "mifahmi.my.id Web Engine",
-      desc: "Sistem arsitektur web modern satu halaman penuh yang memanfaatkan manipulasi keadaan React, optimasi rendering animasi Framer Motion, dan kompilasi utilitas Tailwind.",
-      url: "https://mifahmi.my.id",
-      tags: ["React JS", "Framer Motion", "Tailwind UI"],
-      img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1200&auto=format&fit=crop"
+      title: "AI Character Engine",
+      desc: "Sistem kecerdasan buatan terintegrasi untuk persona karakter interaktif. Memproses input bahasa alami untuk respons real-time.",
+      url: "https://zephyr.mifahmi.my.id/ai/character",
+      tags: ["AI Integration", "Prompt Engineering", "API REST"],
+      img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1200&auto=format&fit=crop" // Tech Abstract
     }
   ];
 
   return (
-    <div className="dev-grid bg-[#fbfbfd] text-black min-h-screen relative selection:bg-black selection:text-white antialiased">
+    <div ref={containerRef} className="bg-grid-pattern bg-[#050505] text-white min-h-screen relative selection:bg-white selection:text-black antialiased">
       
+      {/* Glow Background Halus */}
+      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-zinc-800/30 blur-[150px] rounded-full pointer-events-none" />
+
       {/* Custom Cursor */}
       <div className="cursor-dot hidden md:block" style={{ left: cursorPos.x, top: cursorPos.y }} />
       <div 
         className="cursor-outline hidden md:block" 
         style={{ 
-          left: cursorPos.x, 
-          top: cursorPos.y,
-          width: isHovering ? '55px' : '34px',
-          height: isHovering ? '55px' : '34px',
-          backgroundColor: isHovering ? 'rgba(0,0,0,0.03)' : 'transparent',
-          borderColor: isHovering ? '#000000' : 'rgba(0,0,0,0.25)'
+          left: cursorPos.x, top: cursorPos.y,
+          width: isHovering ? '60px' : '40px', height: isHovering ? '60px' : '40px',
+          backgroundColor: isHovering ? 'rgba(255,255,255,0.05)' : 'transparent',
+          borderColor: isHovering ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)'
         }}
       />
 
-      {/* Modern White Preloader */}
-      {isLoading && (
-        <motion.div 
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-4"
-        >
-          <div className="text-center">
-            <h2 className="text-2xl md:text-3xl font-black tracking-tighter uppercase mb-2">M.K KHOERUL FAHMI</h2>
-            <p className="text-xs font-mono text-gray-400 uppercase tracking-widest animate-pulse">Initializing core architecture...</p>
-          </div>
-        </motion.div>
-      )}
+      {/* Navigasi (Tab Atas - Kapsul Mengambang) */}
+      <div className="fixed top-6 inset-x-0 w-full flex justify-center z-50 pointer-events-none px-4">
+        <nav className="pointer-events-auto flex items-center gap-6 md:gap-10 px-6 md:px-8 py-3 bg-white/5 border border-white/10 backdrop-blur-xl rounded-full shadow-2xl">
+          <span className="font-bold tracking-tighter text-sm">M.K.F</span>
+          <div className="w-[1px] h-4 bg-white/20"></div>
+          <a href="#about" className="text-xs md:text-sm font-medium text-white/60 hover:text-white transition-colors">About</a>
+          <a href="#projects" className="text-xs md:text-sm font-medium text-white/60 hover:text-white transition-colors">Projects</a>
+          <a href="#contact" className="text-xs md:text-sm font-medium text-white/60 hover:text-white transition-colors">Contact</a>
+        </nav>
+      </div>
 
-      {/* Floating Mini Navbar */}
-      <nav className="fixed top-4 left-4 right-4 md:top-6 md:left-8 md:right-8 flex justify-between items-center z-50 p-4 border border-black/5 bg-white/70 backdrop-blur-md rounded-2xl shadow-sm">
-        <span className="font-mono font-black text-xs md:text-sm tracking-tight">FAHMI.SYS</span>
-        <div className="flex gap-4 md:gap-6 text-[11px] md:text-xs font-bold uppercase tracking-wider">
-          <a href="#sandbox" className="hover:text-gray-500 transition-colors">Evolution</a>
-          <a href="#projects" className="hover:text-gray-500 transition-colors">Architectures</a>
-          <a href="#services" className="hover:text-gray-500 transition-colors">Services</a>
-        </div>
-      </nav>
+      <main className="max-w-6xl mx-auto px-6 md:px-12 pt-40 pb-24 relative flex flex-col items-stretch">
+        
+        {/* Memanggil Elemen 3D Interaktif */}
+        <Interactive3DCore containerRef={containerRef} />
 
-      {/* MAIN CONTAINER */}
-      <main className="max-w-5xl mx-auto px-4 md:px-8 pt-32 pb-24 flex flex-col items-stretch">
-
-        {/* --- HERO SECTION --- */}
-        <motion.section style={{ opacity: opacityHero, scale: scaleHero }} className="min-h-[75vh] flex flex-col justify-center items-start mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black text-white text-[10px] font-mono uppercase tracking-wider mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Front-End & Back-End System Engineer
+        {/* --- HERO / ABOUT SECTION --- */}
+        <motion.section id="about" style={{ opacity: opacityHero, y: yHero }} className="min-h-[70vh] flex flex-col justify-center items-start mb-24 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono tracking-widest uppercase mb-8">
+            <Sparkles size={12} className="text-emerald-400" />
+            Software Engineering & AI
           </div>
           
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tight leading-[0.95] uppercase mb-6">
+          <h1 className="text-5xl sm:text-7xl md:text-[5.5rem] font-black tracking-tighter leading-[1] mb-8">
             MOHAMAD <br />
-            <span className="text-stone-400">KHOERUL FAHMI</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white/40 to-white/10">KHOERUL FAHMI</span>
           </h1>
 
-          <p className="max-w-xl text-sm md:text-lg text-stone-600 leading-relaxed font-normal mb-8">
-            Pelajar kelas 9 berkarakter kepemimpinan yang fokus pada rekayasa perangkat lunak (SMK RPL). Mengontrol penuh manajemen server, otomasi pengkodean, dan deployment backend secara mandiri dari ekosistem <span className="text-black font-semiboldunderline underline-offset-4 decoration-1">Termux Android</span>.
-          </p>
-
-          <a 
-            href="#sandbox" 
-            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider border border-black/20 px-5 py-3 rounded-xl hover:bg-black hover:text-white transition-all shadow-sm"
-          >
-            Explore Evolution Stack <ArrowDown size={14} className="animate-bounce" />
-          </a>
-        </motion.section>
-
-        {/* --- INTERACTIVE EVOLUTION SANDBOX SECTION --- */}
-        <section id="sandbox" className="mb-20 md:mb-32">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2">Technical Evolution Sandbox</h2>
-            <p className="text-xs md:text-sm text-stone-500 max-w-xl">
-              Perjalanan teknis saya dari sekadar rekayasa prompt hingga manipulasi fullstack. **Gunakan mouse/jarimu untuk menggeser, menumpuk, atau melempar balok kartu keahlian di bawah ini:**
+          <div className="max-w-2xl">
+            <p className="text-base md:text-xl text-white/60 leading-relaxed font-light mb-6">
+              Sebagai seseorang dengan karakter kepemimpinan yang kuat, saya terbiasa mengambil kendali dalam merancang sistem yang terstruktur. Saya memadukan kreativitas dengan logika pemrograman untuk membangun ekosistem digital.
+            </p>
+            <p className="text-base md:text-xl text-white/60 leading-relaxed font-light">
+              Fokus pada pengembangan menuju SMK RPL, saya telah mengelola infrastruktur bot kompleks dan mengendalikan server environment sepenuhnya secara mandiri melalui <strong>Termux</strong>.
             </p>
           </div>
+        </motion.section>
 
-          {/* Sandbox Wrapper Viewport */}
-          <div 
-            ref={sandboxRef} 
-            className="w-full h-[480px] bg-stone-50 border border-black/10 rounded-[32px] relative overflow-hidden shadow-inner dev-grid"
-          >
-            <div className="absolute top-4 right-4 pointer-events-none flex items-center gap-1.5 text-[10px] font-mono text-stone-400 uppercase bg-white/80 px-2 py-1 rounded-md border border-black/5">
-              <Move size={12} /> Interactive Space
-            </div>
-
-            {/* Draggable Components Mapping */}
-            {evolutionJourney.map((node) => (
-              <motion.div
-                key={node.id}
-                drag
-                dragConstraints={sandboxRef}
-                dragElastic={0.1}
-                dragMomentum={true}
-                whileDrag={{ scale: 1.05, zIndex: 50 }}
-                style={{ left: node.x, top: node.y }}
-                className={`absolute p-4 rounded-2xl shadow-md cursor-grab active:cursor-grabbing w-[190px] md:w-[220px] transition-shadow select-none border border-black/5 ${node.color}`}
-              >
-                <div className="flex items-center gap-2 mb-1.5 pointer-events-none">
-                  {node.icon}
-                  <h4 className="font-bold tracking-tight text-xs md:text-sm uppercase">{node.title}</h4>
-                </div>
-                <p className="text-[10px] md:text-xs opacity-80 leading-normal pointer-events-none font-normal">{node.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* --- SELECTED ARCHITECTURES & WORKS SECTION --- */}
-        <section id="projects" className="mb-20 md:mb-32">
-          <div className="mb-10 md:mb-16">
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2">Selected Architectures</h2>
-            <p className="text-xs md:text-sm text-stone-500">Sistem operasional dan repositori utama yang dikembangkan secara intensif.</p>
+        {/* --- PROJECTS SECTION --- */}
+        <section id="projects" className="mb-32">
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-4">Core <span className="text-white/30">Architectures.</span></h2>
+            <div className="h-[1px] w-full max-w-md bg-gradient-to-r from-white/20 to-transparent"></div>
           </div>
 
-          <div className="flex flex-col gap-12 md:gap-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {projectsData.map((project, index) => (
               <motion.div 
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="flex flex-col md:flex-row items-stretch gap-6 md:gap-12 group"
+                viewport={{ once: true, margin: "-100px" }}
+                className="group relative"
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                {/* Image Showcase Container */}
-                <TiltContainer className="w-full md:w-[45%] h-[240px] md:h-[320px] rounded-3xl overflow-hidden border border-black/5 shadow-sm bg-white shrink-0">
+                <div className="relative w-full h-[300px] md:h-[400px] rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 mb-6">
+                  {/* Efek Hover Kaca */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
                   <img 
                     src={project.img} 
                     alt={project.title} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" 
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out opacity-80 group-hover:opacity-100" 
                   />
-                </TiltContainer>
-
-                {/* Typography Block */}
-                <div className="flex flex-col justify-between items-start py-2">
-                  <div>
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {project.tags.map((tag, i) => (
-                        <span key={i} className="px-2 py-0.5 bg-stone-100 text-stone-600 rounded-md font-mono text-[9px] md:text-[10px] uppercase font-bold tracking-tight border border-black/5">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3 text-black">
-                      {project.title}
-                    </h3>
-                    
-                    <p className="text-stone-600 text-xs md:text-sm leading-relaxed mb-6 font-normal max-w-xl">
-                      {project.desc}
-                    </p>
+                  <div className="absolute top-6 right-6 z-20 w-12 h-12 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <ExternalLink size={20} className="text-white" />
                   </div>
+                </div>
 
+                <div className="px-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map((tag, i) => (
+                      <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 text-white/70 rounded-full font-mono text-[10px] uppercase tracking-wider">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black tracking-tight mb-3">{project.title}</h3>
+                  <p className="text-white/50 text-sm md:text-base leading-relaxed mb-6 font-light">{project.desc}</p>
+                  
                   <a 
-                    href={project.url} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider border-b-2 border-black pb-0.5 hover:text-stone-500 hover:border-stone-400 transition-colors"
+                    href={project.url} target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase border-b border-white/30 pb-1 hover:border-white transition-colors"
                   >
-                    Launch Endpoint <ExternalLink size={14} />
+                    Launch System
                   </a>
                 </div>
               </motion.div>
@@ -247,80 +212,43 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- MINIMALIST EXPERTISE / SERVICES SECTION --- */}
-        <section id="services" className="mb-16 md:mb-24">
-          <div className="mb-10 text-center md:text-left">
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2">Professional Services</h2>
-            <p className="text-xs md:text-sm text-stone-500">Integrasi infrastruktur andal untuk kebutuhan platform digital Anda.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="brutal-card p-6 md:p-8 bg-white flex flex-col justify-between items-start">
-              <div className="mb-6">
-                <div className="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center text-black mb-4 border border-black/5">
-                  <Blocks size={20} />
-                </div>
-                <h3 className="text-lg md:text-xl font-black uppercase tracking-tight mb-2">Discord Bot Setup & API Routing</h3>
-                <p className="text-stone-500 text-xs md:text-sm leading-relaxed font-normal">
-                  Rancang struktur command handler kompleks, integrasi database, manajemen gateway event otomatis, serta rest api handler modular.
-                </p>
-              </div>
-              <div className="text-xl md:text-2xl font-black tracking-tight border-t border-stone-100 pt-4 w-full flex justify-between items-center">
-                <span className="text-xs text-stone-400 uppercase font-mono">Starting From</span>
-                <span>IDR 200K+</span>
-              </div>
-            </div>
-
-            <div className="brutal-card p-6 md:p-8 bg-white flex flex-col justify-between items-start">
-              <div className="mb-6">
-                <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-4">
-                  <Code2 size={20} />
-                </div>
-                <h3 className="text-lg md:text-xl font-black uppercase tracking-tight mb-2">Custom Front-End Application</h3>
-                <p className="text-stone-500 text-xs md:text-sm leading-relaxed font-normal">
-                  Pembangunan situs web interaktif performa tinggi berbasis ekosistem React, manajemen state yang terukur, serta penataan gaya mikro-estetik tanpa aset berat.
-                </p>
-              </div>
-              <div className="text-xl md:text-2xl font-black tracking-tight border-t border-stone-100 pt-4 w-full flex justify-between items-center">
-                <span className="text-xs text-stone-400 uppercase font-mono">Starting From</span>
-                <span>IDR 100K+</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 flex justify-center">
+        {/* --- CONTACT / FOOTER SECTION --- */}
+        <footer id="contact" className="pt-20 border-t border-white/10 flex flex-col items-center text-center">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">Initiate <span className="text-white/30">Protocol.</span></h2>
+            <p className="text-white/50 text-base md:text-lg max-w-lg mx-auto mb-10">
+              Tertarik untuk membahas manajemen server, pengembangan bot kompleks, atau kolaborasi web frontend?
+            </p>
+            
+            {/* Main Email Block */}
             <a 
-              href="https://jasa.mifahmi.my.id" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="px-6 py-3.5 bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-stone-800 transition-colors shadow-md"
+              href="mailto:contact@mifahmi.my.id"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black rounded-full hover:scale-105 transition-transform duration-300 font-bold tracking-wide"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
             >
-              Order Deployment Services
+              <Mail size={20} />
+              contact@mifahmi.my.id
+            </a>
+          </motion.div>
+
+          <div className="flex gap-6 mb-16">
+            <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white/70 hover:bg-white hover:text-black transition-all">
+              <Github size={24} />
+            </a>
+            <a href="https://discord.gg/FkvM362RJu" target="_blank" rel="noreferrer" className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white/70 hover:bg-white hover:text-black transition-all">
+              <Globe size={24} />
             </a>
           </div>
-        </section>
 
-        {/* --- GLOBAL BRUTALIST FOOTER --- */}
-        <footer className="border-t border-black/10 pt-12 flex flex-col gap-12">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-              <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-1">Let's Establish Connection</h2>
-              <p className="text-xs text-stone-500 font-normal">Mari kolaborasikan ekosistem backend modular atau layout frontend interaktif.</p>
-            </div>
-
-            <div className="flex gap-3">
-              <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-11 h-11 bg-white border border-black/10 rounded-xl flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors shadow-sm">
-                <Github size={18} />
-              </a>
-              <a href="https://discord.gg/FkvM362RJu" target="_blank" rel="noreferrer" className="w-11 h-11 bg-white border border-black/10 rounded-xl flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors shadow-sm">
-                <Globe size={18} />
-              </a>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-stone-400 font-bold uppercase tracking-wider">
-            <p>© 2026 M.K FAHMI. MANUFACTURED VIA TERMUX LINUX RUNTIME.</p>
-            <p>KRANGKENG, INDRAMAYU, WEST JAVA</p>
+          <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-mono text-white/40 tracking-widest uppercase">
+            <p>© 2026 M.K FAHMI. ALL SYSTEMS OPERATIONAL.</p>
+            <p>BASED IN INDRAMAYU, ID</p>
           </div>
         </footer>
 
