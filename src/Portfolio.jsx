@@ -88,7 +88,7 @@ export default function Portfolio() {
     }
   }, [chatMessages, isTyping, isChatOpen]);
 
-  // Fungsi Kirim Pesan ke AI
+  // --- FUNGSI KIRIM PESAN KE AI ---
   const handleSendChat = async (e) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
@@ -99,9 +99,19 @@ export default function Portfolio() {
     setIsTyping(true);
 
     try {
-      const token = localStorage.getItem('zephyr_token'); // Mengambil token jika pengunjung sudah login
+      // 1. Ambil token dari Environment Vercel (Penting: Nama var harus VITE_JWT_TOKEN)
+      // Fallback ke localStorage jika suatu saat kamu login sebagai admin
+      const token = import.meta.env.VITE_JWT_TOKEN || localStorage.getItem('zephyr_token');
       
-      // DISINI DIUBAH MENJADI RELATIVE PATH AGAR DITERUSKAN VERCEL.JSON
+      if (!token) {
+        setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ **Error Internal**: Token API tidak ditemukan. Pastikan variabel `VITE_JWT_TOKEN` sudah terpasang di Vercel." }]);
+        setIsTyping(false);
+        return;
+      }
+
+      // 2. Injeksi Waktu Real-Time
+      const currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      
       const response = await fetch('/api/external/ai-generate', {
         method: 'POST',
         headers: { 
@@ -110,8 +120,8 @@ export default function Portfolio() {
         },
         body: JSON.stringify({
           prompt: newMessage.content,
-          systemPrompt: "Kamu adalah asisten AI di portofolio Mohamad Khoerul Fahmi (MKF). Fahmi adalah pelajar SMP yang akan menuju SMK RPL. Dia belajar coding otodidak, menggunakan Termux di HP Vivo Y12 sebagai server utama. Dia mahir Node.js, Discord.js, React Vite, Python, dan Prompt Engineering. Jawablah dengan ramah, percaya diri, sedikit gaul, dan jangan terlalu panjang.",
-          history: chatMessages.filter(msg => msg.role !== 'system') // Kirim history
+          systemPrompt: `Saat ini tanggal ${currentDate}. Kamu adalah asisten AI di portofolio Mohamad Khoerul Fahmi (MKF). Fahmi adalah pelajar SMP yang akan menuju SMK RPL. Dia belajar coding otodidak, menggunakan Termux di HP Vivo Y12 sebagai server utama. Dia mahir Node.js, Discord.js, React Vite, Python, dan Prompt Engineering. Jawablah dengan ramah, percaya diri, sedikit gaul, informatif, dan jangan terlalu panjang.`,
+          history: chatMessages.filter(msg => msg.role !== 'system')
         })
       });
 
@@ -120,15 +130,14 @@ export default function Portfolio() {
       if (data.success) {
         setChatMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
       } else {
-        // Handle jika belum login / token tidak valid
         if (response.status === 401 || data.error?.includes("JWT")) {
-          setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ **Akses Ditolak**: Chat AI portofolio memerlukan integrasi Zephyr. Silakan login ke Dashboard Zephyr terlebih dahulu untuk menggunakan AI." }]);
+          setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ **Akses Ditolak**: Token JWT tidak valid atau kadaluarsa." }]);
         } else {
           setChatMessages((prev) => [...prev, { role: 'assistant', content: `⚠️ Error: ${data.error}` }]);
         }
       }
     } catch (error) {
-      setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ Terjadi gangguan saat menghubungi server AI Fahmi." }]);
+      setChatMessages((prev) => [...prev, { role: 'assistant', content: "⚠️ Terjadi gangguan saat menghubungi server AI Fahmi. (Pastikan vercel.json sudah mengarah ke URL backend yang benar)" }]);
     } finally {
       setIsTyping(false);
     }
@@ -199,7 +208,7 @@ export default function Portfolio() {
                     <div className={`max-w-[85%] brutal-box p-3 text-sm font-bold border-2 border-black ${
                       msg.role === 'user' 
                       ? 'bg-[#FFD700] text-black rounded-br-none' 
-                      : 'bg-[#0055FF] text-black rounded-bl-none'
+                      : 'bg-[#0055FF] text-white rounded-bl-none'
                     }`}>
                       {/* Render markdown simpel (bold) */}
                       <span dangerouslySetInnerHTML={{__html: msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}}></span>
@@ -241,7 +250,7 @@ export default function Portfolio() {
           onClick={() => setIsChatOpen(!isChatOpen)} 
           className={`w-14 h-14 md:w-16 md:h-16 brutal-box rounded-full border-4 border-black flex items-center justify-center shadow-[4px_4px_0_0_#111111] transition-colors text-black ${isChatOpen ? 'bg-white' : 'bg-[#0055FF]'}`}
         >
-          {isChatOpen ? <X size={28} className="text-black" /> : <MessageSquare size={28} className="text-black" />}
+          {isChatOpen ? <X size={28} className="text-black" /> : <MessageSquare size={28} className="text-white" />}
         </motion.button>
       </div>
 
