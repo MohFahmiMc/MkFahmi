@@ -95,11 +95,11 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-white">
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
-      {/* --- NAVBAR MOBILE (Bisa di-scroll ke kanan) --- */}
+      {/* --- NAVBAR MOBILE --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
         <div className="brutal-box rounded-full bg-white px-5 py-3 overflow-x-auto whitespace-nowrap hide-scrollbar flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 shrink-0">
@@ -192,7 +192,7 @@ export default function Portfolio() {
           >
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-4">Perjalanan <br/>& Senjata.</h2>
             <p className="text-black font-bold max-w-sm mx-auto md:mx-0 border-l-4 border-black pl-4 text-sm md:text-base">
-              Scroll untuk melihat proses perjalanan pendidikan hingga senjata arsitektur saat ini.
+              Scroll untuk melihat proses perjalanan pendidikan hingga perangkat arsitektur saat ini.
             </p>
           </motion.div>
 
@@ -213,7 +213,7 @@ export default function Portfolio() {
               className="lg:hidden absolute left-[38px] top-8 bottom-8 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
             />
 
-            {/* Grid Container (Sejajar tinggi dengan h-full di dalam flex/grid) */}
+            {/* Grid Container (Diberikan items-stretch agar tinggi pembungkus sama rata) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10 items-stretch">
               
               {/* 1. SD */}
@@ -224,7 +224,7 @@ export default function Portfolio() {
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
                   <GraduationCap size={28} className="text-black" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform">
+                <div className="brutal-box p-5 bg-white flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-lg uppercase mb-1">Sekolah Dasar</h3>
                   <p className="text-xs font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
                 </div>
@@ -236,12 +236,12 @@ export default function Portfolio() {
                 className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
               >
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <GraduationCap size={28} color="white" className="stroke-white" />
+                  <GraduationCap size={28} className="text-white" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform">
+                <div className="brutal-box p-5 bg-white flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-lg uppercase mb-1">SMP</h3>
-                  <p className="text-xs font-bold text-black/70 uppercase mb-2 flex-grow">SMPN Satap 1 Krangkeng.</p>
-                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black mt-2">Sudah Lulus</span>
+                  <p className="text-xs font-bold text-black/70 uppercase mb-2">SMPN Satap 1 Krangkeng.</p>
+                  <span className="text-black bg-[#FFD700] px-2 py-1 text-[10px] font-black uppercase self-start border-2 border-black mt-auto">Sudah Lulus</span>
                 </div>
               </motion.div>
 
@@ -253,26 +253,28 @@ export default function Portfolio() {
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10 cursor-pointer">
                   <GraduationCap size={28} className="text-gray-400" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full h-full opacity-90 hover:-translate-y-2 transition-transform">
+                <div className="brutal-box p-5 bg-gray-100 border-dashed flex flex-col w-full flex-1 opacity-90 hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-lg uppercase mb-1 text-gray-600">SMK</h3>
-                  <p className="text-xs font-bold text-gray-500 uppercase flex-grow">Status: Kosong / Belum Masuk.</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase">Status: Belum Masuk.</p>
                 </div>
               </motion.div>
 
-              {/* 4. Senjata (Device) - Diperbaiki layoutnya agar teks jelas */}
+              {/* 4. Perangkat Utama (Dulu Senjata Utama - Diperbaiki total ke Putih Kontras & Sejajar) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
                 className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
               >
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer">
-                  <Smartphone size={28} color="white" />
+                  <Smartphone size={28} className="text-white" />
                 </motion.div>
-                <div className="brutal-box p-5 bg-[#111111] text-white flex flex-col w-full h-full hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
-                  <h3 className="font-black text-lg uppercase mb-2">Senjata Utama</h3>
-                  <p className="text-xs font-bold text-white/80 uppercase leading-relaxed">
-                    <span className="text-[#FFD700]">Vivo Y12</span><br/>
+                <div className="brutal-box p-5 bg-white text-black flex flex-col w-full flex-1 hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F]">
+                  <h3 className="font-black text-lg uppercase mb-2">Perangkat Utama</h3>
+                  <p className="text-xs font-bold text-black/80 uppercase leading-relaxed">
+                    <span className="text-[#0055FF] font-black">Vivo Y12</span><br/>
                     RAM 3GB / 32GB ROM.<br/>
-                    <span className="text-[10px] opacity-70 mt-2 block">(Mesin utama coding & server)</span>
+                    <span className="text-[10px] text-black/60 font-bold tracking-tight normal-case mt-3 block border-t border-black/10 pt-2">
+                      (Mesin utama coding & server)
+                    </span>
                   </p>
                 </div>
               </motion.div>
