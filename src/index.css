@@ -4,41 +4,27 @@
 
 @layer base {
   :root {
-    --bg: #050505;
-    --surface: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.08);
     --text-main: #ffffff;
-    --text-muted: #888888;
     --accent: #ffffff;
   }
 
   body {
-    background-color: var(--bg);
+    /* Background Gradient Hitam ke Putih */
+    background: linear-gradient(145deg, #000000 0%, #1a1a1a 40%, #a8a8a8 80%, #ffffff 100%);
+    background-attachment: fixed;
     color: var(--text-main);
     overflow-x: hidden;
     cursor: none;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
 @layer utilities {
-  .bg-grid-pattern {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  }
-
-  /* 3D Core Utilities */
-  .perspective-1000 {
-    perspective: 1000px;
-  }
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
-  .backface-hidden {
-    backface-visibility: hidden;
+  .glass-panel {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -58,24 +44,24 @@
   position: fixed;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+  transition: width 0.15s, height 0.15s, border-color 0.15s;
   z-index: 999998;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: rgba(0,0,0,0.8);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.6);
 }
