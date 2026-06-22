@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin } from 'lucide-react';
+import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // --- Elemen Running Text (Marquee) ---
@@ -93,36 +93,45 @@ export default function Portfolio() {
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
-      {/* Floating Navbar (Mobile: Top, Desktop: Right Sidebar) */}
-      {/* Mobile Navbar */}
-      <nav className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-3 brutal-box rounded-full flex items-center gap-4 w-[90%] justify-between bg-white">
-        <span className="font-black tracking-widest text-base text-black truncate">M.K.F</span>
+      {/* --- NAVBAR MOBILE (Hanya tampil di HP) --- */}
+      <nav className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 brutal-box rounded-full flex items-center w-[90%] justify-between bg-white">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full">
+            <Terminal size={14} className="text-black" />
+          </div>
+          <span className="font-black tracking-widest text-base text-black truncate">FAHMI</span>
+        </div>
         <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
-          <a href="#projects" className="hover:text-[#0055FF] transition-colors">Karya</a>
-          <a href="#contact" className="hover:text-[#FF007F] transition-colors">Kontak</a>
+          <a href="#projects" className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</a>
+          <a href="#contact" className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
         </div>
       </nav>
 
-      {/* Desktop Right Sidebar Navbar */}
-      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full">
-         <a href="#hero" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative">
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Hero</span>
-         </a>
-         <a href="#timeline" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative">
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Jejak</span>
-         </a>
-         <a href="#sandbox" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative">
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Sandbox</span>
-         </a>
-         <a href="#projects" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative">
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Karya</span>
-         </a>
-         <a href="#contact" className="w-4 h-4 rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative">
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">Kontak</span>
-         </a>
+      {/* --- NAVBAR DESKTOP (Hanya tampil di Laptop/Monitor) --- */}
+      <nav className="hidden md:flex fixed top-8 left-1/2 -translate-x-1/2 z-50 px-8 py-4 brutal-box rounded-full items-center gap-10 bg-white w-full max-w-5xl justify-between shadow-[6px_6px_0_0_#111111]">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full hover:rotate-12 transition-transform">
+            <Terminal size={20} className="text-black" />
+          </div>
+          <span className="font-black tracking-widest text-xl text-black">MKF</span>
+        </div>
+        <div className="flex gap-8 text-sm font-bold uppercase tracking-widest text-black">
+          <a href="#timeline" className="flex items-center gap-2 hover:text-[#0055FF] transition-colors group">
+            <Compass size={18} className="group-hover:-translate-y-1 transition-transform" /> Jejak
+          </a>
+          <a href="#sandbox" className="flex items-center gap-2 hover:text-[#FF007F] transition-colors group">
+            <Box size={18} className="group-hover:-translate-y-1 transition-transform" /> Sandbox
+          </a>
+          <a href="#projects" className="flex items-center gap-2 hover:text-[#FFD700] transition-colors group">
+            <Briefcase size={18} className="group-hover:-translate-y-1 transition-transform" /> Karya
+          </a>
+          <a href="#contact" className="flex items-center gap-2 hover:text-[#0055FF] transition-colors group">
+            <Phone size={18} className="group-hover:-translate-y-1 transition-transform" /> Kontak
+          </a>
+        </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-40 pb-20 flex flex-col items-stretch overflow-hidden">
+      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-hidden">
 
         {/* --- HERO SECTION --- */}
         <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32">
@@ -136,8 +145,9 @@ export default function Portfolio() {
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF]">
-              M.K.F.
+            <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF]">
+              Mohamad <br />
+              Khoerul Fahmi.
             </h1>
 
             <p className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed border-l-4 border-black pl-4 text-left">
@@ -219,7 +229,7 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 3. Senjata (Device) - Maju menggantikan SMK */}
+              {/* 3. Senjata (Device) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
                 className="flex lg:flex-col items-start lg:items-center gap-6 lg:gap-4"
@@ -357,7 +367,6 @@ export default function Portfolio() {
               </a>
               <a 
                 href="https://support.scarily.my.id" target="_blank" rel="noreferrer"
-                // Perbaikan warna text agar terlihat jelas, hitam sebelum di hover, putih saat hover
                 className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FF007F] text-black hover:bg-[#111111] hover:text-white rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors group"
               >
                 <Heart size={20} className="fill-black stroke-black group-hover:fill-white group-hover:stroke-white transition-colors" /> 
