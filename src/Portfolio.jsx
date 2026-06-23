@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { 
   Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
   GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
-  FileJson, Palette, Zap, Cpu as BrainCircuit
+  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
@@ -18,6 +18,49 @@ const TiktokIcon = () => (
     <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 15.68a6.34 6.34 0 0012.67-1.74v-5a8.21 8.21 0 004.14 1.15V6.63a6.84 6.84 0 00-2.22.06z"/>
   </svg>
 );
+
+// --- Fitur Teks Interaktif (Klik 3x untuk Edit) ---
+const EditableText = ({ initialText }) => {
+  const [text, setText] = useState(initialText);
+  const [clicks, setClicks] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleClick = () => {
+    if (isEditing) return;
+    const newClicks = clicks + 1;
+    setClicks(newClicks);
+    if (newClicks >= 3) {
+      setIsEditing(true);
+      setClicks(0);
+    }
+    // Reset click kalau tidak cepat
+    setTimeout(() => setClicks(0), 1000);
+  };
+
+  if (isEditing) {
+    return (
+      <textarea 
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onBlur={() => setIsEditing(false)}
+        onKeyDown={(e) => { if(e.key === 'Enter') setIsEditing(false) }}
+        className="bg-[#FFD700] text-black w-full border-2 border-black outline-none font-bold p-2 shadow-[4px_4px_0_0_#111111]"
+        autoFocus
+        rows={3}
+      />
+    );
+  }
+
+  return (
+    <span 
+      onClick={handleClick} 
+      className="cursor-pointer hover:bg-gray-200 transition-colors block border-l-4 border-black pl-4 text-left" 
+      title="💡 Rahasia: Klik 3 kali cepat untuk mengedit teks ini!"
+    >
+      {text}
+    </span>
+  );
+};
 
 // --- Elemen Running Text (Marquee) ---
 const Marquee = () => {
@@ -84,6 +127,7 @@ export default function Portfolio() {
   
   const [fusionMessage, setFusionMessage] = useState("");
   const [secretClicks, setSecretClicks] = useState(0);
+  const [blocks, setBlocks] = useState([]);
 
   const { scrollYProgress: mainScroll } = useScroll();
   const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
@@ -93,12 +137,22 @@ export default function Portfolio() {
     offset: ["start 80%", "end 20%"]
   });
 
-  const evolutionBlocks = [
-    { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 10, y: 10, bg: 'bg-[#FFD700]', text: 'text-black' },
-    { id: '2', title: 'UI/UX', icon: <Code2 size={18} />, desc: 'Frontend', x: 160, y: 50, bg: 'bg-[#0055FF]', text: 'text-white' },
-    { id: '3', title: 'Scripts', icon: <Terminal size={18} />, desc: 'Python', x: 20, y: 130, bg: 'bg-[#FF007F]', text: 'text-white' },
-    { id: '4', title: 'Backend', icon: <Server size={18} />, desc: 'Node.js', x: 150, y: 180, bg: 'bg-white', text: 'text-black' },
-  ];
+  // Load block sesuai device (Banyak di Desktop, Sedikit di Mobile)
+  useEffect(() => {
+    const isDesktop = window.innerWidth > 768;
+    const initialBlocks = [
+      { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 20, y: 20, bg: 'bg-[#FFD700]', text: 'text-black', type: 'AI' },
+      { id: '2', title: 'UI/UX', icon: <Code2 size={18} />, desc: 'Frontend', x: 180, y: 60, bg: 'bg-[#0055FF]', text: 'text-white', type: 'FE' },
+      { id: '3', title: 'Scripts', icon: <Terminal size={18} />, desc: 'Python', x: 30, y: 150, bg: 'bg-[#FF007F]', text: 'text-white', type: 'PY' },
+      { id: '4', title: 'Backend', icon: <Server size={18} />, desc: 'Node.js', x: 180, y: 200, bg: 'bg-white', text: 'text-black', type: 'BE' },
+    ];
+
+    if (isDesktop) {
+      initialBlocks.push({ id: '5', title: 'Database', icon: <Database size={18} />, desc: 'MongoDB', x: 380, y: 40, bg: 'bg-black', text: 'text-white', type: 'DB' });
+      initialBlocks.push({ id: '6', title: 'Cloud', icon: <Cloud size={18} />, desc: 'Hosting', x: 390, y: 180, bg: 'bg-gray-200', text: 'text-black', type: 'CLOUD' });
+    }
+    setBlocks(initialBlocks);
+  }, []);
 
   const projectsData = [
     {
@@ -129,38 +183,66 @@ export default function Portfolio() {
     }
   };
 
-  // Logic deteksi tabrakan (Collision) balok Sandbox
-  const handleDragEnd = () => {
-    const b1 = blockRefs.current['2']?.getBoundingClientRect(); // UI/UX (Frontend)
-    const b2 = blockRefs.current['4']?.getBoundingClientRect(); // Backend
-    const b3 = blockRefs.current['1']?.getBoundingClientRect(); // Logic (AI)
+  // Logic Evolusi (Menggabungkan 2 balok menjadi 1)
+  const handleDragEnd = (event, info, draggedId) => {
+    const draggedEl = blockRefs.current[draggedId];
+    if (!draggedEl) return;
+    const b1 = draggedEl.getBoundingClientRect();
+    let hasFused = false;
 
-    // Cek tabrakan Frontend & Backend
-    if (b1 && b2) {
+    blocks.forEach(target => {
+      if (hasFused || target.id === draggedId) return;
+      
+      const targetEl = blockRefs.current[target.id];
+      if (!targetEl) return;
+      const b2 = targetEl.getBoundingClientRect();
+
+      // Cek apakah balok saling menindih
       const isOverlap = !(b1.right < b2.left || b1.left > b2.right || b1.bottom < b2.top || b1.top > b2.bottom);
-      if (isOverlap) {
-        setFusionMessage("🔥 FUSION: FULLSTACK DEVELOPER TERBENTUK!");
-        setTimeout(() => setFusionMessage(""), 4000);
-        return;
-      }
-    }
 
-    // Cek tabrakan Frontend & Logic (AI)
-    if (b1 && b3) {
-      const isOverlapAI = !(b1.right < b3.left || b1.left > b3.right || b1.bottom < b3.top || b1.top > b3.bottom);
-      if (isOverlapAI) {
-        setFusionMessage("🤖 FUSION: AI-POWERED INTERFACE AKTIF!");
-        setTimeout(() => setFusionMessage(""), 4000);
+      if (isOverlap) {
+        const type1 = blocks.find(b => b.id === draggedId).type;
+        const type2 = target.type;
+        const pair = [type1, type2].sort().join('+'); // Mengurutkan agar A+B = B+A
+        
+        let evolvedBlock = null;
+
+        // Daftar Resep Evolusi Balok
+        if (pair === 'BE+FE') {
+          evolvedBlock = { id: Date.now().toString(), title: 'Fullstack', icon: <Zap size={18}/>, desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL' };
+        } else if (pair === 'AI+PY' || pair === 'AI+BE') {
+          evolvedBlock = { id: Date.now().toString(), title: 'AI Engineer', icon: <BrainCircuit size={18}/>, desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG' };
+        } else if (pair === 'BE+DB' || pair === 'CLOUD+DB') {
+          evolvedBlock = { id: Date.now().toString(), title: 'SysAdmin', icon: <Server size={18}/>, desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS' };
+        } else if (pair === 'CLOUD+FE' || pair === 'CLOUD+FULL') {
+          evolvedBlock = { id: Date.now().toString(), title: 'Live App', icon: <Globe size={18}/>, desc: 'Deployed', bg: 'bg-[#FFD700]', text: 'text-black', type: 'LIVE' };
+        }
+
+        if (evolvedBlock) {
+          hasFused = true;
+          // Posisikan balok baru di titik tabrakan
+          const sandboxRect = sandboxRef.current.getBoundingClientRect();
+          evolvedBlock.x = b2.left - sandboxRect.left;
+          evolvedBlock.y = b2.top - sandboxRect.top;
+
+          setFusionMessage(`🔥 EVOLUSI: ${evolvedBlock.title.toUpperCase()} TERBENTUK!`);
+          setTimeout(() => setFusionMessage(""), 4000);
+
+          // Hapus 2 balok lama, masukkan balok baru hasil evolusi
+          setBlocks(prev => {
+            const filtered = prev.filter(b => b.id !== draggedId && b.id !== target.id);
+            return [...filtered, evolvedBlock];
+          });
+        }
       }
-    }
+    });
   };
 
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
-      {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
-      {/* --- NAVBAR MOBILE (Profil Dihapus & Tanpa Scroll) --- */}
+      {/* --- NAVBAR MOBILE --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
         <div className="brutal-box rounded-full bg-white px-5 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
@@ -176,7 +258,7 @@ export default function Portfolio() {
         </div>
       </nav>
 
-      {/* --- NAVBAR DESKTOP (Teks Tooltip Putih & Hitam Solid) --- */}
+      {/* --- NAVBAR DESKTOP --- */}
       <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full shadow-[6px_6px_0_0_#111111]">
          <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Home size={18} className="text-black" />
@@ -226,9 +308,10 @@ export default function Portfolio() {
               Khoerul Fahmi.
             </h1>
 
-            <p className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed border-l-4 border-black pl-4 text-left">
-              Belajar coding <span className="bg-[#FFD700] px-1">secara otodidak</span>. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.
-            </p>
+            {/* IMPLEMENTASI TEKS INTERAKTIF DI SINI */}
+            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed">
+              <EditableText initialText="Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web." />
+            </div>
 
             <motion.a 
               whileHover={{ scale: 1.05 }}
@@ -247,18 +330,18 @@ export default function Portfolio() {
 
         <Marquee />
 
-        {/* --- ABOUT ME & TECH STACK SECTION --- */}
+        {/* --- ABOUT ME & TECH STACK SECTION (TEXT HITAM SEKARANG) --- */}
         <section id="about" className="mb-24 md:mb-40 mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="brutal-box p-8 md:p-12 bg-[#111111] text-white shadow-[8px_8px_0_0_#FFD700]"
+            className="brutal-box p-8 md:p-12 bg-white text-black shadow-[8px_8px_0_0_#111111]"
           >
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#FFD700]">Tentang Saya.</h2>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
             <div className="space-y-4 text-sm md:text-base font-bold leading-relaxed opacity-90 border-l-4 border-[#FF007F] pl-4">
               <p>
-                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-[#0055FF] bg-white px-1">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
+                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-white bg-[#0055FF] px-2 py-0.5 border border-black">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
               </p>
               <p>
                 Saat ini aku adalah seorang <strong>Prompt Engineer & Software Engineer</strong> amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.
@@ -270,29 +353,29 @@ export default function Portfolio() {
 
             {/* Grid Teknologi */}
             <div className="mt-12">
-              <h3 className="font-black text-xl md:text-2xl uppercase mb-6 text-white text-center md:text-left">Tech Stack & Tools</h3>
+              <h3 className="font-black text-xl md:text-2xl uppercase mb-6 text-black text-center md:text-left underline decoration-4 decoration-[#FFD700]">Tech Stack & Tools</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <Code2 size={28} className="text-[#0055FF]" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">React / Vite</span>
                 </div>
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <Server size={28} className="text-[#FF007F]" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">Node.js</span>
                 </div>
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <FileJson size={28} className="text-[#FFD700]" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">Vanilla JS</span>
                 </div>
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <Palette size={28} className="text-[#00BFFF]" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">Tailwind CSS</span>
                 </div>
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <Globe size={28} className="text-[#E34F26]" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">HTML & CSS</span>
                 </div>
-                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
                   <Terminal size={28} className="text-black" />
                   <span className="font-black text-xs md:text-sm uppercase text-center">Termux CLI</span>
                 </div>
@@ -376,7 +459,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- INTERACTIVE SANDBOX SECTION --- */}
+        {/* --- INTERACTIVE SANDBOX SECTION (DENGAN FUSION EVOLUSI) --- */}
         <motion.section 
           id="sandbox"
           initial={{ opacity: 0, scale: 0.95 }} 
@@ -390,7 +473,7 @@ export default function Portfolio() {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
             </div>
             <p className="text-black font-bold max-w-sm text-left md:text-right mt-4 border-l-4 md:border-l-0 md:border-r-4 border-black pl-4 md:pr-4 text-sm md:text-base">
-              Geser dan tabrakan balok keahlian di bawah untuk melihat reaksinya!
+              Geser dan tabrakan 2 balok keahlian yang cocok untuk menciptakan <b>EVOLUSI</b> baru! (Contoh: Frontend + Backend)
             </p>
           </div>
           
@@ -406,23 +489,23 @@ export default function Portfolio() {
               </motion.div>
             )}
 
-            {evolutionBlocks.map((block) => (
+            {blocks.map((block) => (
               <motion.div
                 key={block.id}
                 ref={(el) => (blockRefs.current[block.id] = el)}
                 drag
                 dragConstraints={sandboxRef}
-                onDragEnd={handleDragEnd}
+                onDragEnd={(e, info) => handleDragEnd(e, info, block.id)}
                 whileDrag={{ scale: 1.1, zIndex: 50, cursor: 'grabbing' }}
                 whileHover={{ scale: 1.05 }}
                 style={{ left: block.x, top: block.y }}
-                className={`absolute p-4 md:p-6 border-4 border-black shadow-[4px_4px_0_0_#111111] cursor-grab w-[130px] md:w-[180px] select-none ${block.bg} ${block.text}`}
+                className={`absolute p-4 md:p-6 border-4 border-black shadow-[4px_4px_0_0_#111111] cursor-grab w-[130px] md:w-[150px] lg:w-[180px] select-none ${block.bg} ${block.text}`}
               >
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 mb-2 md:mb-3 pointer-events-none">
                   {block.icon}
-                  <h3 className="font-black text-xs md:text-sm uppercase tracking-tight">{block.title}</h3>
+                  <h3 className="font-black text-[10px] md:text-xs lg:text-sm uppercase tracking-tight">{block.title}</h3>
                 </div>
-                <p className="text-[10px] md:text-xs font-bold pointer-events-none uppercase tracking-wider opacity-90">{block.desc}</p>
+                <p className="text-[9px] md:text-[10px] lg:text-xs font-bold pointer-events-none uppercase tracking-wider opacity-90">{block.desc}</p>
               </motion.div>
             ))}
           </div>
