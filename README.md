@@ -1,45 +1,61 @@
-# 🌐 M.K Fahmi Portfolio
+<div align="center">
 
-Portfolio website resmi milik **M.K Fahmi (Mohfahmi)** yang dibuat menggunakan **React.js**, **Vite**, dan di-deploy menggunakan **Vercel**.
+# M.K Fahmi
 
-Website ini menampilkan informasi tentang developer, project, skill, pengalaman, serta berbagai karya teknologi yang telah dibuat.
+Portfolio website built with React and Vite.
 
----
+<img src="./public/preview.png" alt="Portfolio Preview" width="100%" />
 
-## ✨ Features
+<br>
 
-- ⚡ Fast Performance with Vite
-- 📱 Fully Responsive Design
-- 🎨 Modern UI/UX
-- 🌙 Clean Layout
-- 🚀 Optimized Build
-- 🔗 Social Media Integration
-- 🛠 Project Showcase
-- 📄 About Me Section
-- 📬 Contact Section
-- 🌐 Custom Domain Support
-- 📈 SEO Optimized
-- 🖼 Discord & Social Media Embed Preview
+[Website](https://mifahmi.my.id) • [GitHub](https://github.com/MohFahmiMc)
+
+</div>
 
 ---
 
-## 🛠 Tech Stack
+## Overview
 
-| Technology | Usage |
-|------------|--------|
-| React.js | Frontend Framework |
+This repository contains the source code for my personal portfolio website.
+
+The website serves as a central place to showcase projects, technical skills, development experience, and other work related to software development and technology.
+
+Built with modern web technologies and optimized for performance, responsiveness, and maintainability.
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|----------|
+| React | User Interface |
 | Vite | Build Tool |
-| JavaScript | Programming Language |
+| JavaScript | Application Logic |
 | HTML5 | Structure |
 | CSS3 | Styling |
-| Vercel | Hosting & Deployment |
+| Vercel | Deployment & Hosting |
 
 ---
 
-## 📂 Project Structure
+## Features
 
-```bash
-.
+- Responsive design for desktop and mobile
+- Modern portfolio layout
+- Project showcase section
+- Skills and technology stack display
+- Contact and social links
+- Fast loading performance
+- SEO optimization
+- Open Graph support for Discord and social media embeds
+- Custom domain integration
+
+---
+
+## Project Structure
+
+```text
+MkFahmi/
+│
 ├── public/
 │   ├── favicon.png
 │   └── preview.png
@@ -54,23 +70,24 @@ Website ini menampilkan informasi tentang developer, project, skill, pengalaman,
 ├── index.html
 ├── package.json
 ├── vite.config.js
-└── README.md
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-## 🚀 Installation
+## Local Development
 
-Clone repository:
+Clone the repository:
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
+git clone https://github.com/MohFahmiMc/MkFahmi.git
 ```
 
-Masuk ke folder project:
+Navigate to the project directory:
 
 ```bash
-cd REPOSITORY
+cd MkFahmi
 ```
 
 Install dependencies:
@@ -79,19 +96,19 @@ Install dependencies:
 npm install
 ```
 
-Jalankan development server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Build production:
+Build for production:
 
 ```bash
 npm run build
 ```
 
-Preview production build:
+Preview the production build:
 
 ```bash
 npm run preview
@@ -99,64 +116,55 @@ npm run preview
 
 ---
 
-## 🌍 Live Website
+## Deployment
 
-Official Website:
+This project is deployed using Vercel.
 
-**https://mifahmi.my.id**
+Production URL:
 
----
+```text
+https://mifahmi.my.id
+```
 
-## 👨‍💻 About Developer
-
-**M.K Fahmi (Mohfahmi)**
-
-Developer yang berfokus pada:
-
-- Discord Bot Development
-- Web Development
-- Automation Systems
-- API Integration
-- Backend Development
-- Technology Projects
+Any changes pushed to the main branch can be automatically deployed through Vercel.
 
 ---
 
-## 📊 Website Goals
+## Repository Information
 
-Website ini dibuat untuk:
-
-- Menampilkan portfolio pribadi
-- Menunjukkan project yang telah dibuat
-- Menjadi pusat informasi developer
-- Menampilkan skill dan pengalaman
-- Mempermudah kolaborasi dan networking
-
----
-
-## 🔒 License
-
-This project is licensed under the MIT License.
-
-Feel free to use, modify, and improve the source code according to the license terms.
+| Item | Value |
+|--------|--------|
+| Repository | MkFahmi |
+| Owner | MohFahmiMc |
+| Framework | React |
+| Bundler | Vite |
+| Hosting | Vercel |
+| Domain | mifahmi.my.id |
 
 ---
 
-## ⭐ Support
+## Goals
 
-Jika kamu menyukai project ini:
+The purpose of this website is to:
 
-- ⭐ Berikan Star pada repository
-- 🍴 Fork repository
-- 🛠 Berkontribusi pada pengembangan
-- 📢 Bagikan kepada teman
+- Present personal projects
+- Showcase technical skills
+- Build an online portfolio
+- Share development work
+- Create a professional online presence
+
+---
+
+## License
+
+This project is available under the MIT License.
+
+See the LICENSE file for more information.
 
 ---
 
 <div align="center">
 
-### Made with ❤️ by M.K Fahmi
-
-**Developer • Creator • Technology Enthusiast**
+Maintained by **MohFahmiMc**
 
 </div>
