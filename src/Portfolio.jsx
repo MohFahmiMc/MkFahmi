@@ -19,8 +19,8 @@ const TiktokIcon = () => (
   </svg>
 );
 
-// --- Fitur Teks Interaktif dengan State Terkontrol Luar ---
-const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess }) => {
+// --- Fitur Teks Interaktif dengan State Terkontrol Luar (Dukung Paragraf) ---
+const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess, borderColorClass = "border-black" }) => {
   const [shake, setShake] = useState(false);
 
   const handleDoubleClick = () => {
@@ -34,16 +34,26 @@ const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess }) 
   };
 
   const renderText = () => {
-    const parts = text.split(/(secara otodidak)/i);
-    return parts.map((part, i) => 
-      part.toLowerCase() === 'secara otodidak' ? (
-        <span key={i} className="bg-[#FFD700] text-black px-1">
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
+    // Memisahkan teks berdasarkan baris baru untuk membuat struktur paragraf
+    return text.split('\n').map((line, index) => {
+      if (line.trim() === '') return <br key={index} />;
+
+      // Regex untuk memisahkan kata-kata kunci agar bisa diberi style khusus
+      const parts = line.split(/(secara otodidak|Fahmi|Prompt Engineer & Software Engineer|Artificial Intelligence \(AI\))/i);
+      
+      return (
+        <p key={index} className={index > 0 ? "mt-4" : ""}>
+          {parts.map((part, i) => {
+            const lower = part.toLowerCase();
+            if (lower === 'secara otodidak') return <span key={i} className="bg-[#FFD700] text-black px-1">{part}</span>;
+            if (lower === 'fahmi') return <span key={i} className="text-white bg-[#0055FF] px-2 py-0.5 border border-black font-normal">{part}</span>;
+            if (lower === 'prompt engineer & software engineer') return <strong key={i}>{part}</strong>;
+            if (lower === 'artificial intelligence (ai)') return <i key={i}>{part}</i>;
+            return part;
+          })}
+        </p>
+      );
+    });
   };
 
   if (isEditing) {
@@ -52,24 +62,30 @@ const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess }) 
         value={text}
         onChange={(e) => setText(e.target.value)}
         onBlur={() => setIsEditing(false)}
-        onKeyDown={(e) => { if(e.key === 'Enter') setIsEditing(false) }}
+        onKeyDown={(e) => { 
+          // Shift+Enter untuk newline, Enter saja untuk save
+          if(e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            setIsEditing(false);
+          } 
+        }}
         className="bg-[#FFD700] text-black w-full border-2 border-black outline-none font-bold p-2 shadow-[4px_4px_0_0_#111111]"
         autoFocus
-        rows={4}
+        rows={text.split('\n').length + 1}
       />
     );
   }
 
   return (
-    <motion.span 
+    <motion.div 
       animate={shake ? { x: [-5, 5, -5, 5, 0] } : {}}
       transition={{ duration: 0.3 }}
       onDoubleClick={handleDoubleClick} 
-      className={`block border-l-4 border-black pl-4 text-left leading-relaxed py-1 transition-colors ${isRootAccess ? 'cursor-text hover:bg-green-50 border-green-500' : 'cursor-default'}`} 
+      className={`block border-l-4 pl-4 text-left leading-relaxed py-1 transition-colors ${isRootAccess ? 'cursor-text hover:bg-green-50 border-green-500' : `${borderColorClass} cursor-default`}`} 
       title={isRootAccess ? "Klik 2x untuk edit teks" : "Terkunci: Aktifkan Root via Navbar atau klik nama di Monitor"}
     >
       {renderText()}
-    </motion.span>
+    </motion.div>
   );
 };
 
@@ -99,42 +115,8 @@ const Marquee = () => {
   );
 };
 
-// --- Abstrak Art Hero Interaktif (Bisa Diputar / Dipercepat Lewat Kursor & Sentuhan) ---
+// --- Abstrak Art Hero (Dikembalikan ke animasi asli yang clean) ---
 const AbstractHeroArt = () => {
-  const [circleAngle, setCircleAngle] = useState(0);
-  const [boxAngle, setBoxAngle] = useState(45);
-  const [circleSpeed, setCircleSpeed] = useState(0.4);
-  const [boxSpeed, setBoxSpeed] = useState(-0.2);
-
-  // Animasi berputar otomatis secara kontinu + pelambatan kecepatan geser
-  useEffect(() => {
-    let frameId;
-    const updateRotation = () => {
-      setCircleAngle((prev) => (prev + circleSpeed) % 360);
-      setBoxAngle((prev) => (prev + boxSpeed) % 360);
-
-      // Secara berkala mengembalikan kecepatan ke kondisi stabil semula (Decay)
-      setCircleSpeed((s) => (s > 0.4 ? s - 0.05 : 0.4));
-      setBoxSpeed((s) => (s < -0.2 ? s + 0.05 : -0.2));
-
-      frameId = requestAnimationFrame(updateRotation);
-    };
-    frameId = requestAnimationFrame(updateRotation);
-    return () => cancelAnimationFrame(frameId);
-  }, [circleSpeed, boxSpeed]);
-
-  // Handler saat lingkaran luar diputar/di-drag dengan tangan atau kursor
-  const handleCircleDrag = (event, info) => {
-    const dragVelocity = (Math.abs(info.delta.x) + Math.abs(info.delta.y)) * 0.6;
-    setCircleSpeed((s) => Math.min(s + dragVelocity, 20)); // Batasi kecepatan maksimal 20
-  };
-
-  // Handler saat kotak luar diputar/di-drag dengan tangan atau kursor
-  const handleBoxDrag = (event, info) => {
-    const dragVelocity = (Math.abs(info.delta.x) + Math.abs(info.delta.y)) * 0.6;
-    setBoxSpeed((s) => Math.max(s - dragVelocity, -20)); // Batasi kecepatan rotasi balik maksimal -20
-  };
-
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.5 }}
@@ -142,26 +124,18 @@ const AbstractHeroArt = () => {
       transition={{ duration: 1, type: "spring" }}
       className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none"
     >
-      {/* 1. Bagian Bulat/Lingkaran yang bisa diputar kursor/tangan */}
+      {/* 1. Bagian Bulat/Lingkaran yang berputar otomatis (Arah Kanan) */}
       <motion.div 
-        drag
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={1}
-        onDrag={handleCircleDrag}
-        style={{ rotate: circleAngle }}
-        className="absolute w-[85%] h-[85%] border-4 border-dashed border-black rounded-full cursor-grab active:cursor-grabbing z-20"
-        title="Putar lingkaran ini dengan mouse/tangan untuk mempercepat!"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        className="absolute w-[85%] h-[85%] border-4 border-dashed border-black rounded-full z-20"
       />
 
-      {/* 2. Bagian Kotak luar yang bisa diputar kursor/tangan */}
+      {/* 2. Bagian Kotak luar yang berputar otomatis (Arah Kiri) */}
       <motion.div 
-        drag
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={1}
-        onDrag={handleBoxDrag}
-        style={{ rotate: boxAngle }}
-        className="absolute w-[65%] h-[65%] border-[6px] border-black rounded-3xl cursor-grab active:cursor-grabbing z-10 bg-white/20"
-        title="Putar kotak ini dengan mouse/tangan untuk memutar cepat!"
+        animate={{ rotate: -360 }}
+        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+        className="absolute w-[65%] h-[65%] border-[6px] border-black rounded-3xl z-10 bg-white/20"
       />
 
       {/* Box MKF Inti Tengah */}
@@ -185,9 +159,13 @@ export default function Portfolio() {
   const [isRootAccess, setIsRootAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   
-  // State Terkontrol untuk teks profil agar sinkron saat diedit via popup
+  // State Terkontrol untuk teks Hero
   const [aboutText, setAboutText] = useState("Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.");
   const [isEditingAbout, setIsEditingAbout] = useState(false);
+
+  // State Terkontrol untuk teks 'Tentang Saya' (Perkenalan)
+  const [aboutMeText, setAboutMeText] = useState("Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil Fahmi. Kesukaanku berpusat pada eksplorasi Teknologi dan Artificial Intelligence (AI).\n\nSaat ini aku adalah seorang Prompt Engineer & Software Engineer amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.\n\nMembangun sesuatu dari barisan kode kosong hingga menjadi program yang bisa berinteraksi dengan pengguna nyata adalah kepuasan terbesarku. Aku selalu tertantang untuk mempelajari bahasa pemrograman baru dan mengasah logika backend maupun estetika frontend.");
+  const [isEditingAboutMe, setIsEditingAboutMe] = useState(false);
 
   // State untuk Pop-Up Achievement
   const [achievement, setAchievement] = useState(null);
@@ -266,11 +244,10 @@ export default function Portfolio() {
     }
   };
 
-  // Menangani klik pada baris notifikasi achievement sirkular di kiri atas
+  // Menangani klik pada baris notifikasi achievement
   const handleAchievementClick = () => {
     setIsRootAccess(true);
     setIsEditingAbout(true);
-    // Gulir halus ke arah area pengisian formulir About
     document.getElementById("hero")?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -341,7 +318,7 @@ export default function Portfolio() {
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       
-      {/* --- NOTIFICATION ACHIEVEMENT (Kiri Atas, Kecil, Pas di Mobile & Klik Untuk Edit) --- */}
+      {/* --- NOTIFICATION ACHIEVEMENT --- */}
       <AnimatePresence>
         {achievement && (
           <motion.div
@@ -432,7 +409,6 @@ export default function Portfolio() {
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </motion.div>
             
-            {/* Nama Lengkap - Ditambahkan fungsi onClick desktop untuk dapetin achievement root */}
             <motion.h1 
               whileTap={{ scale: 0.95, x: 10, color: "#FF007F" }}
               onClick={handleDesktopNameClick}
@@ -479,16 +455,17 @@ export default function Portfolio() {
             className="brutal-box p-8 md:p-12 bg-white text-black shadow-[8px_8px_0_0_#111111]"
           >
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
-            <div className="space-y-4 text-sm md:text-base font-bold leading-relaxed opacity-90 border-l-4 border-[#FF007F] pl-4">
-              <p>
-                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-white bg-[#0055FF] px-2 py-0.5 border border-black font-normal">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
-              </p>
-              <p>
-                Saat ini aku adalah seorang <strong>Prompt Engineer & Software Engineer</strong> amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.
-              </p>
-              <p>
-                Membangun sesuatu dari barisan kode kosong hingga menjadi program yang bisa berinteraksi dengan pengguna nyata adalah kepuasan terbesarku. Aku selalu tertantang untuk mempelajari bahasa pemrograman baru dan mengasah logika *backend* maupun estetika *frontend*.
-              </p>
+            
+            {/* Bagian teks perkenalan yang sekarang bisa diedit interaktif! */}
+            <div className="text-sm md:text-base font-bold leading-relaxed opacity-90">
+              <EditableText 
+                text={aboutMeText}
+                setText={setAboutMeText}
+                isEditing={isEditingAboutMe}
+                setIsEditing={setIsEditingAboutMe}
+                isRootAccess={isRootAccess}
+                borderColorClass="border-[#FF007F]"
+              />
             </div>
 
             {/* Grid Teknologi */}
