@@ -37,12 +37,12 @@ const EditableText = ({ initialText }) => {
     setTimeout(() => setClicks(0), 1000);
   };
 
-  // Fungsi untuk me-render teks dan membungkus kata "otodidak" dengan styling khusus
+  // Fungsi untuk me-render teks dan membungkus kata "secara otodidak" dengan styling background kuning
   const renderText = () => {
-    const parts = text.split(/(otodidak)/i);
+    const parts = text.split(/(secara otodidak)/i);
     return parts.map((part, i) => 
-      part.toLowerCase() === 'otodidak' ? (
-        <span key={i} className="text-black bg-[#FFD700] px-2 py-0.5 border-2 border-black font-black leading-normal inline-block my-1 mx-1 shadow-[2px_2px_0_0_#111111]">
+      part.toLowerCase() === 'secara otodidak' ? (
+        <span key={i} className="bg-[#FFD700] text-black px-1">
           {part}
         </span>
       ) : (
@@ -265,6 +265,7 @@ export default function Portfolio() {
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       
       {/* --- ACHIEVEMENT POP-UP (Kustom Notification) --- */}
+      {/* Responsive adjustments: Lebar max-w-sm (mobile) ke max-w-md (PC), posisi diatur agar tidak tertutup navbar mobile */}
       <AnimatePresence>
         {achievement && (
           <motion.div
@@ -272,14 +273,14 @@ export default function Portfolio() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             transition={{ type: "spring", stiffness: 100, damping: 15 }}
-            className="fixed top-24 md:top-10 left-1/2 -translate-x-1/2 z-[99999] brutal-box bg-[#FFD700] border-4 border-black p-4 flex items-center gap-4 shadow-[8px_8px_0_0_#111111] w-[90%] max-w-[400px]"
+            className="fixed top-24 md:top-10 left-1/2 -translate-x-1/2 z-[99999] bg-[#FFD700] border-4 border-black p-3 md:p-4 flex items-center gap-3 md:gap-4 shadow-[6px_6px_0_0_#111111] md:shadow-[8px_8px_0_0_#111111] w-[90%] md:w-auto md:min-w-[350px] max-w-sm md:max-w-md"
           >
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full shrink-0 border-2 border-white">
-              <Terminal size={24} className="text-[#FFD700]" />
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-black flex items-center justify-center rounded-full shrink-0 border-2 border-white">
+              <Terminal size={20} className="text-[#FFD700]" />
             </div>
             <div>
-              <h4 className="font-black text-sm uppercase text-black mb-1">{achievement.title}</h4>
-              <p className="font-bold text-xs text-black leading-tight">{achievement.desc}</p>
+              <h4 className="font-black text-sm md:text-base uppercase text-black mb-0.5">{achievement.title}</h4>
+              <p className="font-bold text-[10px] md:text-xs text-black leading-tight">{achievement.desc}</p>
             </div>
           </motion.div>
         )}
@@ -386,7 +387,7 @@ export default function Portfolio() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
             <div className="space-y-4 text-sm md:text-base font-bold leading-relaxed opacity-90 border-l-4 border-[#FF007F] pl-4">
               <p>
-                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-black bg-[#FFD700] px-2 py-0.5 border-2 border-black font-black">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
+                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-white bg-[#0055FF] px-2 py-0.5 border border-black font-normal">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
               </p>
               <p>
                 Saat ini aku adalah seorang <strong>Prompt Engineer & Software Engineer</strong> amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.
