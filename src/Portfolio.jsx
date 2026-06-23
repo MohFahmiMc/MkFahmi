@@ -19,22 +19,17 @@ const TiktokIcon = () => (
   </svg>
 );
 
-// --- Fitur Teks Interaktif (Edit dengan Double Click jika Root Access aktif) ---
-const EditableText = ({ initialText, isRootAccess }) => {
-  const [text, setText] = useState(initialText);
-  const [isEditing, setIsEditing] = useState(false);
+// --- Fitur Teks Interaktif dengan State Terkontrol Luar ---
+const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess }) => {
   const [shake, setShake] = useState(false);
 
   const handleDoubleClick = () => {
     if (isEditing) return;
-    
-    // Jika root belum didapat, kasih animasi goyang sebagai hint
     if (!isRootAccess) {
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
     }
-    
     setIsEditing(true);
   };
 
@@ -71,7 +66,7 @@ const EditableText = ({ initialText, isRootAccess }) => {
       transition={{ duration: 0.3 }}
       onDoubleClick={handleDoubleClick} 
       className={`block border-l-4 border-black pl-4 text-left leading-relaxed py-1 transition-colors ${isRootAccess ? 'cursor-text hover:bg-green-50 border-green-500' : 'cursor-default'}`} 
-      title={isRootAccess ? "Akses Root Aktif: Klik 2x untuk edit teks" : "Terkunci: Cari cara masuk sebagai root"}
+      title={isRootAccess ? "Klik 2x untuk edit teks" : "Terkunci: Aktifkan Root via Navbar atau klik nama di Monitor"}
     >
       {renderText()}
     </motion.span>
@@ -104,31 +99,75 @@ const Marquee = () => {
   );
 };
 
-// --- Abstrak Art untuk Hero ---
+// --- Abstrak Art Hero Interaktif (Bisa Diputar / Dipercepat Lewat Kursor & Sentuhan) ---
 const AbstractHeroArt = () => {
+  const [circleAngle, setCircleAngle] = useState(0);
+  const [boxAngle, setBoxAngle] = useState(45);
+  const [circleSpeed, setCircleSpeed] = useState(0.4);
+  const [boxSpeed, setBoxSpeed] = useState(-0.2);
+
+  // Animasi berputar otomatis secara kontinu + pelambatan kecepatan geser
+  useEffect(() => {
+    let frameId;
+    const updateRotation = () => {
+      setCircleAngle((prev) => (prev + circleSpeed) % 360);
+      setBoxAngle((prev) => (prev + boxSpeed) % 360);
+
+      // Secara berkala mengembalikan kecepatan ke kondisi stabil semula (Decay)
+      setCircleSpeed((s) => (s > 0.4 ? s - 0.05 : 0.4));
+      setBoxSpeed((s) => (s < -0.2 ? s + 0.05 : -0.2));
+
+      frameId = requestAnimationFrame(updateRotation);
+    };
+    frameId = requestAnimationFrame(updateRotation);
+    return () => cancelAnimationFrame(frameId);
+  }, [circleSpeed, boxSpeed]);
+
+  // Handler saat lingkaran luar diputar/di-drag dengan tangan atau kursor
+  const handleCircleDrag = (event, info) => {
+    const dragVelocity = (Math.abs(info.delta.x) + Math.abs(info.delta.y)) * 0.6;
+    setCircleSpeed((s) => Math.min(s + dragVelocity, 20)); // Batasi kecepatan maksimal 20
+  };
+
+  // Handler saat kotak luar diputar/di-drag dengan tangan atau kursor
+  const handleBoxDrag = (event, info) => {
+    const dragVelocity = (Math.abs(info.delta.x) + Math.abs(info.delta.y)) * 0.6;
+    setBoxSpeed((s) => Math.max(s - dragVelocity, -20)); // Batasi kecepatan rotasi balik maksimal -20
+  };
+
   return (
     <motion.div 
-      initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
-      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-      transition={{ duration: 1, type: "spring", stiffness: 100 }}
-      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0"
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, type: "spring" }}
+      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none"
     >
+      {/* 1. Bagian Bulat/Lingkaran yang bisa diputar kursor/tangan */}
       <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute w-[80%] h-[80%] border-4 border-dashed border-black rounded-full"
+        drag
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        dragElastic={1}
+        onDrag={handleCircleDrag}
+        style={{ rotate: circleAngle }}
+        className="absolute w-[85%] h-[85%] border-4 border-dashed border-black rounded-full cursor-grab active:cursor-grabbing z-20"
+        title="Putar lingkaran ini dengan mouse/tangan untuk mempercepat!"
       />
+
+      {/* 2. Bagian Kotak luar yang bisa diputar kursor/tangan */}
       <motion.div 
-        animate={{ rotate: -360, scale: [1, 1.05, 1] }}
-        transition={{ 
-          rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-          scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-        }}
-        className="absolute w-[60%] h-[60%] border-[6px] border-black rounded-3xl"
+        drag
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        dragElastic={1}
+        onDrag={handleBoxDrag}
+        style={{ rotate: boxAngle }}
+        className="absolute w-[65%] h-[65%] border-[6px] border-black rounded-3xl cursor-grab active:cursor-grabbing z-10 bg-white/20"
+        title="Putar kotak ini dengan mouse/tangan untuk memutar cepat!"
       />
+
+      {/* Box MKF Inti Tengah */}
       <motion.div 
-        whileHover={{ scale: 1.1, rotate: 10 }}
-        className="brutal-box w-[45%] h-[45%] flex items-center justify-center rotate-12 z-10 bg-[#FFD700] cursor-pointer"
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        className="brutal-box w-[45%] h-[45%] flex items-center justify-center z-0 bg-[#FFD700] shadow-[6px_6px_0_0_#000]"
       >
         <span className="text-3xl md:text-5xl font-black text-black tracking-tighter">MKF</span>
       </motion.div>
@@ -146,6 +185,10 @@ export default function Portfolio() {
   const [isRootAccess, setIsRootAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   
+  // State Terkontrol untuk teks profil agar sinkron saat diedit via popup
+  const [aboutText, setAboutText] = useState("Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.");
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
+
   // State untuk Pop-Up Achievement
   const [achievement, setAchievement] = useState(null);
 
@@ -193,28 +236,45 @@ export default function Portfolio() {
     }
   ];
 
-  // Logic klik tombol navbar Termux untuk Achievement Pop-Up & Unlock Teks
+  // Fungsi mengaktifkan root & notifikasi
+  const triggerUnlockRoot = (sourceInfo) => {
+    setIsRootAccess(true);
+    setAchievement({ 
+      title: "ACHIEVEMENT UNLOCKED", 
+      desc: `${sourceInfo}! Akses root terbuka, klik bar notifikasi ini atau isi About untuk mengedit.` 
+    });
+    
+    setTimeout(() => {
+      setAchievement(null);
+    }, 5000);
+  };
+
+  // Logic klik tombol navbar Termux (Untuk Mobile)
   const handleNavSecretClick = () => {
     const nextClick = secretClicks + 1;
     setSecretClicks(nextClick);
-    
     if (nextClick === 5) {
-      setIsRootAccess(true); // Membuka kunci edit teks
-      setAchievement({ 
-        title: "ACHIEVEMENT UNLOCKED", 
-        desc: "Akses 'root' Termux diberikan! Klik 2x pada teks 'About' untuk mengedit." 
-      });
-      
-      // Auto-hide pop up setelah 4.5 detik
-      setTimeout(() => {
-        setAchievement(null);
-      }, 4500);
-      
+      triggerUnlockRoot("Akses root diberikan dari Terminal Termux");
       setSecretClicks(0);
     }
   };
 
-  // Logic Evolusi (Sekarang bisa digabung sampai jadi 1 block ultimate)
+  // Logic Klik Nama Lengkap (Khusus Desktop/Monitor)
+  const handleDesktopNameClick = () => {
+    if (window.innerWidth >= 768) {
+      triggerUnlockRoot("Akses root diberikan via Monitor click nama");
+    }
+  };
+
+  // Menangani klik pada baris notifikasi achievement sirkular di kiri atas
+  const handleAchievementClick = () => {
+    setIsRootAccess(true);
+    setIsEditingAbout(true);
+    // Gulir halus ke arah area pengisian formulir About
+    document.getElementById("hero")?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Logic Evolusi Sandbox
   const handleDragEnd = (event, info, draggedId) => {
     const draggedEl = blockRefs.current[draggedId];
     if (!draggedEl) return;
@@ -237,13 +297,10 @@ export default function Portfolio() {
         
         let evolvedBlock = null;
 
-        // --- ATURAN EVOLUSI ---
         const rules = {
-          // Tier 1 ke Tier 2
           'BE+FE': { title: 'Fullstack', desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL', icon: <Zap size={18}/> },
           'AI+PY': { title: 'AI Engineer', desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG', icon: <BrainCircuit size={18}/> },
           'CLOUD+DB': { title: 'SysAdmin', desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS', icon: <Server size={18}/> },
-          // Tier 2 ke Tier 3
           'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', icon: <Globe size={18}/> },
           'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', icon: <Code2 size={18}/> },
           'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', icon: <Database size={18}/> },
@@ -252,8 +309,6 @@ export default function Portfolio() {
         if (rules[pair]) {
           evolvedBlock = { id: Date.now().toString(), ...rules[pair] };
         } else {
-          // JIKA TIDAK ADA DI ATURAN, PAKSA GABUNG MENJADI ULTIMATE BLOCK AGAR BISA JADI 1
-          // Ini memastikan apapun yang digabung sisanya akan mengerucut ke 1 block.
           evolvedBlock = { 
             id: Date.now().toString(), 
             title: 'MKF CORE', 
@@ -286,22 +341,28 @@ export default function Portfolio() {
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       
-      {/* --- ACHIEVEMENT POP-UP --- */}
+      {/* --- NOTIFICATION ACHIEVEMENT (Kiri Atas, Kecil, Pas di Mobile & Klik Untuk Edit) --- */}
       <AnimatePresence>
         {achievement && (
           <motion.div
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-            transition={{ type: "spring", stiffness: 100, damping: 15 }}
-            className="fixed top-24 md:top-10 left-1/2 -translate-x-1/2 z-[99999] bg-[#FFD700] border-4 border-black p-3 md:p-4 flex items-center gap-3 md:gap-4 shadow-[6px_6px_0_0_#111111] md:shadow-[8px_8px_0_0_#111111] w-[90%] md:w-auto md:min-w-[350px] max-w-sm md:max-w-md"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ type: "spring", stiffness: 120, damping: 14 }}
+            onClick={handleAchievementClick}
+            className="fixed top-20 md:top-4 left-4 z-[99999] bg-[#FFD700] border-2 border-black p-2 flex items-center gap-2 shadow-[4px_4px_0_0_#111111] max-w-[280px] md:max-w-xs cursor-pointer hover:bg-yellow-300 transition-colors"
+            title="Klik notifikasi ini untuk langsung mengedit teks profil saya!"
           >
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-black flex items-center justify-center rounded-full shrink-0 border-2 border-white">
-              <Terminal size={20} className="text-[#FFD700]" />
+            <div className="w-7 h-7 bg-black flex items-center justify-center rounded-full shrink-0 border border-white animate-spin-slow">
+              <Star size={14} className="text-[#FFD700]" />
             </div>
-            <div>
-              <h4 className="font-black text-sm md:text-base uppercase text-black mb-0.5">{achievement.title}</h4>
-              <p className="font-bold text-[10px] md:text-xs text-black leading-tight">{achievement.desc}</p>
+            <div className="overflow-hidden">
+              <h4 className="font-black text-[11px] md:text-xs uppercase text-black mb-0.5 tracking-tight flex items-center gap-1">
+                {achievement.title} <Zap size={10} className="fill-black" />
+              </h4>
+              <p className="font-bold text-[9px] md:text-[10px] text-black leading-tight truncate">
+                {achievement.desc}
+              </p>
             </div>
           </motion.div>
         )}
@@ -371,9 +432,12 @@ export default function Portfolio() {
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </motion.div>
             
+            {/* Nama Lengkap - Ditambahkan fungsi onClick desktop untuk dapetin achievement root */}
             <motion.h1 
               whileTap={{ scale: 0.95, x: 10, color: "#FF007F" }}
-              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300"
+              onClick={handleDesktopNameClick}
+              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300 md:hover:text-[#0055FF]"
+              title="Khusus Monitor/Desktop: Klik nama saya untuk unlock achievement & root!"
             >
               Mohamad <br />
               Khoerul Fahmi.
@@ -381,7 +445,10 @@ export default function Portfolio() {
 
             <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10">
               <EditableText 
-                initialText="Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web." 
+                text={aboutText}
+                setText={setAboutText}
+                isEditing={isEditingAbout}
+                setIsEditing={setIsEditingAbout}
                 isRootAccess={isRootAccess}
               />
             </div>
@@ -457,7 +524,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* --- JEJAK & PERSENJATAAN (Timeline) --- */}
+        {/* --- JEJAK TIMELINE --- */}
         <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
@@ -647,7 +714,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- SERVICES, STATUS & CONTACT SECTION --- */}
+        {/* --- SERVICES & CONTACT SECTION --- */}
         <section id="contact" className="pt-16 md:pt-20 border-t-8 border-black text-center relative z-10 bg-white/80 backdrop-blur-sm p-4 rounded-[2rem]">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
             <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 md:mb-8 uppercase text-black drop-shadow-[3px_3px_0_#FFD700]">Siap <br/>Membangun?</h2>
@@ -657,7 +724,6 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16 md:mb-24 px-4">
-            
             <motion.div 
               initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="flex flex-col gap-4 w-full md:w-auto"
