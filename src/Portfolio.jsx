@@ -4,7 +4,7 @@ import {
   GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
   FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud
 } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 // --- Custom SVGs untuk Discord & TikTok ---
 const DiscordIcon = () => (
@@ -37,6 +37,20 @@ const EditableText = ({ initialText }) => {
     setTimeout(() => setClicks(0), 1000);
   };
 
+  // Fungsi untuk me-render teks dan membungkus kata "otodidak" dengan styling khusus
+  const renderText = () => {
+    const parts = text.split(/(otodidak)/i);
+    return parts.map((part, i) => 
+      part.toLowerCase() === 'otodidak' ? (
+        <span key={i} className="text-black bg-[#FFD700] px-2 py-0.5 border-2 border-black font-black leading-normal inline-block my-1 mx-1 shadow-[2px_2px_0_0_#111111]">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
   if (isEditing) {
     return (
       <textarea 
@@ -46,7 +60,7 @@ const EditableText = ({ initialText }) => {
         onKeyDown={(e) => { if(e.key === 'Enter') setIsEditing(false) }}
         className="bg-[#FFD700] text-black w-full border-2 border-black outline-none font-bold p-2 shadow-[4px_4px_0_0_#111111]"
         autoFocus
-        rows={3}
+        rows={4}
       />
     );
   }
@@ -54,10 +68,10 @@ const EditableText = ({ initialText }) => {
   return (
     <span 
       onClick={handleClick} 
-      className="cursor-pointer hover:bg-gray-200 transition-colors block border-l-4 border-black pl-4 text-left" 
+      className="cursor-pointer hover:bg-gray-100 transition-colors block border-l-4 border-black pl-4 text-left leading-relaxed py-1" 
       title="💡 Rahasia: Klik 3 kali cepat untuk mengedit teks ini!"
     >
-      {text}
+      {renderText()}
     </span>
   );
 };
@@ -128,6 +142,9 @@ export default function Portfolio() {
   const [fusionMessage, setFusionMessage] = useState("");
   const [secretClicks, setSecretClicks] = useState(0);
   const [blocks, setBlocks] = useState([]);
+  
+  // State untuk Pop-Up Achievement
+  const [achievement, setAchievement] = useState(null);
 
   const { scrollYProgress: mainScroll } = useScroll();
   const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
@@ -137,7 +154,7 @@ export default function Portfolio() {
     offset: ["start 80%", "end 20%"]
   });
 
-  // Load block sesuai device (Banyak di Desktop, Sedikit di Mobile)
+  // Load block sesuai device
   useEffect(() => {
     const isDesktop = window.innerWidth > 768;
     const initialBlocks = [
@@ -173,17 +190,27 @@ export default function Portfolio() {
     }
   ];
 
-  // Logic klik tombol navbar Termux
+  // Logic klik tombol navbar Termux untuk Achievement Pop-Up
   const handleNavSecretClick = () => {
     const nextClick = secretClicks + 1;
     setSecretClicks(nextClick);
+    
     if (nextClick === 5) {
-      alert("🔥 EASTER EGG! Akses 'root' sistem diberikan. Terus semangat koding dan merakit ya! 💻");
+      setAchievement({ 
+        title: "ACHIEVEMENT UNLOCKED", 
+        desc: "Akses 'root' Termux diberikan! Terus semangat ngoding 🔥" 
+      });
+      
+      // Auto-hide pop up setelah 4.5 detik
+      setTimeout(() => {
+        setAchievement(null);
+      }, 4500);
+      
       setSecretClicks(0);
     }
   };
 
-  // Logic Evolusi (Menggabungkan 2 balok menjadi 1)
+  // Logic Evolusi
   const handleDragEnd = (event, info, draggedId) => {
     const draggedEl = blockRefs.current[draggedId];
     if (!draggedEl) return;
@@ -197,17 +224,15 @@ export default function Portfolio() {
       if (!targetEl) return;
       const b2 = targetEl.getBoundingClientRect();
 
-      // Cek apakah balok saling menindih
       const isOverlap = !(b1.right < b2.left || b1.left > b2.right || b1.bottom < b2.top || b1.top > b2.bottom);
 
       if (isOverlap) {
         const type1 = blocks.find(b => b.id === draggedId).type;
         const type2 = target.type;
-        const pair = [type1, type2].sort().join('+'); // Mengurutkan agar A+B = B+A
+        const pair = [type1, type2].sort().join('+');
         
         let evolvedBlock = null;
 
-        // Daftar Resep Evolusi Balok
         if (pair === 'BE+FE') {
           evolvedBlock = { id: Date.now().toString(), title: 'Fullstack', icon: <Zap size={18}/>, desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL' };
         } else if (pair === 'AI+PY' || pair === 'AI+BE') {
@@ -220,7 +245,6 @@ export default function Portfolio() {
 
         if (evolvedBlock) {
           hasFused = true;
-          // Posisikan balok baru di titik tabrakan
           const sandboxRect = sandboxRef.current.getBoundingClientRect();
           evolvedBlock.x = b2.left - sandboxRect.left;
           evolvedBlock.y = b2.top - sandboxRect.top;
@@ -228,7 +252,6 @@ export default function Portfolio() {
           setFusionMessage(`🔥 EVOLUSI: ${evolvedBlock.title.toUpperCase()} TERBENTUK!`);
           setTimeout(() => setFusionMessage(""), 4000);
 
-          // Hapus 2 balok lama, masukkan balok baru hasil evolusi
           setBlocks(prev => {
             const filtered = prev.filter(b => b.id !== draggedId && b.id !== target.id);
             return [...filtered, evolvedBlock];
@@ -240,11 +263,33 @@ export default function Portfolio() {
 
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
+      
+      {/* --- ACHIEVEMENT POP-UP (Kustom Notification) --- */}
+      <AnimatePresence>
+        {achievement && (
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{ type: "spring", stiffness: 100, damping: 15 }}
+            className="fixed top-24 md:top-10 left-1/2 -translate-x-1/2 z-[99999] brutal-box bg-[#FFD700] border-4 border-black p-4 flex items-center gap-4 shadow-[8px_8px_0_0_#111111] w-[90%] max-w-[400px]"
+          >
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full shrink-0 border-2 border-white">
+              <Terminal size={24} className="text-[#FFD700]" />
+            </div>
+            <div>
+              <h4 className="font-black text-sm uppercase text-black mb-1">{achievement.title}</h4>
+              <p className="font-bold text-xs text-black leading-tight">{achievement.desc}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
       {/* --- NAVBAR MOBILE --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
-        <div className="brutal-box rounded-full bg-white px-5 py-3 flex items-center justify-between gap-4">
+        <div className="brutal-box rounded-full bg-white px-5 py-3 flex items-center justify-between gap-4 shadow-[4px_4px_0_0_#111111]">
           <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
             <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full active:scale-90 transition-transform">
               <Terminal size={14} className="text-black" />
@@ -298,7 +343,7 @@ export default function Portfolio() {
           >
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className="inline-block brutal-box px-4 py-2 mb-6 md:mb-8 bg-white cursor-pointer"
+              className="inline-block px-4 py-2 mb-6 md:mb-8 bg-white cursor-pointer border-4 border-black shadow-[4px_4px_0_0_#111111]"
             >
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </motion.div>
@@ -309,7 +354,7 @@ export default function Portfolio() {
             </h1>
 
             {/* IMPLEMENTASI TEKS INTERAKTIF DI SINI */}
-            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed">
+            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10">
               <EditableText initialText="Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web." />
             </div>
 
@@ -330,7 +375,7 @@ export default function Portfolio() {
 
         <Marquee />
 
-        {/* --- ABOUT ME & TECH STACK SECTION (TEXT HITAM SEKARANG) --- */}
+        {/* --- ABOUT ME & TECH STACK SECTION --- */}
         <section id="about" className="mb-24 md:mb-40 mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
@@ -341,7 +386,7 @@ export default function Portfolio() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
             <div className="space-y-4 text-sm md:text-base font-bold leading-relaxed opacity-90 border-l-4 border-[#FF007F] pl-4">
               <p>
-                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-white bg-[#0055FF] px-2 py-0.5 border border-black">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
+                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-black bg-[#FFD700] px-2 py-0.5 border-2 border-black font-black">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
               </p>
               <p>
                 Saat ini aku adalah seorang <strong>Prompt Engineer & Software Engineer</strong> amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.
@@ -459,7 +504,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* --- INTERACTIVE SANDBOX SECTION (DENGAN FUSION EVOLUSI) --- */}
+        {/* --- INTERACTIVE SANDBOX SECTION --- */}
         <motion.section 
           id="sandbox"
           initial={{ opacity: 0, scale: 0.95 }} 
@@ -478,7 +523,6 @@ export default function Portfolio() {
           </div>
           
           <div ref={sandboxRef} className="w-full h-[350px] md:h-[400px] brutal-box relative overflow-hidden bg-white touch-none">
-            {/* Notifikasi Easter Egg Fusion */}
             {fusionMessage && (
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
@@ -511,7 +555,7 @@ export default function Portfolio() {
           </div>
         </motion.section>
 
-        {/* --- REAL WEB PROJECTS (IFRAME) SECTION --- */}
+        {/* --- REAL WEB PROJECTS SECTION --- */}
         <section id="projects" className="mb-24 md:mb-40 relative z-10">
           <motion.h2 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
