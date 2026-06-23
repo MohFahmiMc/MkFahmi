@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { 
   Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
   GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
-  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud
+  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star
 } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
@@ -19,25 +19,25 @@ const TiktokIcon = () => (
   </svg>
 );
 
-// --- Fitur Teks Interaktif (Klik 3x untuk Edit) ---
-const EditableText = ({ initialText }) => {
+// --- Fitur Teks Interaktif (Edit dengan Double Click jika Root Access aktif) ---
+const EditableText = ({ initialText, isRootAccess }) => {
   const [text, setText] = useState(initialText);
-  const [clicks, setClicks] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
+  const [shake, setShake] = useState(false);
 
-  const handleClick = () => {
+  const handleDoubleClick = () => {
     if (isEditing) return;
-    const newClicks = clicks + 1;
-    setClicks(newClicks);
-    if (newClicks >= 3) {
-      setIsEditing(true);
-      setClicks(0);
+    
+    // Jika root belum didapat, kasih animasi goyang sebagai hint
+    if (!isRootAccess) {
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      return;
     }
-    // Reset click kalau tidak cepat
-    setTimeout(() => setClicks(0), 1000);
+    
+    setIsEditing(true);
   };
 
-  // Fungsi untuk me-render teks dan membungkus kata "secara otodidak" dengan styling background kuning
   const renderText = () => {
     const parts = text.split(/(secara otodidak)/i);
     return parts.map((part, i) => 
@@ -66,13 +66,15 @@ const EditableText = ({ initialText }) => {
   }
 
   return (
-    <span 
-      onClick={handleClick} 
-      className="cursor-pointer hover:bg-gray-100 transition-colors block border-l-4 border-black pl-4 text-left leading-relaxed py-1" 
-      title="💡 Rahasia: Klik 3 kali cepat untuk mengedit teks ini!"
+    <motion.span 
+      animate={shake ? { x: [-5, 5, -5, 5, 0] } : {}}
+      transition={{ duration: 0.3 }}
+      onDoubleClick={handleDoubleClick} 
+      className={`block border-l-4 border-black pl-4 text-left leading-relaxed py-1 transition-colors ${isRootAccess ? 'cursor-text hover:bg-green-50 border-green-500' : 'cursor-default'}`} 
+      title={isRootAccess ? "Akses Root Aktif: Klik 2x untuk edit teks" : "Terkunci: Cari cara masuk sebagai root"}
     >
       {renderText()}
-    </span>
+    </motion.span>
   );
 };
 
@@ -141,6 +143,7 @@ export default function Portfolio() {
   
   const [fusionMessage, setFusionMessage] = useState("");
   const [secretClicks, setSecretClicks] = useState(0);
+  const [isRootAccess, setIsRootAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   
   // State untuk Pop-Up Achievement
@@ -190,15 +193,16 @@ export default function Portfolio() {
     }
   ];
 
-  // Logic klik tombol navbar Termux untuk Achievement Pop-Up
+  // Logic klik tombol navbar Termux untuk Achievement Pop-Up & Unlock Teks
   const handleNavSecretClick = () => {
     const nextClick = secretClicks + 1;
     setSecretClicks(nextClick);
     
     if (nextClick === 5) {
+      setIsRootAccess(true); // Membuka kunci edit teks
       setAchievement({ 
         title: "ACHIEVEMENT UNLOCKED", 
-        desc: "Akses 'root' Termux diberikan! Terus semangat ngoding 🔥" 
+        desc: "Akses 'root' Termux diberikan! Klik 2x pada teks 'About' untuk mengedit." 
       });
       
       // Auto-hide pop up setelah 4.5 detik
@@ -210,7 +214,7 @@ export default function Portfolio() {
     }
   };
 
-  // Logic Evolusi
+  // Logic Evolusi (Sekarang bisa digabung sampai jadi 1 block ultimate)
   const handleDragEnd = (event, info, draggedId) => {
     const draggedEl = blockRefs.current[draggedId];
     if (!draggedEl) return;
@@ -233,14 +237,32 @@ export default function Portfolio() {
         
         let evolvedBlock = null;
 
-        if (pair === 'BE+FE') {
-          evolvedBlock = { id: Date.now().toString(), title: 'Fullstack', icon: <Zap size={18}/>, desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL' };
-        } else if (pair === 'AI+PY' || pair === 'AI+BE') {
-          evolvedBlock = { id: Date.now().toString(), title: 'AI Engineer', icon: <BrainCircuit size={18}/>, desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG' };
-        } else if (pair === 'BE+DB' || pair === 'CLOUD+DB') {
-          evolvedBlock = { id: Date.now().toString(), title: 'SysAdmin', icon: <Server size={18}/>, desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS' };
-        } else if (pair === 'CLOUD+FE' || pair === 'CLOUD+FULL') {
-          evolvedBlock = { id: Date.now().toString(), title: 'Live App', icon: <Globe size={18}/>, desc: 'Deployed', bg: 'bg-[#FFD700]', text: 'text-black', type: 'LIVE' };
+        // --- ATURAN EVOLUSI ---
+        const rules = {
+          // Tier 1 ke Tier 2
+          'BE+FE': { title: 'Fullstack', desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL', icon: <Zap size={18}/> },
+          'AI+PY': { title: 'AI Engineer', desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG', icon: <BrainCircuit size={18}/> },
+          'CLOUD+DB': { title: 'SysAdmin', desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS', icon: <Server size={18}/> },
+          // Tier 2 ke Tier 3
+          'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', icon: <Globe size={18}/> },
+          'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', icon: <Code2 size={18}/> },
+          'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', icon: <Database size={18}/> },
+        };
+
+        if (rules[pair]) {
+          evolvedBlock = { id: Date.now().toString(), ...rules[pair] };
+        } else {
+          // JIKA TIDAK ADA DI ATURAN, PAKSA GABUNG MENJADI ULTIMATE BLOCK AGAR BISA JADI 1
+          // Ini memastikan apapun yang digabung sisanya akan mengerucut ke 1 block.
+          evolvedBlock = { 
+            id: Date.now().toString(), 
+            title: 'MKF CORE', 
+            icon: <Star size={18}/>, 
+            desc: 'Singularity', 
+            bg: 'bg-black border-[#FF007F]', 
+            text: 'text-[#FF007F]', 
+            type: 'ULTIMATE' 
+          };
         }
 
         if (evolvedBlock) {
@@ -264,8 +286,7 @@ export default function Portfolio() {
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       
-      {/* --- ACHIEVEMENT POP-UP (Kustom Notification) --- */}
-      {/* Responsive adjustments: Lebar max-w-sm (mobile) ke max-w-md (PC), posisi diatur agar tidak tertutup navbar mobile */}
+      {/* --- ACHIEVEMENT POP-UP --- */}
       <AnimatePresence>
         {achievement && (
           <motion.div
@@ -343,20 +364,26 @@ export default function Portfolio() {
             className="flex-1 w-full text-center md:text-left"
           >
             <motion.div 
+              whileTap={{ scale: 0.9, rotate: -2, backgroundColor: "#FFD700" }}
               whileHover={{ scale: 1.05 }}
-              className="inline-block px-4 py-2 mb-6 md:mb-8 bg-white cursor-pointer border-4 border-black shadow-[4px_4px_0_0_#111111]"
+              className="inline-block px-4 py-2 mb-6 md:mb-8 bg-white cursor-pointer border-4 border-black shadow-[4px_4px_0_0_#111111] select-none"
             >
               <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </motion.div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF]">
+            <motion.h1 
+              whileTap={{ scale: 0.95, x: 10, color: "#FF007F" }}
+              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300"
+            >
               Mohamad <br />
               Khoerul Fahmi.
-            </h1>
+            </motion.h1>
 
-            {/* IMPLEMENTASI TEKS INTERAKTIF DI SINI */}
             <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10">
-              <EditableText initialText="Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web." />
+              <EditableText 
+                initialText="Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web." 
+                isRootAccess={isRootAccess}
+              />
             </div>
 
             <motion.a 
@@ -460,7 +487,7 @@ export default function Portfolio() {
                 </motion.div>
                 <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
                   <h3 className="font-black text-xl md:text-2xl uppercase mb-2">Sekolah Dasar</h3>
-                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">MI-Alfalah Tanjakan <br/>Krangkeng, Indramayu.</p>
+                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">MI Al-Falah Indramayu.</p>
                 </div>
               </motion.div>
 
@@ -519,7 +546,7 @@ export default function Portfolio() {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
             </div>
             <p className="text-black font-bold max-w-sm text-left md:text-right mt-4 border-l-4 md:border-l-0 md:border-r-4 border-black pl-4 md:pr-4 text-sm md:text-base">
-              Geser dan tabrakan 2 balok keahlian yang cocok untuk menciptakan <b>EVOLUSI</b> baru! (Contoh: Frontend + Backend)
+              Geser dan tabrakan 2 balok keahlian yang cocok untuk menciptakan <b>EVOLUSI</b> baru sampai tersisa 1 balok!
             </p>
           </div>
           
