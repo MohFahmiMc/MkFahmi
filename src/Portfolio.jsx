@@ -160,9 +160,9 @@ export default function Portfolio() {
       {/* Progress Bar Atas */}
       <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
 
-      {/* --- NAVBAR MOBILE --- */}
+      {/* --- NAVBAR MOBILE (Profil Dihapus & Tanpa Scroll) --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
-        <div className="brutal-box rounded-full bg-white px-5 py-3 overflow-x-auto whitespace-nowrap hide-scrollbar flex items-center justify-between gap-4">
+        <div className="brutal-box rounded-full bg-white px-5 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
             <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full active:scale-90 transition-transform">
               <Terminal size={14} className="text-black" />
@@ -170,39 +170,37 @@ export default function Portfolio() {
             <span className="font-black tracking-widest text-base text-black">FAHMI</span>
           </div>
           <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
-            <a href="#about" className="flex items-center gap-1 hover:text-[#0055FF] transition-colors">Profil</a>
             <a href="#projects" className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</a>
             <a href="#contact" className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
           </div>
         </div>
       </nav>
 
-      {/* --- NAVBAR DESKTOP (SIDEBAR KANAN) --- */}
-      {/* hover:z-50 ditambahkan agar tooltip tidak tertutup tombol di bawahnya */}
+      {/* --- NAVBAR DESKTOP (Teks Tooltip Putih & Hitam Solid) --- */}
       <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full shadow-[6px_6px_0_0_#111111]">
          <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Home size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Hero</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Hero</span>
          </a>
          <a href="#about" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <BrainCircuit size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Profil</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Profil</span>
          </a>
          <a href="#timeline" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Compass size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#0055FF] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Jejak</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Jejak</span>
          </a>
          <a href="#sandbox" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Box size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FFD700] text-black text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Sandbox</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Sandbox</span>
          </a>
          <a href="#projects" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Briefcase size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Karya</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Karya</span>
          </a>
          <a href="#contact" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Phone size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Kontak</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Kontak</span>
          </a>
       </nav>
 
@@ -544,7 +542,7 @@ export default function Portfolio() {
             <motion.a whileHover={{ y: -5 }} href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
               <Github size={24} />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-[#5865F2] rounded-full flex items-center justify-center text-white hover:bg-black transition-colors">
+            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#5865F2] hover:text-white transition-colors">
               <DiscordIcon />
             </motion.a>
             <motion.a whileHover={{ y: -5 }} href="https://tiktok.com/@mizephyrz" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
