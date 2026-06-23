@@ -1,6 +1,23 @@
-import React, { useRef } from 'react';
-import { Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { 
+  Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
+  GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
+  FileJson, Palette, Zap, Cpu as BrainCircuit
+} from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+
+// --- Custom SVGs untuk Discord & TikTok ---
+const DiscordIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" height="24" width="24">
+    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.946 2.4189-2.1568 2.4189Z"/>
+  </svg>
+);
+
+const TiktokIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" height="24" width="24">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 15.68a6.34 6.34 0 0012.67-1.74v-5a8.21 8.21 0 004.14 1.15V6.63a6.84 6.84 0 00-2.22.06z"/>
+  </svg>
+);
 
 // --- Elemen Running Text (Marquee) ---
 const Marquee = () => {
@@ -63,7 +80,11 @@ const AbstractHeroArt = () => {
 export default function Portfolio() {
   const sandboxRef = useRef(null);
   const timelineRef = useRef(null);
+  const blockRefs = useRef({});
   
+  const [fusionMessage, setFusionMessage] = useState("");
+  const [secretClicks, setSecretClicks] = useState(0);
+
   const { scrollYProgress: mainScroll } = useScroll();
   const scaleXMain = useTransform(mainScroll, [0, 1], [0, 1]);
 
@@ -82,9 +103,13 @@ export default function Portfolio() {
   const projectsData = [
     {
       title: "ZEPHYR BOT INFRASTRUCTURE",
-      desc: "Sistem moderasi dan utilitas skala besar untuk Discord. Dikembangkan berbasis objek dengan arsitektur Node.js yang berjalan mandiri via Termux Android.",
+      desc: "Sistem moderasi dan utilitas skala besar untuk Discord. Dikembangkan dengan arsitektur Node.js pada backend, dan antarmuka Dashboard Website murni dibangun dengan bahasa Vanilla JS, HTML, dan CSS.",
       url: "https://zephyr.mifahmi.my.id",
-      tags: [{ name: "Node.js", color: "brutal-tag-yellow" }, { name: "Termux", color: "brutal-tag-blue" }]
+      tags: [
+        { name: "Node.js", color: "brutal-tag-yellow" }, 
+        { name: "Vanilla JS", color: "brutal-tag-blue" },
+        { name: "HTML/CSS", color: "brutal-tag-pink" }
+      ]
     },
     {
       title: "AI CHARACTER ENGINE",
@@ -94,6 +119,42 @@ export default function Portfolio() {
     }
   ];
 
+  // Logic klik tombol navbar Termux
+  const handleNavSecretClick = () => {
+    const nextClick = secretClicks + 1;
+    setSecretClicks(nextClick);
+    if (nextClick === 5) {
+      alert("🔥 EASTER EGG! Akses 'root' sistem diberikan. Terus semangat koding dan merakit ya! 💻");
+      setSecretClicks(0);
+    }
+  };
+
+  // Logic deteksi tabrakan (Collision) balok Sandbox
+  const handleDragEnd = () => {
+    const b1 = blockRefs.current['2']?.getBoundingClientRect(); // UI/UX (Frontend)
+    const b2 = blockRefs.current['4']?.getBoundingClientRect(); // Backend
+    const b3 = blockRefs.current['1']?.getBoundingClientRect(); // Logic (AI)
+
+    // Cek tabrakan Frontend & Backend
+    if (b1 && b2) {
+      const isOverlap = !(b1.right < b2.left || b1.left > b2.right || b1.bottom < b2.top || b1.top > b2.bottom);
+      if (isOverlap) {
+        setFusionMessage("🔥 FUSION: FULLSTACK DEVELOPER TERBENTUK!");
+        setTimeout(() => setFusionMessage(""), 4000);
+        return;
+      }
+    }
+
+    // Cek tabrakan Frontend & Logic (AI)
+    if (b1 && b3) {
+      const isOverlapAI = !(b1.right < b3.left || b1.left > b3.right || b1.bottom < b3.top || b1.top > b3.bottom);
+      if (isOverlapAI) {
+        setFusionMessage("🤖 FUSION: AI-POWERED INTERFACE AKTIF!");
+        setTimeout(() => setFusionMessage(""), 4000);
+      }
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
       {/* Progress Bar Atas */}
@@ -102,13 +163,14 @@ export default function Portfolio() {
       {/* --- NAVBAR MOBILE --- */}
       <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
         <div className="brutal-box rounded-full bg-white px-5 py-3 overflow-x-auto whitespace-nowrap hide-scrollbar flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full">
+          <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
+            <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full active:scale-90 transition-transform">
               <Terminal size={14} className="text-black" />
             </div>
             <span className="font-black tracking-widest text-base text-black">FAHMI</span>
           </div>
           <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
+            <a href="#about" className="flex items-center gap-1 hover:text-[#0055FF] transition-colors">Profil</a>
             <a href="#projects" className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</a>
             <a href="#contact" className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
           </div>
@@ -116,30 +178,35 @@ export default function Portfolio() {
       </nav>
 
       {/* --- NAVBAR DESKTOP (SIDEBAR KANAN) --- */}
+      {/* hover:z-50 ditambahkan agar tooltip tidak tertutup tombol di bawahnya */}
       <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full shadow-[6px_6px_0_0_#111111]">
-         <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
+         <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Home size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Hero</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Hero</span>
          </a>
-         <a href="#timeline" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white">
+         <a href="#about" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white hover:z-50 focus:z-50">
+            <BrainCircuit size={18} className="text-black group-hover:text-white" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Profil</span>
+         </a>
+         <a href="#timeline" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Compass size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#0055FF] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Jejak</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#0055FF] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Jejak</span>
          </a>
-         <a href="#sandbox" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white">
-            <Box size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Sandbox</span>
+         <a href="#sandbox" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white hover:z-50 focus:z-50">
+            <Box size={18} className="text-black" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FFD700] text-black text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Sandbox</span>
          </a>
-         <a href="#projects" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
-            <Briefcase size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FFD700] text-black text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Karya</span>
+         <a href="#projects" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white hover:z-50 focus:z-50">
+            <Briefcase size={18} className="text-black group-hover:text-white" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-[#FF007F] text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Karya</span>
          </a>
-         <a href="#contact" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white">
+         <a href="#contact" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white hover:z-50 focus:z-50">
             <Phone size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none">Kontak</span>
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-black text-white text-xs px-3 py-2 rounded font-bold uppercase pointer-events-none z-50">Kontak</span>
          </a>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-hidden">
+      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-visible">
 
         {/* --- HERO SECTION --- */}
         <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32 relative z-10">
@@ -168,10 +235,10 @@ export default function Portfolio() {
             <motion.a 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="#projects" 
+              href="#about" 
               className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full md:w-auto text-sm md:text-base"
             >
-              Eksplorasi Proyek <ArrowRight size={20} />
+              Kenali Lebih Lanjut <ArrowRight size={20} />
             </motion.a>
           </motion.div>
 
@@ -182,8 +249,62 @@ export default function Portfolio() {
 
         <Marquee />
 
-        {/* --- JEJAK & PERSENJATAAN (Timeline Progress Section - VERTIKAL ALL SCREEN) --- */}
-        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-20 relative z-10">
+        {/* --- ABOUT ME & TECH STACK SECTION --- */}
+        <section id="about" className="mb-24 md:mb-40 mt-10 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="brutal-box p-8 md:p-12 bg-[#111111] text-white shadow-[8px_8px_0_0_#FFD700]"
+          >
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#FFD700]">Tentang Saya.</h2>
+            <div className="space-y-4 text-sm md:text-base font-bold leading-relaxed opacity-90 border-l-4 border-[#FF007F] pl-4">
+              <p>
+                Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil <span className="text-[#0055FF] bg-white px-1">Fahmi</span>. Kesukaanku berpusat pada eksplorasi Teknologi dan <i>Artificial Intelligence (AI)</i>.
+              </p>
+              <p>
+                Saat ini aku adalah seorang <strong>Prompt Engineer & Software Engineer</strong> amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.
+              </p>
+              <p>
+                Membangun sesuatu dari barisan kode kosong hingga menjadi program yang bisa berinteraksi dengan pengguna nyata adalah kepuasan terbesarku. Aku selalu tertantang untuk mempelajari bahasa pemrograman baru dan mengasah logika *backend* maupun estetika *frontend*.
+              </p>
+            </div>
+
+            {/* Grid Teknologi */}
+            <div className="mt-12">
+              <h3 className="font-black text-xl md:text-2xl uppercase mb-6 text-white text-center md:text-left">Tech Stack & Tools</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Code2 size={28} className="text-[#0055FF]" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">React / Vite</span>
+                </div>
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Server size={28} className="text-[#FF007F]" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">Node.js</span>
+                </div>
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <FileJson size={28} className="text-[#FFD700]" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">Vanilla JS</span>
+                </div>
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Palette size={28} className="text-[#00BFFF]" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">Tailwind CSS</span>
+                </div>
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Globe size={28} className="text-[#E34F26]" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">HTML & CSS</span>
+                </div>
+                <div className="brutal-box p-4 bg-white text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Terminal size={28} className="text-black" />
+                  <span className="font-black text-xs md:text-sm uppercase text-center">Termux CLI</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* --- JEJAK & PERSENJATAAN (Timeline) --- */}
+        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -197,23 +318,16 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="relative">
-            {/* Garis Latar Vertical (All Screens) */}
             <div className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
             
-            {/* Garis Progress Vertical Animasi */}
             <motion.div 
               style={{ scaleY: timelineProgress }} 
               className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
             />
 
-            {/* Layout Vertikal (Berjejer kebawah) untuk Desktop dan Mobile */}
             <div className="flex flex-col gap-10 md:gap-16 relative z-10">
               
-              {/* 1. SD */}
-              <motion.div 
-                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="flex items-center gap-6 md:gap-10"
-              >
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex items-center gap-6 md:gap-10">
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
                   <GraduationCap size={32} className="text-black" />
                 </motion.div>
@@ -223,11 +337,7 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 2. SMP */}
-              <motion.div 
-                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="flex items-center gap-6 md:gap-10"
-              >
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex items-center gap-6 md:gap-10">
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
                   <GraduationCap size={32} className="text-white" />
                 </motion.div>
@@ -238,11 +348,7 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 3. SMK */}
-              <motion.div 
-                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="flex items-center gap-6 md:gap-10"
-              >
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex items-center gap-6 md:gap-10">
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
                   <GraduationCap size={32} className="text-gray-400" />
                 </motion.div>
@@ -252,11 +358,7 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* 4. Perangkat Utama (Teks Kontras & Rapi) */}
-              <motion.div 
-                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                className="flex items-center gap-6 md:gap-10"
-              >
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex items-center gap-6 md:gap-10">
                 <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
                   <Smartphone size={32} className="text-white" />
                 </motion.div>
@@ -290,16 +392,29 @@ export default function Portfolio() {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
             </div>
             <p className="text-black font-bold max-w-sm text-left md:text-right mt-4 border-l-4 md:border-l-0 md:border-r-4 border-black pl-4 md:pr-4 text-sm md:text-base">
-              Geser balok keahlian di bawah. Berawal dari Vivo Y12 menuju penguasaan sistem skala besar.
+              Geser dan tabrakan balok keahlian di bawah untuk melihat reaksinya!
             </p>
           </div>
           
           <div ref={sandboxRef} className="w-full h-[350px] md:h-[400px] brutal-box relative overflow-hidden bg-white touch-none">
+            {/* Notifikasi Easter Egg Fusion */}
+            {fusionMessage && (
+              <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute top-6 left-1/2 -translate-x-1/2 brutal-box bg-black text-[#FFD700] px-6 py-3 z-50 animate-bounce"
+              >
+                <span className="font-black text-sm md:text-base uppercase tracking-widest">{fusionMessage}</span>
+              </motion.div>
+            )}
+
             {evolutionBlocks.map((block) => (
               <motion.div
                 key={block.id}
+                ref={(el) => (blockRefs.current[block.id] = el)}
                 drag
                 dragConstraints={sandboxRef}
+                onDragEnd={handleDragEnd}
                 whileDrag={{ scale: 1.1, zIndex: 50, cursor: 'grabbing' }}
                 whileHover={{ scale: 1.05 }}
                 style={{ left: block.x, top: block.y }}
@@ -390,7 +505,6 @@ export default function Portfolio() {
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16 md:mb-24 px-4">
             
-            {/* Bagian Tombol Order & Donasi */}
             <motion.div 
               initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="flex flex-col gap-4 w-full md:w-auto"
@@ -412,7 +526,6 @@ export default function Portfolio() {
               </motion.a>
             </motion.div>
 
-            {/* Bagian Discord Status Widget */}
             <motion.div 
               initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="w-full md:w-auto flex justify-center"
@@ -426,15 +539,18 @@ export default function Portfolio() {
           {/* Social Links */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="flex justify-center gap-4 md:gap-6 mb-12"
+            className="flex justify-center gap-4 md:gap-6 mb-12 flex-wrap"
           >
             <motion.a whileHover={{ y: -5 }} href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
               <Github size={24} />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#0055FF] hover:text-white transition-colors">
-              <Globe size={24} />
+            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-[#5865F2] rounded-full flex items-center justify-center text-white hover:bg-black transition-colors">
+              <DiscordIcon />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="mailto:contact@mifahmi.my.id" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
+            <motion.a whileHover={{ y: -5 }} href="https://tiktok.com/@mizephyrz" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
+              <TiktokIcon />
+            </motion.a>
+            <motion.a whileHover={{ y: -5 }} href="mailto:contact@mifahmi.my.id" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#0055FF] hover:text-white transition-colors">
               <Mail size={24} />
             </motion.a>
           </motion.div>
