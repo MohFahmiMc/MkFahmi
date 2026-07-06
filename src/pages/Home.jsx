@@ -11,6 +11,7 @@ import EditableText from '../components/EditableText';
 import Marquee from '../components/Marquee';
 import AbstractHeroArt from '../components/AbstractHeroArt';
 import { projectsData } from '../data/projectsData';
+import CommentSection from '../components/CommentSection';
 
 export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
   const sandboxRef = useRef(null);
@@ -514,6 +515,8 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             </button>
           </div>
         </section>
+
+        <CommentSection />
 
         <section id="contact" className="pt-16 md:pt-20 border-t-8 border-black text-center relative z-10 bg-white/80 backdrop-blur-sm p-4 rounded-[2rem]">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
