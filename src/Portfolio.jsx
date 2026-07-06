@@ -112,46 +112,59 @@ const Marquee = () => {
   );
 };
 
-// --- Abstrak Art Hero (Diperbarui Sesuai Foto & Fitur Klik) ---
+// --- Abstrak Art Hero ---
 const AbstractHeroArt = () => {
-  const [isNormal, setIsNormal] = useState(false);
+  const [isStraight, setIsStraight] = useState(false);
+
+  useEffect(() => {
+    const handleResetTilt = () => {
+      setIsStraight(false);
+    };
+
+    window.addEventListener('scroll', handleResetTilt);
+    window.addEventListener('click', handleResetTilt);
+
+    return () => {
+      window.removeEventListener('scroll', handleResetTilt);
+      window.removeEventListener('click', handleResetTilt);
+    };
+  }, []);
 
   return (
-    <div 
-      onClick={() => setIsNormal(!isNormal)}
-      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none cursor-pointer"
-      title="Klik untuk mengubah posisi ke normal/semula"
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, type: "spring" }}
+      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none"
     >
-      {/* 1. Lingkaran luar putus-putus */}
+      {/* 1. Bagian Bulat/Lingkaran yang berputar otomatis (Arah Kanan) */}
       <motion.div 
-        animate={{ rotate: isNormal ? 0 : 0 }}
-        transition={{ type: "spring", stiffness: 100, damping: 15 }}
-        className="absolute w-[85%] h-[85%] border-2 border-dashed border-black rounded-full z-0"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        className="absolute w-[85%] h-[85%] border-4 border-dashed border-black rounded-full z-20"
       />
 
-      {/* 2. Kotak luar melengkung (Tilted) */}
+      {/* 2. Bagian Kotak luar yang berputar otomatis (Arah Kiri) */}
       <motion.div 
-        animate={{ rotate: isNormal ? 0 : 35 }}
-        transition={{ type: "spring", stiffness: 100, damping: 15 }}
-        className="absolute w-[72%] h-[72%] border-2 border-black rounded-[2rem] z-10 bg-transparent"
+        animate={{ rotate: -360 }}
+        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+        className="absolute w-[65%] h-[65%] border-[6px] border-black rounded-3xl z-10 bg-white/20"
       />
 
-      {/* 3. Kotak inti tajam MKF di tengah */}
+      {/* Box MKF Inti Tengah */}
       <motion.div 
-        animate={{ rotate: isNormal ? 0 : -10 }}
-        transition={{ type: "spring", stiffness: 100, damping: 15 }}
-        className="absolute w-[46%] h-[46%] border-2 border-black bg-white flex items-center justify-center z-20 shadow-[1px_3px_0_0_rgba(0,0,0,1)]"
+        onClick={(e) => {
+          e.stopPropagation(); 
+          setIsStraight(!isStraight);
+        }}
+        animate={{ rotate: isStraight ? 0 : -8 }}
+        whileHover={{ scale: 1.1 }}
+        transition={{ type: "spring", stiffness: 250, damping: 15 }}
+        className="brutal-box w-[45%] h-[45%] flex items-center justify-center z-0 bg-[#FFD700] shadow-[6px_6px_0_0_#000] cursor-pointer"
       >
-        {/* Counter-rotate teks agar tetap tegak lurus sesuai foto saat posisi miring */}
-        <motion.span 
-          animate={{ rotate: isNormal ? 0 : 10 }}
-          transition={{ type: "spring", stiffness: 100, damping: 15 }}
-          className="text-3xl md:text-5xl font-black text-black tracking-tighter"
-        >
-          MKF
-        </motion.span>
+        <span className="text-3xl md:text-5xl font-black text-black tracking-tighter">MKF</span>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -200,7 +213,7 @@ export default function Portfolio() {
   const projectsData = [
     {
       title: "ZEPHYR BOT INFRASTRUCTURE",
-      desc: "Sistem moderasi dan utilitas Discord skala besar dengan backend Node.js dan dashboard website murni Vanilla JS, HTML, dan CSS.",
+      desc: "Sistem moderasi dan utilitas skala besar untuk Discord. Dikembangkan dengan arsitektur Node.js pada backend, dan antarmuka Dashboard Website murni dibangun dengan bahasa Vanilla JS, HTML, dan CSS.",
       url: "https://zephyr.mifahmi.my.id",
       tags: [
         { name: "Node.js", color: "brutal-tag-yellow" }, 
@@ -210,14 +223,14 @@ export default function Portfolio() {
     },
     {
       title: "AI CHARACTER ENGINE",
-      desc: "Integrasi LLM untuk menciptakan persona karakter digital yang interaktif secara real-time dan dinamis.",
+      desc: "Integrasi bahasa alami (LLM) untuk menciptakan persona karakter digital yang mampu berinteraksi secara real-time dan dinamis.",
       url: "https://zephyr.mifahmi.my.id/ai/character",
       tags: [{ name: "AI Integration", color: "brutal-tag-pink" }, { name: "Prompt Eng.", color: "bg-black text-white" }]
     },
     {
       title: "FREEDOM MINECRAFT CLAN PORTAL",
-      desc: "Website resmi manajemen clan Minecraft Server Freedom. Dibangun dengan Next.js, MongoDB, 3D Skin Viewer, dan portal admin terpusat.",
-      url: "https://clans.scarily.my.id/freedom",
+      desc: "Website resmi dan pusat manajemen untuk clan Minecraft di dalam server Minecraft Freedom. Arsitektur sistem dibangun menggunakan Next.js dengan integrasi database MongoDB untuk penyimpanan data faksi, sistem penampil skin3d (3D Skin Viewer) yang interaktif, serta dilengkapi dengan portal admin khusus untuk mempermudah manajemen klan secara terpusat.",
+      url: "https://clan.scarily.my.id/freedom",
       tags: [
         { name: "Next.js", color: "bg-black text-white" },
         { name: "MongoDB", color: "brutal-tag-yellow" },
@@ -288,20 +301,17 @@ export default function Portfolio() {
           'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', icon: <Globe size={18}/> },
           'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', icon: <Code2 size={18}/> },
           'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', icon: <Database size={18}/> },
+          // Jalur khusus bertahap agar tidak langsung jadi MKF CORE secara sembarangan
+          'ARCH+AIDEV': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
+          'ARCH+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
+          'AIDEV+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' }
         };
 
         if (rules[pair]) {
           evolvedBlock = { id: Date.now().toString(), ...rules[pair] };
         } else {
-          evolvedBlock = { 
-            id: Date.now().toString(), 
-            title: 'MKF CORE', 
-            icon: <Star size={18}/>, 
-            desc: 'Singularity', 
-            bg: 'bg-black border-[#FF007F]', 
-            text: 'text-[#FF007F]', 
-            type: 'ULTIMATE' 
-          };
+          // Jika tidak sesuai resep/kombinasi di atas, balok tidak akan bergabung (tidak langsung jadi MKF CORE)
+          evolvedBlock = null;
         }
 
         if (evolvedBlock) {
