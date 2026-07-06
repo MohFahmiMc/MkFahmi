@@ -230,7 +230,7 @@ export default function Portfolio() {
     {
       title: "FREEDOM MINECRAFT CLAN PORTAL",
       desc: "Website resmi dan pusat manajemen untuk clan Minecraft di dalam server Minecraft Freedom. Arsitektur sistem dibangun menggunakan Next.js dengan integrasi database MongoDB untuk penyimpanan data faksi, sistem penampil skin3d (3D Skin Viewer) yang interaktif, serta dilengkapi dengan portal admin khusus untuk mempermudah manajemen klan secara terpusat.",
-      url: "https://clan.scarily.my.id/freedom",
+      url: "https://clans.scarily.my.id/freedom",
       tags: [
         { name: "Next.js", color: "bg-black text-white" },
         { name: "MongoDB", color: "brutal-tag-yellow" },
@@ -301,7 +301,6 @@ export default function Portfolio() {
           'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', icon: <Globe size={18}/> },
           'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', icon: <Code2 size={18}/> },
           'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', icon: <Database size={18}/> },
-          // Jalur khusus bertahap agar tidak langsung jadi MKF CORE secara sembarangan
           'ARCH+AIDEV': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
           'ARCH+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
           'AIDEV+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' }
@@ -310,7 +309,6 @@ export default function Portfolio() {
         if (rules[pair]) {
           evolvedBlock = { id: Date.now().toString(), ...rules[pair] };
         } else {
-          // Jika tidak sesuai resep/kombinasi di atas, balok tidak akan bergabung (tidak langsung jadi MKF CORE)
           evolvedBlock = null;
         }
 
