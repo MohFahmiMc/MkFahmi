@@ -34,11 +34,9 @@ const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess, bo
   };
 
   const renderText = () => {
-    // Memisahkan teks berdasarkan baris baru untuk membuat struktur paragraf
     return text.split('\n').map((line, index) => {
       if (line.trim() === '') return <br key={index} />;
 
-      // Regex untuk memisahkan kata-kata kunci agar bisa diberi style khusus
       const parts = line.split(/(secara otodidak|Fahmi|Prompt Engineer & Software Engineer|Artificial Intelligence \(AI\))/i);
       
       return (
@@ -63,7 +61,6 @@ const EditableText = ({ text, setText, isEditing, setIsEditing, isRootAccess, bo
         onChange={(e) => setText(e.target.value)}
         onBlur={() => setIsEditing(false)}
         onKeyDown={(e) => { 
-          // Shift+Enter untuk newline, Enter saja untuk save
           if(e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             setIsEditing(false);
@@ -115,37 +112,46 @@ const Marquee = () => {
   );
 };
 
-// --- Abstrak Art Hero (Dikembalikan ke animasi asli yang clean) ---
+// --- Abstrak Art Hero (Diperbarui Sesuai Foto & Fitur Klik) ---
 const AbstractHeroArt = () => {
+  const [isNormal, setIsNormal] = useState(false);
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, type: "spring" }}
-      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none"
+    <div 
+      onClick={() => setIsNormal(!isNormal)}
+      className="relative w-full max-w-[280px] md:max-w-[400px] aspect-square flex items-center justify-center mt-10 md:mt-0 select-none cursor-pointer"
+      title="Klik untuk mengubah posisi ke normal/semula"
     >
-      {/* 1. Bagian Bulat/Lingkaran yang berputar otomatis (Arah Kanan) */}
+      {/* 1. Lingkaran luar putus-putus */}
       <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-        className="absolute w-[85%] h-[85%] border-4 border-dashed border-black rounded-full z-20"
+        animate={{ rotate: isNormal ? 0 : 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        className="absolute w-[85%] h-[85%] border-2 border-dashed border-black rounded-full z-0"
       />
 
-      {/* 2. Bagian Kotak luar yang berputar otomatis (Arah Kiri) */}
+      {/* 2. Kotak luar melengkung (Tilted) */}
       <motion.div 
-        animate={{ rotate: -360 }}
-        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-        className="absolute w-[65%] h-[65%] border-[6px] border-black rounded-3xl z-10 bg-white/20"
+        animate={{ rotate: isNormal ? 0 : 35 }}
+        transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        className="absolute w-[72%] h-[72%] border-2 border-black rounded-[2rem] z-10 bg-transparent"
       />
 
-      {/* Box MKF Inti Tengah */}
+      {/* 3. Kotak inti tajam MKF di tengah */}
       <motion.div 
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        className="brutal-box w-[45%] h-[45%] flex items-center justify-center z-0 bg-[#FFD700] shadow-[6px_6px_0_0_#000]"
+        animate={{ rotate: isNormal ? 0 : -10 }}
+        transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        className="absolute w-[46%] h-[46%] border-2 border-black bg-white flex items-center justify-center z-20 shadow-[1px_3px_0_0_rgba(0,0,0,1)]"
       >
-        <span className="text-3xl md:text-5xl font-black text-black tracking-tighter">MKF</span>
+        {/* Counter-rotate teks agar tetap tegak lurus sesuai foto saat posisi miring */}
+        <motion.span 
+          animate={{ rotate: isNormal ? 0 : 10 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          className="text-3xl md:text-5xl font-black text-black tracking-tighter"
+        >
+          MKF
+        </motion.span>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -159,15 +165,12 @@ export default function Portfolio() {
   const [isRootAccess, setIsRootAccess] = useState(false);
   const [blocks, setBlocks] = useState([]);
   
-  // State Terkontrol untuk teks Hero
   const [aboutText, setAboutText] = useState("Belajar coding secara otodidak. Menguasai ekosistem Termux untuk merancang logika bot Discord, otomasi server, dan rekayasa web.");
   const [isEditingAbout, setIsEditingAbout] = useState(false);
 
-  // State Terkontrol untuk teks 'Tentang Saya' (Perkenalan)
   const [aboutMeText, setAboutMeText] = useState("Halo! Aku Mohamad Khoerul Fahmi, sering dipanggil Fahmi. Kesukaanku berpusat pada eksplorasi Teknologi dan Artificial Intelligence (AI).\n\nSaat ini aku adalah seorang Prompt Engineer & Software Engineer amatir namun bersemangat. Aku sangat suka merancang dan membuat berbagai macam karya digital seperti website interaktif, automasi Discord Bot, dan sistem-sistem logika lainnya.\n\nMembangun sesuatu dari barisan kode kosong hingga menjadi program yang bisa berinteraksi dengan pengguna nyata adalah kepuasan terbesarku. Aku selalu tertantang untuk mempelajari bahasa pemrograman baru dan mengasah logika backend maupun estetika frontend.");
   const [isEditingAboutMe, setIsEditingAboutMe] = useState(false);
 
-  // State untuk Pop-Up Achievement
   const [achievement, setAchievement] = useState(null);
 
   const { scrollYProgress: mainScroll } = useScroll();
@@ -178,7 +181,6 @@ export default function Portfolio() {
     offset: ["start 80%", "end 20%"]
   });
 
-  // Load block sesuai device
   useEffect(() => {
     const isDesktop = window.innerWidth > 768;
     const initialBlocks = [
@@ -198,7 +200,7 @@ export default function Portfolio() {
   const projectsData = [
     {
       title: "ZEPHYR BOT INFRASTRUCTURE",
-      desc: "Sistem moderasi dan utilitas skala besar untuk Discord. Dikembangkan dengan arsitektur Node.js pada backend, dan antarmuka Dashboard Website murni dibangun dengan bahasa Vanilla JS, HTML, dan CSS.",
+      desc: "Sistem moderasi dan utilitas Discord skala besar dengan backend Node.js dan dashboard website murni Vanilla JS, HTML, dan CSS.",
       url: "https://zephyr.mifahmi.my.id",
       tags: [
         { name: "Node.js", color: "brutal-tag-yellow" }, 
@@ -208,14 +210,14 @@ export default function Portfolio() {
     },
     {
       title: "AI CHARACTER ENGINE",
-      desc: "Integrasi bahasa alami (LLM) untuk menciptakan persona karakter digital yang mampu berinteraksi secara real-time dan dinamis.",
+      desc: "Integrasi LLM untuk menciptakan persona karakter digital yang interaktif secara real-time dan dinamis.",
       url: "https://zephyr.mifahmi.my.id/ai/character",
       tags: [{ name: "AI Integration", color: "brutal-tag-pink" }, { name: "Prompt Eng.", color: "bg-black text-white" }]
     },
     {
       title: "FREEDOM MINECRAFT CLAN PORTAL",
-      desc: "Website resmi dan pusat manajemen untuk clan Minecraft di dalam server Minecraft Freedom. Arsitektur sistem dibangun menggunakan Next.js dengan integrasi database MongoDB untuk penyimpanan data faksi, sistem penampil skin3d (3D Skin Viewer) yang interaktif, serta dilengkapi dengan portal admin khusus untuk mempermudah manajemen klan secara terpusat.",
-      url: "https://clan.scarily.my.id/freedom",
+      desc: "Website resmi manajemen clan Minecraft Server Freedom. Dibangun dengan Next.js, MongoDB, 3D Skin Viewer, dan portal admin terpusat.",
+      url: "https://clans.scarily.my.id/freedom",
       tags: [
         { name: "Next.js", color: "bg-black text-white" },
         { name: "MongoDB", color: "brutal-tag-yellow" },
@@ -224,7 +226,6 @@ export default function Portfolio() {
     }
   ];
 
-  // Fungsi mengaktifkan root & notifikasi
   const triggerUnlockRoot = (sourceInfo) => {
     setIsRootAccess(true);
     setAchievement({ 
@@ -237,7 +238,6 @@ export default function Portfolio() {
     }, 5000);
   };
 
-  // Logic klik tombol navbar Termux (Untuk Mobile)
   const handleNavSecretClick = () => {
     const nextClick = secretClicks + 1;
     setSecretClicks(nextClick);
@@ -247,21 +247,18 @@ export default function Portfolio() {
     }
   };
 
-  // Logic Klik Nama Lengkap (Khusus Desktop/Monitor)
   const handleDesktopNameClick = () => {
     if (window.innerWidth >= 768) {
       triggerUnlockRoot("Akses root diberikan via Monitor click nama");
     }
   };
 
-  // Menangani klik pada baris notifikasi achievement
   const handleAchievementClick = () => {
     setIsRootAccess(true);
     setIsEditingAbout(true);
     document.getElementById("hero")?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Logic Evolusi Sandbox
   const handleDragEnd = (event, info, draggedId) => {
     const draggedEl = blockRefs.current[draggedId];
     if (!draggedEl) return;
@@ -466,7 +463,6 @@ export default function Portfolio() {
           >
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
             
-            {/* Bagian teks perkenalan yang sekarang bisa diedit interaktif! */}
             <div className="text-sm md:text-base font-bold leading-relaxed opacity-90">
               <EditableText 
                 text={aboutMeText}
