@@ -211,6 +211,16 @@ export default function Portfolio() {
       desc: "Integrasi bahasa alami (LLM) untuk menciptakan persona karakter digital yang mampu berinteraksi secara real-time dan dinamis.",
       url: "https://zephyr.mifahmi.my.id/ai/character",
       tags: [{ name: "AI Integration", color: "brutal-tag-pink" }, { name: "Prompt Eng.", color: "bg-black text-white" }]
+    },
+    {
+      title: "FREEDOM MINECRAFT CLAN PORTAL",
+      desc: "Website resmi dan pusat manajemen untuk clan Minecraft di dalam server Minecraft Freedom. Arsitektur sistem dibangun menggunakan Next.js dengan integrasi database MongoDB untuk penyimpanan data faksi, sistem penampil skin3d (3D Skin Viewer) yang interaktif, serta dilengkapi dengan portal admin khusus untuk mempermudah manajemen klan secara terpusat.",
+      url: "https://clan.scarily.my.id/freedom",
+      tags: [
+        { name: "Next.js", color: "bg-black text-white" },
+        { name: "MongoDB", color: "brutal-tag-yellow" },
+        { name: "3D Viewer", color: "brutal-tag-pink" }
+      ]
     }
   ];
 
@@ -303,7 +313,7 @@ export default function Portfolio() {
           evolvedBlock.x = b2.left - sandboxRect.left;
           evolvedBlock.y = b2.top - sandboxRect.top;
 
-          setFusionMessage(`🔥 EVOLUSI: ${evolvedBlock.title.toUpperCase()} TERBENTUK!`);
+          setFusionMessage(`EVOLUSI: ${evolvedBlock.title.toUpperCase()} TERBENTUK!`);
           setTimeout(() => setFusionMessage(""), 4000);
 
           setBlocks(prev => {
