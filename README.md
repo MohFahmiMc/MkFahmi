@@ -2,56 +2,59 @@
 
 # M.K Fahmi
 
-Portfolio website built with React and Vite.
+Personal portfolio website built with **React** and **Vite**.
 
 <img src="./public/preview.png" alt="Portfolio Preview" width="100%" />
 
-<br>
-
-[Website](https://mifahmi.my.id) • [GitHub](https://github.com/MohFahmiMc)
+<p>
+  <a href="https://mifahmi.my.id">Website</a> •
+  <a href="https://github.com/MohFahmiMc">GitHub</a>
+</p>
 
 </div>
 
 ---
 
-## Overview
+# Overview
 
 This repository contains the source code for my personal portfolio website.
 
 The website serves as a central place to showcase projects, technical skills, development experience, and other work related to software development and technology.
 
-Built with modern web technologies and optimized for performance, responsiveness, and maintainability.
+Built with modern web technologies, the project is optimized for performance, responsiveness, accessibility, and maintainability.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
 | Technology | Purpose |
-|------------|----------|
+| :--------- | :------ |
 | React | User Interface |
 | Vite | Build Tool |
 | JavaScript | Application Logic |
 | HTML5 | Structure |
 | CSS3 | Styling |
 | Vercel | Deployment & Hosting |
+| `vercel.json` | SPA Client-side Routing Configuration |
 
 ---
 
-## Features
+# Features
 
 - Responsive design for desktop and mobile
-- Modern portfolio layout
-- Project showcase section
-- Skills and technology stack display
+- Modern portfolio interface
+- Project showcase
+- Skills & technology stack
 - Contact and social links
 - Fast loading performance
 - SEO optimization
 - Open Graph support for Discord and social media embeds
-- Custom domain integration
+- Custom domain support
+- SPA routing fallback using `vercel.json`
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 MkFahmi/
@@ -69,6 +72,7 @@ MkFahmi/
 │
 ├── index.html
 ├── package.json
+├── vercel.json
 ├── vite.config.js
 ├── README.md
 └── .gitignore
@@ -76,7 +80,7 @@ MkFahmi/
 
 ---
 
-## Local Development
+# Local Development
 
 Clone the repository:
 
@@ -84,7 +88,7 @@ Clone the repository:
 git clone https://github.com/MohFahmiMc/MkFahmi.git
 ```
 
-Navigate to the project directory:
+Move into the project directory:
 
 ```bash
 cd MkFahmi
@@ -96,7 +100,7 @@ Install dependencies:
 npm install
 ```
 
-Start the development server:
+Run the development server:
 
 ```bash
 npm run dev
@@ -116,24 +120,41 @@ npm run preview
 
 ---
 
-## Deployment
+# Deployment
 
-This project is deployed using Vercel.
+This project is deployed using **Vercel**.
 
-Production URL:
+### Production
 
-```text
+```
 https://mifahmi.my.id
 ```
 
-Any changes pushed to the main branch can be automatically deployed through Vercel.
+## SPA Routing Configuration
+
+To prevent **404 errors** when refreshing pages or directly opening nested routes, the project includes a **vercel.json** configuration file in the root directory.
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+This rewrite ensures that every request is served through `index.html`, allowing React Router (or any client-side router) to handle navigation correctly.
+
+Every push to the **main** branch can be automatically deployed through Vercel.
 
 ---
 
-## Repository Information
+# Repository Information
 
 | Item | Value |
-|--------|--------|
+| :--- | :---- |
 | Repository | MkFahmi |
 | Owner | MohFahmiMc |
 | Framework | React |
@@ -143,28 +164,28 @@ Any changes pushed to the main branch can be automatically deployed through Verc
 
 ---
 
-## Goals
+# Goals
 
-The purpose of this website is to:
+This website aims to:
 
-- Present personal projects
-- Showcase technical skills
-- Build an online portfolio
+- Showcase personal projects
+- Highlight technical skills
+- Build a professional online portfolio
 - Share development work
-- Create a professional online presence
+- Provide an easy way to discover my work and experience
 
 ---
 
-## License
+# License
 
-This project is available under the MIT License.
+This project is licensed under the **MIT License**.
 
-See the LICENSE file for more information.
+See the **LICENSE** file for more information.
 
 ---
 
 <div align="center">
 
-Maintained by **MohFahmiMc**
+**Maintained by MohFahmiMc**
 
 </div>
