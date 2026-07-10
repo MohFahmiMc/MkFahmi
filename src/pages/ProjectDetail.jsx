@@ -27,6 +27,7 @@ export default function ProjectDetail({ projectId, navigate }) {
     <div className="min-h-screen bg-[#f4f4f0] bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] pt-8 pb-20 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         
+        {/* Bagian Tombol Navigasi Atas */}
         <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
           <button 
             onClick={() => navigate('/project')}
@@ -34,16 +35,20 @@ export default function ProjectDetail({ projectId, navigate }) {
           >
             <ArrowLeft size={16} /> Kembali ke Arsip
           </button>
+          
+          {/* PERBAIKAN: Mengubah bg-black text-white menjadi bg-white text-black agar tulisan hitam terlihat jelas */}
           <button 
             onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 px-5 py-2.5 brutal-box bg-black text-white font-black uppercase text-xs tracking-widest rounded-full"
+            className="inline-flex items-center gap-2 px-5 py-2.5 brutal-box bg-white text-black font-black uppercase text-xs tracking-widest rounded-full"
           >
             Beranda Utama
           </button>
         </div>
 
+        {/* Konten Utama Detail Project */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-12">
           
+          {/* Panel Informasi Kiri */}
           <div className="lg:col-span-1 brutal-box p-6 md:p-8 bg-white shadow-[6px_6px_0_0_#111111]">
             <div className="flex items-center gap-2 text-xs font-black text-gray-600 uppercase mb-3">
               <Calendar size={14} className="text-[#FF007F]" />
@@ -67,8 +72,10 @@ export default function ProjectDetail({ projectId, navigate }) {
             </div>
           </div>
 
+          {/* Panel Live Preview (Iframe) Kanan */}
           <div className="lg:col-span-2 flex flex-col">
             <div className="w-full brutal-box p-0 overflow-hidden bg-white shadow-[8px_8px_0_0_#111111] h-[450px] md:h-[650px]">
+              {/* Header ala Browser Window */}
               <div className="w-full h-11 bg-white border-b-4 border-black flex items-center px-4 md:px-6 justify-between">
                 <div className="flex items-center gap-2 md:gap-3">
                   <div className="w-3 h-3 rounded-full border-2 border-black bg-[#FF007F]"></div>
@@ -87,6 +94,7 @@ export default function ProjectDetail({ projectId, navigate }) {
                   Buka Tab Baru <ExternalLink size={10} />
                 </a>
               </div>
+              {/* Iframe Website */}
               <iframe 
                 src={project.url} 
                 className="w-full h-[calc(100%-2.75rem)] border-none bg-gray-100" 
