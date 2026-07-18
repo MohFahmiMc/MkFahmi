@@ -367,12 +367,13 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex items-center gap-6 md:gap-10">
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-gray-200 border-dashed rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
-                  <GraduationCap size={32} className="text-gray-400" />
+                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#00BFFF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
+                  <GraduationCap size={32} className="text-white" />
                 </motion.div>
-                <div className="brutal-box p-6 md:p-8 bg-gray-100 border-dashed flex flex-col w-full opacity-90 hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2 text-gray-600">SMK</h3>
-                  <p className="text-sm md:text-base font-bold text-gray-500 uppercase">Status: Belum Masuk.</p>
+                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform relative overflow-hidden">
+                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">SMK</h3>
+                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">SMK NU Kaplongan.</p>
+                  <p className="text-xs md:text-sm font-black text-[#0055FF] uppercase mt-1">Jurusan: Teknik Komputer dan Jaringan (TKJ)</p>
                 </div>
               </motion.div>
 
