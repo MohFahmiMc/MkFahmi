@@ -12,6 +12,7 @@ import Marquee from '../components/Marquee';
 import AbstractHeroArt from '../components/AbstractHeroArt';
 import { projectsData } from '../data/projectsData';
 import CommentSection from '../components/CommentSection';
+import HeroLikeButton from '../components/HeroLikeButton';
 
 export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
   const sandboxRef = useRef(null);
@@ -237,13 +238,15 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             <motion.h1 
               whileTap={{ scale: 0.95, x: 10, color: "#FF007F" }}
               onClick={handleDesktopNameClick}
-              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300 md:hover:text-[#0055FF]"
+              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-4 md:mb-6 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300 md:hover:text-[#0055FF]"
             >
               Mohamad <br />
               Khoerul Fahmi.
             </motion.h1>
 
-            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10">
+            <HeroLikeButton />
+
+            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 mt-6 md:mt-8">
               <EditableText 
                 text={aboutText}
                 setText={setAboutText}
