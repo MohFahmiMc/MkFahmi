@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { 
   Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
   GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
-  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star, Instagram
+  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star, Instagram,
+  Wrench, Sparkles
 } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
@@ -197,7 +198,8 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             </div>
             <span className="font-black tracking-widest text-base text-black">FAHMI</span>
           </div>
-          <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
+          <div className="flex gap-3 text-xs font-bold uppercase tracking-widest text-black shrink-0">
+            <button onClick={() => navigate('/service')} className="flex items-center gap-1 hover:text-[#FFD700] transition-colors"><Wrench size={14}/> Layanan</button>
             <button onClick={() => navigate('/project')} className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</button>
             <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
           </div>
@@ -248,6 +250,17 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
          >
             <Box size={18} className="text-black transition-transform group-hover:scale-110" />
             <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Sandbox</span>
+         </motion.button>
+
+         <motion.button 
+            type="button"
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigate('/service')} 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white"
+         >
+            <Wrench size={18} className="text-black transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Layanan</span>
          </motion.button>
 
          <motion.button 
@@ -311,15 +324,26 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               />
             </div>
 
-            <motion.a 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="#about" 
-              onClick={(e) => scrollToSection(e, 'about')}
-              className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full md:w-auto text-sm md:text-base"
-            >
-              Kenali Lebih Lanjut <ArrowRight size={20} />
-            </motion.a>
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+              <motion.a 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                href="#about" 
+                onClick={(e) => scrollToSection(e, 'about')}
+                className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full sm:w-auto text-sm md:text-base"
+              >
+                Kenali Lebih Lanjut <ArrowRight size={20} />
+              </motion.a>
+
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/service')}
+                className="inline-flex items-center justify-center gap-3 brutal-box bg-[#FFD700] text-black hover:bg-yellow-400 px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full sm:w-auto text-sm md:text-base shadow-[4px_4px_0_0_#111111]"
+              >
+                <Wrench size={20} /> Layanan Jasa
+              </motion.button>
+            </div>
           </motion.div>
 
           <div className="flex-1 w-full flex justify-center md:justify-end">
@@ -566,10 +590,16 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             ))}
           </div>
 
-          <div className="text-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <button 
+              onClick={() => navigate('/service')}
+              className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFD700] text-black border-4 border-black font-black uppercase text-sm md:text-base tracking-widest shadow-[6px_6px_0_0_#111111] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_#111111] transition-all rounded-xl"
+            >
+              <Wrench size={20} /> Lihat Halaman Layanan
+            </button>
             <button 
               onClick={() => navigate('/project')}
-              className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFD700] text-black border-4 border-black font-black uppercase text-sm md:text-base tracking-widest shadow-[6px_6px_0_0_#111111] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_#111111] transition-all rounded-xl"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black border-4 border-black font-black uppercase text-sm md:text-base tracking-widest shadow-[6px_6px_0_0_#111111] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_#111111] transition-all rounded-xl"
             >
               Lihat Semua Project <ArrowRight size={20} />
             </button>
@@ -598,6 +628,13 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               >
                 Order Jasa Sekarang
               </motion.a>
+              <motion.button 
+                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/service')}
+                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FFD700] text-black rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors"
+              >
+                <Wrench size={20} /> Halaman Layanan
+              </motion.button>
               <motion.a 
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 href="https://support.scarily.my.id" target="_blank" rel="noreferrer"
