@@ -199,7 +199,6 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             <span className="font-black tracking-widest text-base text-black">FAHMI</span>
           </div>
           <div className="flex gap-3 text-xs font-bold uppercase tracking-widest text-black shrink-0">
-            <button onClick={() => navigate('/service')} className="flex items-center gap-1 hover:text-[#FFD700] transition-colors"><Wrench size={14}/> Layanan</button>
             <button onClick={() => navigate('/project')} className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</button>
             <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
           </div>
