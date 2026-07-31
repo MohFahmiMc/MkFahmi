@@ -55,6 +55,14 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
     setBlocks(initialBlocks);
   }, []);
 
+  const scrollToSection = (e, id) => {
+    if (e) e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const triggerUnlockRoot = (sourceInfo) => {
     setIsRootAccess(true);
     setAchievement({ 
@@ -82,10 +90,10 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
     }
   };
 
-  const handleAchievementClick = () => {
+  const handleAchievementClick = (e) => {
+    if (e) e.preventDefault();
     setIsRootAccess(true);
     setIsEditingAbout(true);
-    document.getElementById("hero")?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleDragEnd = (event, info, draggedId) => {
@@ -155,6 +163,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
+            whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 120, damping: 14 }}
             onClick={handleAchievementClick}
             className="fixed top-20 md:top-4 left-4 z-[99999] bg-[#FFD700] border-2 border-black p-2 flex items-center gap-2 shadow-[4px_4px_0_0_#111111] max-w-[280px] md:max-w-xs cursor-pointer hover:bg-yellow-300 transition-colors"
@@ -186,7 +195,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           </div>
           <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-black shrink-0">
             <button onClick={() => navigate('/project')} className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</button>
-            <a href="#contact" className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
+            <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
           </div>
         </div>
       </nav>
@@ -197,6 +206,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             href="#hero" 
+            onClick={(e) => scrollToSection(e, 'hero')}
             className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white"
          >
             <Home size={18} className="text-black transition-transform group-hover:scale-110" />
@@ -207,6 +217,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             href="#about" 
+            onClick={(e) => scrollToSection(e, 'about')}
             className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white"
          >
             <BrainCircuit size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
@@ -217,6 +228,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             href="#timeline" 
+            onClick={(e) => scrollToSection(e, 'timeline')}
             className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white"
          >
             <Compass size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
@@ -227,6 +239,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             href="#sandbox" 
+            onClick={(e) => scrollToSection(e, 'sandbox')}
             className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white"
          >
             <Box size={18} className="text-black transition-transform group-hover:scale-110" />
@@ -247,6 +260,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             href="#contact" 
+            onClick={(e) => scrollToSection(e, 'contact')}
             className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white"
          >
             <Phone size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
@@ -296,6 +310,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="#about" 
+              onClick={(e) => scrollToSection(e, 'about')}
               className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full md:w-auto text-sm md:text-base"
             >
               Kenali Lebih Lanjut <ArrowRight size={20} />
