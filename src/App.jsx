@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import HomeView from './pages/Home';
 import AllProjects from './pages/AllProjects';
 import ProjectDetail from './pages/ProjectDetail';
-import ServicesView from './pages/Services';
+import ServicesView from './pages/ServicesView';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
