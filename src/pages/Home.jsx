@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { 
   Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
   GraduationCap, Smartphone, MapPin, Compass, Box, Briefcase, Phone, Home, 
-  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star
+  FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star, Instagram
 } from 'lucide-react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
@@ -56,7 +56,10 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
   }, []);
 
   const scrollToSection = (e, id) => {
-    if (e) e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -200,8 +203,8 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
         </div>
       </nav>
 
-      {/* NAVBAR DESKTOP/MONITOR INTERAKTIF & REVISI ANIMASI */}
-      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-5 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111]">
+      {/* NAVBAR DESKTOP/MONITOR INTERAKTIF - KODE KUNCI POSISI DENGAN TRANSFORM-GPU */}
+      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-[999] flex-col items-center gap-5 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111] transform-gpu">
          <motion.a 
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
@@ -613,12 +616,16 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             </motion.div>
           </div>
 
+          {/* DITAMBAHKAN SOSIAL MEDIA INSTAGRAM @mizephyr */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="flex justify-center gap-4 md:gap-6 mb-12 flex-wrap"
           >
             <motion.a whileHover={{ y: -5 }} href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
               <Github size={24} />
+            </motion.a>
+            <motion.a whileHover={{ y: -5 }} href="https://instagram.com/mizephyr" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#E1306C] hover:text-white transition-colors">
+              <Instagram size={24} />
             </motion.a>
             <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#5865F2] hover:text-white transition-colors">
               <DiscordIcon />
