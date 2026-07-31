@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import HomeView from './pages/Home';
 import AllProjects from './pages/AllProjects';
 import ProjectDetail from './pages/ProjectDetail';
+import ServicesView from './pages/Services';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -42,6 +43,13 @@ function App() {
     return (
       <ProjectDetail 
         projectId={projectId} 
+        navigate={navigate} 
+        isRootAccess={isRootAccess} 
+      />
+    );
+  } else if (currentPath === '/service' || currentPath === '/services') {
+    return (
+      <ServicesView 
         navigate={navigate} 
         isRootAccess={isRootAccess} 
       />
