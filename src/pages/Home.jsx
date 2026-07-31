@@ -191,31 +191,67 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
         </div>
       </nav>
 
-      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-6 brutal-box p-4 bg-white rounded-full shadow-[6px_6px_0_0_#111111]">
-         <a href="#hero" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
-            <Home size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Hero</span>
-         </a>
-         <a href="#about" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white">
-            <BrainCircuit size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Profil</span>
-         </a>
-         <a href="#timeline" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white">
-            <Compass size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Jejak</span>
-         </a>
-         <a href="#sandbox" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white">
-            <Box size={18} className="text-black" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Sandbox</span>
-         </a>
-         <button onClick={() => navigate('/project')} className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white">
-            <Briefcase size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Karya</span>
-         </button>
-         <a href="#contact" className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white">
-            <Phone size={18} className="text-black group-hover:text-white" />
-            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-2 font-black uppercase pointer-events-none z-50">Kontak</span>
-         </a>
+      {/* NAVBAR DESKTOP/MONITOR INTERAKTIF & REVISI ANIMASI */}
+      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-50 flex-col items-center gap-5 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111]">
+         <motion.a 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            href="#hero" 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white"
+         >
+            <Home size={18} className="text-black transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Hero</span>
+         </motion.a>
+
+         <motion.a 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            href="#about" 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white"
+         >
+            <BrainCircuit size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Profil</span>
+         </motion.a>
+
+         <motion.a 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            href="#timeline" 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#0055FF] transition-colors group relative bg-white"
+         >
+            <Compass size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Jejak</span>
+         </motion.a>
+
+         <motion.a 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            href="#sandbox" 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FFD700] transition-colors group relative bg-white"
+         >
+            <Box size={18} className="text-black transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Sandbox</span>
+         </motion.a>
+
+         <motion.button 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigate('/project')} 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-[#FF007F] transition-colors group relative bg-white"
+         >
+            <Briefcase size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Karya</span>
+         </motion.button>
+
+         <motion.a 
+            whileHover={{ scale: 1.15, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            href="#contact" 
+            className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-black hover:bg-black transition-colors group relative bg-white"
+         >
+            <Phone size={18} className="text-black group-hover:text-white transition-transform group-hover:scale-110" />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap brutal-box bg-white text-black border-2 border-black text-xs px-3 py-1.5 font-black uppercase pointer-events-none z-50 shadow-[2px_2px_0_0_#111111]">Kontak</span>
+         </motion.a>
       </nav>
 
       <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-visible">
