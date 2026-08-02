@@ -26,7 +26,6 @@ const WhatsappIcon = () => (
   </svg>
 );
 
-// Varian Animasi Khusus
 const staggerContainer = {
   hidden: { opacity: 0 },
   show: {
@@ -61,7 +60,7 @@ export default function ServicesView({ navigate }) {
       tag: "Paling Hemat",
       tagColor: "bg-[#FFD700] text-black border-2 border-black",
       badgeIcon: <Zap size={16} />,
-      desc: "Solusi cepat dan hemat untuk landing page, portofolio pribadi, atau situs promosi acara.",
+      desc: "Solusi cepat dan hemat untuk landing page, portofolio, web undangan pernikahan/acara, atau promosi.",
       features: [
         "Teknologi: HTML, CSS, JavaScript Vanilla",
         "Tampilan 100% Responsif (Mobile & Desktop)",
@@ -70,7 +69,7 @@ export default function ServicesView({ navigate }) {
         "Free Hosting Deployment (Vercel / Netlify)",
         "Fitur Custom Ringan Sesuai Permintaan"
       ],
-      recommendedFor: "Portofolio, Undangan Digital, Landing Page",
+      recommendedFor: "Web Undangan Digital, Portofolio, Landing Page",
       ctaColor: "bg-[#FFD700] text-black border-4 border-black hover:bg-black hover:text-white"
     },
     {
@@ -82,38 +81,38 @@ export default function ServicesView({ navigate }) {
       tagColor: "bg-[#FF007F] text-white border-2 border-black",
       badgeIcon: <Sparkles size={16} />,
       popular: true,
-      desc: "Pilihan terbaik untuk website dinamis dengan integrasi database cepat dan performa tinggi.",
+      desc: "Pilihan terbaik untuk website dinamis dengan integrasi database cepat tanpa biaya server bulanan.",
       features: [
-        "Teknologi: React JS / Next.js",
-        "Termasuk Integrasi Database (MongoDB)",
-        "Sistem CRUD / Manajemen Data Dinamis",
-        "UI/UX Interaktif dengan Animasi Smooth",
-        "Responsif Mobile-First & Performa Cepat",
+        "Teknologi: React JS / Next.js Framework",
+        "Termasuk Database Dinamis (MongoDB / Firebase)",
+        "Fitur CRUD / Input Data & Formulir Interaktif",
+        "UI/UX Elegan & Animasi Smooth",
+        "Responsif Mobile-First & Loading Super Cepat",
         "Free Hosting Setup & Konfigurasi DNS Domain",
         "Fitur Custom Sesuai Permintaan"
       ],
-      recommendedFor: "Dashboard, Web App, Blog Dinamis, Project Kuliah",
+      recommendedFor: "Web Undangan Fitur Lengkap, Dashboard, Web App, Blog Dinamis",
       ctaColor: "bg-[#FF007F] text-white border-4 border-black hover:bg-black"
     },
     {
       id: "ultimate",
-      name: "Paket Ultimate Fullstack",
-      price: "300K",
+      name: "Paket Ultimate Custom",
+      price: "300K+",
       period: "sekali bayar",
-      tag: "Komplit & Spesial",
+      tag: "Fitur Lengkap",
       tagColor: "bg-[#0055FF] text-white border-2 border-black",
       badgeIcon: <Cpu size={16} />,
-      desc: "Solusi fullstack profesional tanpa batas fitur untuk kebutuhan sistem kompleks dan bisnis.",
+      desc: "Solusi fullstack interaktif tingkat lanjut dengan arsitektur database terstruktur dan fitur custom fleksibel.",
       features: [
-        "Teknologi: Next.js / React + Node.js Backend",
-        "Database MongoDB / PostgreSQL Kompleks",
-        "Sistem Otentikasi & Role Pengguna",
-        "Desain Custom Eksklusif + Full Animasi",
-        "Integrasi API Pihak Ketiga",
-        "Optimasi SEO Maksimal & Loading Super Cepat",
+        "Teknologi: Next.js / React JS (Fullstack Serverless)",
+        "Database Kompleks (MongoDB / Supabase)",
+        "Sistem Otentikasi, Login & Hak Akses User",
+        "Desain Custom Eksklusif + Full Animasi Interaktif",
+        "Integrasi API Pihak Ketiga Sesuai Kebutuhan",
+        "Optimasi SEO Maksimal & Performa Tinggi",
         "Prioritas Support & Free Maintenance Awal"
       ],
-      recommendedFor: "E-Commerce, Web Panel Panel, Sistem Informasi",
+      recommendedFor: "Web Undangan Premium/VIP, E-Commerce, System Panel, Web App Kompleks",
       ctaColor: "bg-[#0055FF] text-white border-4 border-black hover:bg-black"
     }
   ];
@@ -127,16 +126,20 @@ export default function ServicesView({ navigate }) {
 
   const faqs = [
     {
+      q: "Apakah saya perlu membayar biaya server/hosting bulanan?",
+      a: "Sama sekali tidak! Semua website di-deploy ke serverless hosting gratis (seperti Vercel atau Netlify) sehingga Anda cukup bayar sekali untuk pengerjaan tanpa ada tagihan bulanan."
+    },
+    {
+      q: "Apakah bisa membuat website undangan pernikahan / acara?",
+      a: "Bisa banget! Saya melayani pembuatan Web Undangan Digital modern interaktif yang hemat, estetik, responsif di HP, dan dilengkapi fitur RSVP/buku tamu."
+    },
+    {
       q: "Apakah saya perlu membeli domain sendiri?",
-      a: "Ya, Anda bisa membeli nama domain pilihan Anda di registrar seperti Niagahoster, Domainesia, Namecheap, dll. Saya tidak menjual domain langsung, namun saya akan membantu proses penyambungan DNS ke website secara GRATIS!"
+      a: "Ya, Anda bisa membeli nama domain pilihan Anda di registrar seperti Niagahoster, Domainesia, Namecheap, dll. Saya akan membantu proses penyambungan DNS ke website secara GRATIS!"
     },
     {
       q: "Berapa lama proses pembuatan websitenya?",
       a: "Waktu pengerjaan berkisar antara 1 hingga 3 hari tergantung pada kompleksitas fitur dan antrean project yang sedang berjalan."
-    },
-    {
-      q: "Apakah saya bisa meminta fitur kustom sesuai keinginan?",
-      a: "Tentu saja! Semua paket mendukung kustomisasi. Anda cukup menjelaskan konsep atau memberikan rujukan website yang Anda sukai."
     },
     {
       q: "Bagaimana cara melakukan pemesanan?",
@@ -207,7 +210,7 @@ export default function ServicesView({ navigate }) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xs sm:text-sm md:text-xl font-bold max-w-3xl mx-auto text-gray-800 leading-relaxed mb-8 sm:mb-10 bg-white p-3 sm:p-4 border-2 sm:border-4 border-black shadow-[4px_4px_0_0_#FFD700] md:shadow-[6px_6px_0_0_#FFD700]"
           >
-            Dapatkan website interaktif, modern, dan responsif menggunakan teknologi mutakhir seperti HTML/CSS/JS, React JS, atau Next.js dengan dukungan database dan hosting gratis!
+            Melayani pembuatan website Portofolio, Undangan Digital, Landing Page, dan Web Dinamis interaktif menggunakan teknologi modern (React JS, Next.js, MongoDB) dengan hosting gratis tanpa biaya tahunan server.
           </motion.p>
 
           <motion.div 
@@ -240,7 +243,7 @@ export default function ServicesView({ navigate }) {
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="inline-block text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2 sm:mb-4 border-b-4 sm:border-b-8 border-black pb-1 sm:pb-2">Pilih Paket Layanan</h2>
             <p className="font-bold text-xs sm:text-sm md:text-lg bg-black text-white inline-block px-3 sm:px-4 py-1 mx-auto mt-2 sm:mt-4 border-2 border-black">
-              Harga bersahabat dengan kualitas arsitektur modern
+              Harga bersahabat, sekali bayar, kualitas arsitektur modern
             </p>
           </div>
 
@@ -413,8 +416,8 @@ export default function ServicesView({ navigate }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
               { icon: <Smartphone size={28} className="sm:w-8 sm:h-8" />, title: "100% Responsif Mobile", desc: "Tampilan otomatis menyesuaikan dengan sempurna di layar Smartphone, Tablet, hingga Layar Desktop lebar.", color: "bg-[#0055FF]", shadow: "shadow-[6px_6px_0_0_#0055FF] md:shadow-[8px_8px_0_0_#0055FF]" },
-              { icon: <Database size={28} className="sm:w-8 sm:h-8" />, title: "Database MongoDB", desc: "Khusus paket Pro dan Ultimate dilengkapi integrasi basis data modern untuk keamanan dan kecepatan akses.", color: "bg-[#FF007F]", shadow: "shadow-[6px_6px_0_0_#FF007F] md:shadow-[8px_8px_0_0_#FF007F]" },
-              { icon: <Zap size={28} className="sm:w-8 sm:h-8" />, title: "Free Instant Hosting", desc: "Website Anda langsung di-deploy secara publik menggunakan platform server modern seperti Vercel.", color: "bg-[#FFD700]", textCol: "text-black", shadow: "shadow-[6px_6px_0_0_#FFD700] md:shadow-[8px_8px_0_0_#FFD700]" }
+              { icon: <Database size={28} className="sm:w-8 sm:h-8" />, title: "Database & Dynamic", desc: "Paket Pro & Ultimate dilengkapi integrasi basis data modern tanpa biaya langganan bulanan server.", color: "bg-[#FF007F]", shadow: "shadow-[6px_6px_0_0_#FF007F] md:shadow-[8px_8px_0_0_#FF007F]" },
+              { icon: <Zap size={28} className="sm:w-8 sm:h-8" />, title: "Free Instant Hosting", desc: "Website Anda langsung di-deploy secara publik menggunakan platform serverless modern seperti Vercel.", color: "bg-[#FFD700]", textCol: "text-black", shadow: "shadow-[6px_6px_0_0_#FFD700] md:shadow-[8px_8px_0_0_#FFD700]" }
             ].map((feat, i) => (
               <motion.div 
                 key={i}
