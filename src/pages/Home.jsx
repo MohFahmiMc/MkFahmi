@@ -43,13 +43,17 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
   useEffect(() => {
     const isDesktop = window.innerWidth > 768;
     const initialBlocks = [
-      { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 20, y: 20, bg: 'bg-[#FFD700]', text: 'text-black', type: 'AI' },
-      { id: '2', title: 'UI/UX', icon: <Code2 size={18} />, desc: 'Frontend', x: 180, y: 60, bg: 'bg-[#0055FF]', text: 'text-white', type: 'FE' },
-      { id: '3', title: 'Scripts', icon: <Terminal size={18} />, desc: 'Python', x: 30, y: 150, bg: 'bg-[#FF007F]', text: 'text-white', type: 'PY' },
-      { id: '4', title: 'Backend', icon: <Server size={18} />, desc: 'Node.js', x: 180, y: 200, bg: 'bg-white', text: 'text-black', type: 'BE' },
+      { id: '1', title: 'Logic', icon: <Cpu size={18} />, desc: 'AI Prompt', x: 15, y: 15, bg: 'bg-[#FFD700]', text: 'text-black', type: 'AI' },
+      { id: '2', title: 'UI/UX', icon: <Code2 size={18} />, desc: 'Frontend', x: 130, y: 50, bg: 'bg-[#0055FF]', text: 'text-white', type: 'FE' },
+      { id: '3', title: 'Scripts', icon: <Terminal size={18} />, desc: 'Python', x: 20, y: 120, bg: 'bg-[#FF007F]', text: 'text-white', type: 'PY' },
+      { id: '4', title: 'Backend', icon: <Server size={18} />, desc: 'Node.js', x: 130, y: 160, bg: 'bg-white', text: 'text-black', type: 'BE' },
     ];
 
     if (isDesktop) {
+      initialBlocks[0].x = 20; initialBlocks[0].y = 20;
+      initialBlocks[1].x = 180; initialBlocks[1].y = 60;
+      initialBlocks[2].x = 30; initialBlocks[2].y = 150;
+      initialBlocks[3].x = 180; initialBlocks[3].y = 200;
       initialBlocks.push({ id: '5', title: 'Database', icon: <Database size={18} />, desc: 'MongoDB', x: 380, y: 40, bg: 'bg-black', text: 'text-white', type: 'DB' });
       initialBlocks.push({ id: '6', title: 'Cloud', icon: <Cloud size={18} />, desc: 'Hosting', x: 390, y: 180, bg: 'bg-gray-200', text: 'text-black', type: 'CLOUD' });
     }
@@ -170,16 +174,16 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 120, damping: 14 }}
             onClick={handleAchievementClick}
-            className="fixed top-20 md:top-4 left-4 z-[99999] bg-[#FFD700] border-2 border-black p-2 flex items-center gap-2 shadow-[4px_4px_0_0_#111111] max-w-[280px] md:max-w-xs cursor-pointer hover:bg-yellow-300 transition-colors"
+            className="fixed top-16 md:top-4 left-3 md:left-4 z-[99999] bg-[#FFD700] border-2 border-black p-1.5 md:p-2 flex items-center gap-1.5 md:gap-2 shadow-[3px_3px_0_0_#111111] md:shadow-[4px_4px_0_0_#111111] max-w-[230px] sm:max-w-[280px] md:max-w-xs cursor-pointer hover:bg-yellow-300 transition-colors"
           >
-            <div className="w-7 h-7 bg-black flex items-center justify-center rounded-full shrink-0 border border-white animate-spin-slow">
-              <Star size={14} className="text-[#FFD700]" />
+            <div className="w-6 h-6 md:w-7 md:h-7 bg-black flex items-center justify-center rounded-full shrink-0 border border-white animate-spin-slow">
+              <Star className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#FFD700]" />
             </div>
             <div className="overflow-hidden">
-              <h4 className="font-black text-[11px] md:text-xs uppercase text-black mb-0.5 tracking-tight flex items-center gap-1">
-                {achievement.title} <Zap size={10} className="fill-black" />
+              <h4 className="font-black text-[10px] md:text-xs uppercase text-black mb-0.5 tracking-tight flex items-center gap-1">
+                {achievement.title} <Zap className="w-2.5 h-2.5 md:w-2.5 md:h-2.5 fill-black" />
               </h4>
-              <p className="font-bold text-[9px] md:text-[10px] text-black leading-tight truncate">
+              <p className="font-bold text-[8px] md:text-[10px] text-black leading-tight truncate">
                 {achievement.desc}
               </p>
             </div>
@@ -187,25 +191,25 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
         )}
       </AnimatePresence>
 
-      <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-2 bg-[#FF007F] origin-left z-[9999]" />
+      <motion.div style={{ scaleX: scaleXMain }} className="fixed top-0 left-0 right-0 h-1.5 md:h-2 bg-[#FF007F] origin-left z-[9999]" />
 
       {/* NAVBAR MOBILE */}
-      <nav className="md:hidden fixed top-4 left-4 right-4 z-50">
-        <div className="brutal-box rounded-full bg-white px-5 py-3 flex items-center justify-between gap-4 shadow-[4px_4px_0_0_#111111]">
-          <div className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
-            <div className="w-7 h-7 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full active:scale-90 transition-transform">
-              <Terminal size={14} className="text-black" />
+      <nav className="md:hidden fixed top-3 left-3 right-3 z-50">
+        <div className="brutal-box rounded-full bg-white px-3.5 py-2 flex items-center justify-between gap-2 shadow-[3px_3px_0_0_#111111]">
+          <div className="flex items-center gap-1.5 shrink-0 cursor-pointer" onClick={handleNavSecretClick}>
+            <div className="w-6 h-6 brutal-box bg-[#FFD700] flex items-center justify-center rounded-full active:scale-90 transition-transform">
+              <Terminal className="w-3 h-3 text-black" />
             </div>
-            <span className="font-black tracking-widest text-base text-black">FAHMI</span>
+            <span className="font-black tracking-widest text-xs text-black">FAHMI</span>
           </div>
-          <div className="flex gap-3 text-xs font-bold uppercase tracking-widest text-black shrink-0">
-            <button onClick={() => navigate('/project')} className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase size={14}/> Karya</button>
-            <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone size={14}/> Kontak</a>
+          <div className="flex gap-2 text-[10px] font-bold uppercase tracking-wider text-black shrink-0">
+            <button onClick={() => navigate('/project')} className="flex items-center gap-1 hover:text-[#0055FF] transition-colors"><Briefcase className="w-3 h-3"/> Karya</button>
+            <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="flex items-center gap-1 hover:text-[#FF007F] transition-colors"><Phone className="w-3 h-3"/> Kontak</a>
           </div>
         </div>
       </nav>
 
-      {/* NAVBAR DESKTOP / MONITOR - POSISI TERKUNCI STABIL TANPA SHIFT */}
+      {/* NAVBAR DESKTOP / MONITOR */}
       <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-[9999] flex-col items-center gap-4 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111] pointer-events-auto transform-gpu select-none">
          <motion.button 
             type="button"
@@ -285,9 +289,10 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
          </motion.button>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-48 pb-20 flex flex-col items-stretch overflow-visible">
+      <main className="max-w-6xl mx-auto px-3.5 sm:px-6 md:px-12 pt-20 sm:pt-24 md:pt-48 pb-12 md:pb-20 flex flex-col items-stretch overflow-visible">
 
-        <section id="hero" className="min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 mb-20 md:mb-32 relative z-10">
+        {/* HERO */}
+        <section id="hero" className="min-h-[60vh] md:min-h-[75vh] flex flex-col-reverse md:flex-row items-center justify-between gap-6 md:gap-12 mb-12 md:mb-32 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -297,15 +302,15 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             <motion.div 
               whileTap={{ scale: 0.9, rotate: -2, backgroundColor: "#FFD700" }}
               whileHover={{ scale: 1.05 }}
-              className="inline-block px-4 py-2 mb-6 md:mb-8 bg-white cursor-pointer border-4 border-black shadow-[4px_4px_0_0_#111111] select-none"
+              className="inline-block px-3 py-1 mb-4 md:px-4 md:py-2 md:mb-8 bg-white cursor-pointer border-2 md:border-4 border-black shadow-[3px_3px_0_0_#111111] md:shadow-[4px_4px_0_0_#111111] select-none"
             >
-              <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
+              <span className="text-[9px] sm:text-[10px] md:text-xs font-black tracking-widest uppercase text-black">Autodidact Full-Stack Dev</span>
             </motion.div>
             
             <motion.h1 
               whileTap={{ scale: 0.95, x: 10, color: "#FF007F" }}
               onClick={handleDesktopNameClick}
-              className="text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.9] mb-4 md:mb-6 uppercase text-black drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300 md:hover:text-[#0055FF]"
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-[5rem] font-black tracking-tighter leading-[0.95] md:leading-[0.9] mb-3 md:mb-6 uppercase text-black drop-shadow-[2px_2px_0_#0055FF] md:drop-shadow-[4px_4px_0_#0055FF] cursor-pointer select-none transition-colors duration-300 md:hover:text-[#0055FF]"
             >
               Mohamad <br />
               Khoerul Fahmi.
@@ -313,7 +318,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
 
             <HeroLikeButton />
 
-            <div className="text-base md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-8 md:mb-10 mt-6 md:mt-8">
+            <div className="text-xs sm:text-sm md:text-lg text-black font-bold max-w-md mx-auto md:mx-0 mb-6 md:mb-10 mt-4 md:mt-8">
               <EditableText 
                 text={aboutText}
                 setText={setAboutText}
@@ -323,36 +328,37 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+            <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 justify-center md:justify-start">
               <motion.a 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="#about" 
                 onClick={(e) => scrollToSection(e, 'about')}
-                className="inline-flex items-center justify-center gap-3 brutal-btn px-6 md:px-8 py-3 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full sm:w-auto text-sm md:text-base"
+                className="inline-flex items-center justify-center gap-2 md:gap-3 brutal-btn px-5 py-2.5 md:px-8 md:py-4 font-black uppercase tracking-widest rounded-full cursor-pointer w-full sm:w-auto text-xs md:text-base"
               >
-                Kenali Lebih Lanjut <ArrowRight size={20} />
+                Kenali Lebih Lanjut <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </motion.a>
             </div>
           </motion.div>
 
-          <div className="flex-1 w-full flex justify-center md:justify-end">
+          <div className="flex-1 w-full flex justify-center md:justify-end scale-90 sm:scale-100 origin-center">
             <AbstractHeroArt />
           </div>
         </section>
 
         <Marquee />
 
-        <section id="about" className="mb-24 md:mb-40 mt-10 relative z-10">
+        {/* ABOUT */}
+        <section id="about" className="mb-16 md:mb-40 mt-6 md:mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="brutal-box p-8 md:p-12 bg-white text-black shadow-[8px_8px_0_0_#111111]"
+            className="brutal-box p-5 sm:p-8 md:p-12 bg-white text-black shadow-[4px_4px_0_0_#111111] md:shadow-[8px_8px_0_0_#111111]"
           >
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 text-[#0055FF]">Tentang Saya.</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4 md:mb-6 text-[#0055FF]">Tentang Saya.</h2>
             
-            <div className="text-sm md:text-base font-bold leading-relaxed opacity-90">
+            <div className="text-xs sm:text-sm md:text-base font-bold leading-relaxed opacity-90">
               <EditableText 
                 text={aboutMeText}
                 setText={setAboutMeText}
@@ -363,103 +369,104 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               />
             </div>
 
-            <div className="mt-12">
-              <h3 className="font-black text-xl md:text-2xl uppercase mb-6 text-black text-center md:text-left underline decoration-4 decoration-[#FFD700]">Tech Stack & Tools</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Code2 size={28} className="text-[#0055FF]" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">React / Vite</span>
+            <div className="mt-8 md:mt-12">
+              <h3 className="font-black text-base sm:text-xl md:text-2xl uppercase mb-4 md:mb-6 text-black text-center md:text-left underline decoration-2 md:decoration-4 decoration-[#FFD700]">Tech Stack & Tools</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4">
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Code2 className="w-5 h-5 md:w-7 md:h-7 text-[#0055FF]" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">React / Vite</span>
                 </div>
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Server size={28} className="text-[#FF007F]" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">Node.js</span>
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Server className="w-5 h-5 md:w-7 md:h-7 text-[#FF007F]" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Node.js</span>
                 </div>
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <FileJson size={28} className="text-[#FFD700]" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">Vanilla JS</span>
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <FileJson className="w-5 h-5 md:w-7 md:h-7 text-[#FFD700]" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Vanilla JS</span>
                 </div>
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Palette size={28} className="text-[#00BFFF]" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">Tailwind CSS</span>
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Palette className="w-5 h-5 md:w-7 md:h-7 text-[#00BFFF]" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Tailwind CSS</span>
                 </div>
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Globe size={28} className="text-[#E34F26]" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">HTML & CSS</span>
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Globe className="w-5 h-5 md:w-7 md:h-7 text-[#E34F26]" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">HTML & CSS</span>
                 </div>
-                <div className="brutal-box p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-3 hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Terminal size={28} className="text-black" />
-                  <span className="font-black text-xs md:text-sm uppercase text-center">Termux CLI</span>
+                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                  <Terminal className="w-5 h-5 md:w-7 md:h-7 text-black" />
+                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Termux CLI</span>
                 </div>
               </div>
             </div>
           </motion.div>
         </section>
 
-        <section id="timeline" ref={timelineRef} className="mb-24 md:mb-40 mt-10 relative z-10">
+        {/* TIMELINE */}
+        <section id="timeline" ref={timelineRef} className="mb-16 md:mb-40 mt-6 md:mt-10 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className="mb-16 md:mb-20 text-center md:text-left"
+            className="mb-10 md:mb-20 text-center md:text-left"
           >
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-4">Perjalanan <br/>& Senjata.</h2>
-            <p className="text-black font-bold max-w-sm mx-auto md:mx-0 border-l-4 border-black pl-4 text-sm md:text-base">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-black mb-2 md:mb-4">Perjalanan <br/>& Senjata.</h2>
+            <p className="text-black font-bold max-w-sm mx-auto md:mx-0 border-l-2 md:border-l-4 border-black pl-3 md:pl-4 text-xs md:text-base">
               Scroll untuk melihat proses perjalanan pendidikan hingga perangkat arsitektur saat ini.
             </p>
           </motion.div>
 
           <div className="relative">
-            <div className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-gray-200 border-x-4 border-black z-0"></div>
+            <div className="absolute left-[18px] sm:left-[24px] md:left-[40px] top-4 bottom-4 w-2.5 md:w-4 bg-gray-200 border-x-2 md:border-x-4 border-black z-0"></div>
             
             <motion.div 
               style={{ scaleY: timelineProgress }} 
-              className="absolute left-[28px] md:left-[40px] top-4 bottom-4 w-4 bg-[#FF007F] border-x-4 border-black origin-top z-0" 
+              className="absolute left-[18px] sm:left-[24px] md:left-[40px] top-4 bottom-4 w-2.5 md:w-4 bg-[#FF007F] border-x-2 md:border-x-4 border-black origin-top z-0" 
             />
 
-            <div className="flex flex-col gap-10 md:gap-16 relative z-10">
+            <div className="flex flex-col gap-6 sm:gap-8 md:gap-16 relative z-10">
               
-              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex items-center gap-6 md:gap-10">
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
-                  <GraduationCap size={32} className="text-black" />
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="flex items-center gap-3 sm:gap-4 md:gap-10">
+                <motion.div whileHover={{ rotate: 15 }} className="w-10 h-10 sm:w-12 sm:h-12 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FFD700] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-0.5 md:ml-2">
+                  <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-black" />
                 </motion.div>
-                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform">
-                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">Sekolah Dasar</h3>
-                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">MI Al-Falah Indramayu.</p>
+                <div className="brutal-box p-4 md:p-8 bg-white flex flex-col w-full hover:-translate-y-1 md:hover:-translate-y-2 transition-transform">
+                  <h3 className="font-black text-base sm:text-lg md:text-2xl uppercase mb-1 md:mb-2">Sekolah Dasar</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-bold text-black/70 uppercase">MI Al-Falah Indramayu.</p>
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex items-center gap-6 md:gap-10">
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
-                  <GraduationCap size={32} className="text-white" />
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex items-center gap-3 sm:gap-4 md:gap-10">
+                <motion.div whileHover={{ rotate: 15 }} className="w-10 h-10 sm:w-12 sm:h-12 md:w-20 md:h-20 shrink-0 brutal-box bg-[#0055FF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-0.5 md:ml-2">
+                  <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
                 </motion.div>
-                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform relative overflow-hidden">
-                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">SMP</h3>
-                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">SMPN Satap 1 Krangkeng.</p>
-                  <span className="absolute top-6 right-6 text-black bg-[#FFD700] px-3 py-1 text-xs font-black uppercase border-2 border-black rotate-3">Lulus</span>
+                <div className="brutal-box p-4 md:p-8 bg-white flex flex-col w-full hover:-translate-y-1 md:hover:-translate-y-2 transition-transform relative overflow-hidden">
+                  <h3 className="font-black text-base sm:text-lg md:text-2xl uppercase mb-1 md:mb-2">SMP</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-bold text-black/70 uppercase">SMPN Satap 1 Krangkeng.</p>
+                  <span className="absolute top-3 right-3 md:top-6 md:right-6 text-black bg-[#FFD700] px-2 py-0.5 md:px-3 md:py-1 text-[9px] md:text-xs font-black uppercase border-2 border-black rotate-3">Lulus</span>
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex items-center gap-6 md:gap-10">
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#00BFFF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
-                  <GraduationCap size={32} className="text-white" />
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex items-center gap-3 sm:gap-4 md:gap-10">
+                <motion.div whileHover={{ rotate: 15 }} className="w-10 h-10 sm:w-12 sm:h-12 md:w-20 md:h-20 shrink-0 brutal-box bg-[#00BFFF] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-0.5 md:ml-2">
+                  <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
                 </motion.div>
-                <div className="brutal-box p-6 md:p-8 bg-white flex flex-col w-full hover:-translate-y-2 transition-transform relative overflow-hidden">
-                  <h3 className="font-black text-xl md:text-2xl uppercase mb-2">SMK</h3>
-                  <p className="text-sm md:text-base font-bold text-black/70 uppercase">SMK NU Kaplongan.</p>
-                  <p className="text-xs md:text-sm font-black text-[#0055FF] uppercase mt-1">Jurusan: Teknik Komputer dan Jaringan (TKJ)</p>
+                <div className="brutal-box p-4 md:p-8 bg-white flex flex-col w-full hover:-translate-y-1 md:hover:-translate-y-2 transition-transform relative overflow-hidden">
+                  <h3 className="font-black text-base sm:text-lg md:text-2xl uppercase mb-1 md:mb-2">SMK</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-bold text-black/70 uppercase">SMK NU Kaplongan.</p>
+                  <p className="text-[10px] sm:text-xs md:text-sm font-black text-[#0055FF] uppercase mt-1">Jurusan: Teknik Komputer dan Jaringan (TKJ)</p>
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex items-center gap-6 md:gap-10">
-                <motion.div whileHover={{ rotate: 15 }} className="w-16 h-16 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-1 md:ml-2">
-                  <Smartphone size={32} className="text-white" />
+              <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex items-center gap-3 sm:gap-4 md:gap-10">
+                <motion.div whileHover={{ rotate: 15 }} className="w-10 h-10 sm:w-12 sm:h-12 md:w-20 md:h-20 shrink-0 brutal-box bg-[#FF007F] rounded-full flex items-center justify-center relative z-10 cursor-pointer ml-0.5 md:ml-2">
+                  <Smartphone className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
                 </motion.div>
-                <div className="brutal-box p-6 md:p-8 bg-white text-black flex flex-col w-full hover:-translate-y-2 transition-transform shadow-[6px_6px_0_0_#FF007F]">
-                  <h3 className="font-black text-xl md:text-2xl uppercase mb-4 text-[#FF007F]">Perangkat Utama</h3>
-                  <p className="text-sm md:text-lg font-black text-black uppercase leading-relaxed">
-                    <span className="bg-black text-white px-2 py-1 mr-2">Vivo Y12</span> <br className="md:hidden" />
+                <div className="brutal-box p-4 md:p-8 bg-white text-black flex flex-col w-full hover:-translate-y-1 md:hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#FF007F] md:shadow-[6px_6px_0_0_#FF007F]">
+                  <h3 className="font-black text-base sm:text-lg md:text-2xl uppercase mb-2 md:mb-4 text-[#FF007F]">Perangkat Utama</h3>
+                  <p className="text-xs sm:text-sm md:text-lg font-black text-black uppercase leading-relaxed">
+                    <span className="bg-black text-white px-1.5 py-0.5 md:px-2 md:py-1 mr-2 text-[10px] sm:text-xs md:text-base">Vivo Y12</span> <br className="md:hidden" />
                     RAM 3GB / 32GB ROM.<br/>
-                    <span className="text-xs md:text-sm font-bold text-gray-600 mt-4 block border-t-2 border-black/10 pt-4">
+                    <span className="text-[10px] sm:text-xs md:text-sm font-bold text-gray-600 mt-2 md:mt-4 block border-t-2 border-black/10 pt-2 md:pt-4">
                       (Mesin utama coding & kompilasi server)
                     </span>
                   </p>
@@ -470,31 +477,32 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           </div>
         </section>
 
+        {/* SANDBOX */}
         <motion.section 
           id="sandbox"
           initial={{ opacity: 0, scale: 0.95 }} 
           whileInView={{ opacity: 1, scale: 1 }} 
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-24 md:mb-40 relative z-10"
+          className="mb-16 md:mb-40 relative z-10"
         >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-10">
             <div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-black">Sandbox <br/>Evolusi.</h2>
             </div>
-            <p className="text-black font-bold max-w-sm text-left md:text-right mt-4 border-l-4 md:border-l-0 md:border-r-4 border-black pl-4 md:pr-4 text-sm md:text-base">
+            <p className="text-black font-bold max-w-sm text-left md:text-right mt-2 md:mt-4 border-l-2 md:border-l-0 md:border-r-4 border-black pl-3 md:pl-0 md:pr-4 text-xs md:text-base">
               Geser dan tabrakan 2 balok keahlian yang cocok untuk menciptakan <b>EVOLUSI</b> baru sampai tersisa 1 balok!
             </p>
           </div>
           
-          <div ref={sandboxRef} className="w-full h-[350px] md:h-[400px] brutal-box relative overflow-hidden bg-white touch-none">
+          <div ref={sandboxRef} className="w-full h-[280px] sm:h-[320px] md:h-[400px] brutal-box relative overflow-hidden bg-white touch-none">
             {fusionMessage && (
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute top-6 left-1/2 -translate-x-1/2 brutal-box bg-black text-[#FFD700] px-6 py-3 z-50 animate-bounce"
+                className="absolute top-3 md:top-6 left-1/2 -translate-x-1/2 brutal-box bg-black text-[#FFD700] px-3 py-1.5 md:px-6 md:py-3 z-50 animate-bounce"
               >
-                <span className="font-black text-sm md:text-base uppercase tracking-widest">{fusionMessage}</span>
+                <span className="font-black text-[10px] sm:text-xs md:text-base uppercase tracking-widest">{fusionMessage}</span>
               </motion.div>
             )}
 
@@ -508,27 +516,30 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
                 whileDrag={{ scale: 1.1, zIndex: 50, cursor: 'grabbing' }}
                 whileHover={{ scale: 1.05 }}
                 style={{ left: block.x, top: block.y }}
-                className={`absolute p-4 md:p-6 border-4 border-black shadow-[4px_4px_0_0_#111111] cursor-grab w-[130px] md:w-[150px] lg:w-[180px] select-none ${block.bg} ${block.text}`}
+                className={`absolute p-2.5 sm:p-3 md:p-6 border-2 md:border-4 border-black shadow-[2px_2px_0_0_#111111] md:shadow-[4px_4px_0_0_#111111] cursor-grab w-[110px] sm:w-[130px] md:w-[150px] lg:w-[180px] select-none ${block.bg} ${block.text}`}
               >
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 mb-2 md:mb-3 pointer-events-none">
-                  {block.icon}
-                  <h3 className="font-black text-[10px] md:text-xs lg:text-sm uppercase tracking-tight">{block.title}</h3>
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-3 mb-1 md:mb-3 pointer-events-none">
+                  <div className="shrink-0 w-4 h-4 md:w-5 md:h-5 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
+                    {block.icon}
+                  </div>
+                  <h3 className="font-black text-[9px] sm:text-[10px] md:text-xs lg:text-sm uppercase tracking-tight">{block.title}</h3>
                 </div>
-                <p className="text-[9px] md:text-[10px] lg:text-xs font-bold pointer-events-none uppercase tracking-wider opacity-90">{block.desc}</p>
+                <p className="text-[8px] sm:text-[9px] md:text-[10px] lg:text-xs font-bold pointer-events-none uppercase tracking-wider opacity-90">{block.desc}</p>
               </motion.div>
             ))}
           </div>
         </motion.section>
 
-        <section id="projects" className="mb-24 md:mb-40 relative z-10">
+        {/* PROJECTS */}
+        <section id="projects" className="mb-16 md:mb-40 relative z-10">
           <motion.h2 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-black tracking-tighter mb-12 md:mb-16 uppercase text-center text-black drop-shadow-[3px_3px_0_#FF007F]"
+            className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-8 md:mb-16 uppercase text-center text-black drop-shadow-[2px_2px_0_#FF007F] md:drop-shadow-[3px_3px_0_#FF007F]"
           >
             Live <br/> Architectures.
           </motion.h2>
 
-          <div className="flex flex-col gap-16 md:gap-24 mb-16">
+          <div className="flex flex-col gap-10 sm:gap-12 md:gap-24 mb-10 md:mb-16">
             {projectsData.slice(0, 3).map((project, index) => (
               <motion.div 
                 key={index}
@@ -536,22 +547,22 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6 }}
-                className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center group"
+                className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center group"
               >
                 <div className="w-full lg:w-1/3">
-                  <div className="flex flex-wrap gap-2 mb-6 md:mb-8">
+                  <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-8">
                     {project.tags.map((tag, i) => (
-                      <span key={i} className={`px-3 py-1 border-2 border-black font-black text-[10px] uppercase tracking-widest ${tag.color}`}>
+                      <span key={i} className={`px-2 py-0.5 md:px-3 md:py-1 border-2 border-black font-black text-[9px] md:text-[10px] uppercase tracking-widest ${tag.color}`}>
                         {tag.name}
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-black tracking-tight mb-4 md:mb-6 uppercase leading-none text-black group-hover:text-[#0055FF] transition-colors">{project.title}</h3>
-                  <p className="text-black font-bold text-sm md:text-base leading-relaxed mb-6 md:mb-8">{project.descShort}</p>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 md:mb-6 uppercase leading-none text-black group-hover:text-[#0055FF] transition-colors">{project.title}</h3>
+                  <p className="text-black font-bold text-xs sm:text-sm md:text-base leading-relaxed mb-4 md:mb-8">{project.descShort}</p>
                   
                   <button 
                     onClick={() => navigate(`/project/${project.id}`)}
-                    className="inline-flex px-6 md:px-8 py-3 md:py-4 brutal-btn rounded-full text-xs md:text-sm font-black uppercase tracking-widest w-full md:w-auto justify-center"
+                    className="inline-flex px-5 py-2.5 md:px-8 md:py-4 brutal-btn rounded-full text-xs md:text-sm font-black uppercase tracking-widest w-full md:w-auto justify-center"
                   >
                     Buka Halaman
                   </button>
@@ -559,19 +570,19 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
 
                 <motion.div 
                   whileHover={{ y: -5 }}
-                  className="w-full lg:w-2/3 h-[350px] md:h-[550px] brutal-box p-0 overflow-hidden bg-white"
+                  className="w-full lg:w-2/3 h-[260px] sm:h-[320px] md:h-[550px] brutal-box p-0 overflow-hidden bg-white"
                 >
-                  <div className="w-full h-10 md:h-12 bg-white border-b-4 border-black flex items-center px-4 md:px-6 gap-2 md:gap-3">
-                    <div className="w-3 h-3 rounded-full border-2 border-black bg-[#FF007F]"></div>
-                    <div className="w-3 h-3 rounded-full border-2 border-black bg-[#FFD700]"></div>
-                    <div className="w-3 h-3 rounded-full border-2 border-black bg-[#0055FF]"></div>
-                    <div className="ml-2 md:ml-4 text-[10px] md:text-xs font-black tracking-widest uppercase border-l-2 border-black pl-2 md:pl-4 text-black truncate">
+                  <div className="w-full h-8 md:h-12 bg-white border-b-2 md:border-b-4 border-black flex items-center px-3 md:px-6 gap-2 md:gap-3">
+                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border md:border-2 border-black bg-[#FF007F]"></div>
+                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border md:border-2 border-black bg-[#FFD700]"></div>
+                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border md:border-2 border-black bg-[#0055FF]"></div>
+                    <div className="ml-2 md:ml-4 text-[9px] md:text-xs font-black tracking-widest uppercase border-l-2 border-black pl-2 md:pl-4 text-black truncate">
                       {project.url.replace('https://', '')}
                     </div>
                   </div>
                   <iframe 
                     src={project.url} 
-                    className="w-full h-[calc(100%-2.5rem)] md:h-[calc(100%-3rem)] border-none bg-gray-50" 
+                    className="w-full h-[calc(100%-2rem)] md:h-[calc(100%-3rem)] border-none bg-gray-50" 
                     title={project.title}
                     loading="lazy"
                   />
@@ -583,36 +594,36 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           <div className="flex justify-center items-center">
             <button 
               onClick={() => navigate('/project')}
-              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-black border-4 border-black font-black uppercase text-sm md:text-base tracking-widest shadow-[6px_6px_0_0_#111111] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_0_#111111] transition-all rounded-xl"
+              className="inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-10 md:py-5 bg-white text-black border-2 md:border-4 border-black font-black uppercase text-xs md:text-base tracking-widest shadow-[4px_4px_0_0_#111111] md:shadow-[6px_6px_0_0_#111111] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_#111111] md:hover:shadow-[4px_4px_0_0_#111111] transition-all rounded-xl"
             >
-              Lihat Semua Project <ArrowRight size={20} />
+              Lihat Semua Project <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
             </button>
           </div>
         </section>
 
         <CommentSection />
 
-        {/* BANNER LAYANAN JASA BARU - ELEGAN & MENARIK (DI BAWAH COMMENT) */}
-        <section id="services-banner" className="my-20 md:my-28 relative z-10">
+        {/* BANNER LAYANAN JASA */}
+        <section id="services-banner" className="my-12 md:my-28 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="brutal-box p-8 md:p-12 bg-[#FFD700] text-black shadow-[10px_10px_0_0_#111111] relative overflow-hidden rounded-3xl"
+            className="brutal-box p-5 sm:p-8 md:p-12 bg-[#FFD700] text-black shadow-[6px_6px_0_0_#111111] md:shadow-[10px_10px_0_0_#111111] relative overflow-hidden rounded-2xl md:rounded-3xl"
           >
             <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
               <Wrench size={260} className="text-black" />
             </div>
 
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8">
               <div className="max-w-2xl text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-black text-white font-black text-xs uppercase tracking-widest rounded-full mb-4 shadow-[2px_2px_0_0_#ffffff]">
-                  <Sparkles size={14} className="text-[#FFD700]" /> Solusi Digital & Automasi
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-black text-white font-black text-[10px] md:text-xs uppercase tracking-widest rounded-full mb-3 md:mb-4 shadow-[2px_2px_0_0_#ffffff]">
+                  <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#FFD700]" /> Solusi Digital & Automasi
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4 leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tighter uppercase mb-2 md:mb-4 leading-tight">
                   Jasa Development & Automasi Bot Profesional.
                 </h2>
-                <p className="text-sm md:text-base font-bold opacity-90 leading-relaxed">
+                <p className="text-xs sm:text-sm md:text-base font-bold opacity-90 leading-relaxed">
                   Layanan pembuatan Bot Discord kustom, Website interaktif modern, Otomasi Server Termux, hingga Prompt Engineering AI terintegrasi.
                 </p>
               </div>
@@ -622,48 +633,49 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/service')}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-5 brutal-box bg-white text-black hover:bg-black hover:text-white font-black text-base md:text-lg uppercase tracking-widest rounded-2xl transition-colors shadow-[6px_6px_0_0_#111111]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3.5 md:px-10 md:py-5 brutal-box bg-white text-black hover:bg-black hover:text-white font-black text-xs sm:text-sm md:text-lg uppercase tracking-widest rounded-xl md:rounded-2xl transition-colors shadow-[4px_4px_0_0_#111111] md:shadow-[6px_6px_0_0_#111111]"
                 >
-                  <Wrench size={22} /> Halaman Layanan Jasa <ArrowRight size={22} />
+                  <Wrench className="w-4 h-4 md:w-5 md:h-5" /> Halaman Layanan Jasa <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                 </motion.button>
               </div>
             </div>
           </motion.div>
         </section>
 
-        <section id="contact" className="pt-16 md:pt-20 border-t-8 border-black text-center relative z-10 bg-white/80 backdrop-blur-sm p-4 rounded-[2rem]">
+        {/* KONTAK */}
+        <section id="contact" className="pt-10 md:pt-20 border-t-4 md:border-t-8 border-black text-center relative z-10 bg-white/80 backdrop-blur-sm p-4 rounded-[1.5rem] md:rounded-[2rem]">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-            <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 md:mb-8 uppercase text-black drop-shadow-[3px_3px_0_#FFD700]">Siap <br/>Membangun?</h2>
-            <p className="text-black font-bold text-sm md:text-lg max-w-lg mx-auto mb-10 md:mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-7xl font-black tracking-tighter mb-4 md:mb-8 uppercase text-black drop-shadow-[2px_2px_0_#FFD700] md:drop-shadow-[3px_3px_0_#FFD700]">Siap <br/>Membangun?</h2>
+            <p className="text-black font-bold text-xs sm:text-sm md:text-lg max-w-lg mx-auto mb-6 md:mb-16 px-2 md:px-4">
               Mulai dari setup bot moderasi hingga pembuatan portfolio web profesional.
             </p>
           </motion.div>
 
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16 md:mb-24 px-4">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 mb-10 md:mb-24 px-2 md:px-4">
             <motion.div 
               initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="flex flex-col gap-4 w-full md:w-auto"
+              className="flex flex-col gap-3 md:gap-4 w-full md:w-auto"
             >
               <motion.a 
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 href="https://jasa.mifahmi.my.id" target="_blank" rel="noreferrer"
-                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 brutal-btn rounded-full text-sm md:text-lg font-black uppercase tracking-widest"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3.5 md:py-5 brutal-btn rounded-full text-xs md:text-lg font-black uppercase tracking-widest"
               >
                 Order Jasa Sekarang
               </motion.a>
               <motion.button 
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/service')}
-                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FFD700] text-black rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3 md:py-4 brutal-box bg-[#FFD700] text-black rounded-full text-xs md:text-base font-black uppercase tracking-widest transition-colors"
               >
-                <Wrench size={20} /> Halaman Layanan
+                <Wrench className="w-4 h-4 md:w-5 md:h-5" /> Halaman Layanan
               </motion.button>
               <motion.a 
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 href="https://support.scarily.my.id" target="_blank" rel="noreferrer"
-                className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-4 brutal-box bg-[#FF007F] text-black hover:bg-[#111111] hover:text-white rounded-full text-sm md:text-base font-black uppercase tracking-widest transition-colors group"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3 md:py-4 brutal-box bg-[#FF007F] text-black hover:bg-[#111111] hover:text-white rounded-full text-xs md:text-base font-black uppercase tracking-widest transition-colors group"
               >
-                <Heart size={20} className="fill-black stroke-black group-hover:fill-white group-hover:stroke-white transition-colors" /> 
+                <Heart className="w-4 h-4 md:w-5 md:h-5 fill-black stroke-black group-hover:fill-white group-hover:stroke-white transition-colors" /> 
                 <span>Dukung / Donate</span>
               </motion.a>
             </motion.div>
@@ -672,37 +684,37 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
               initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="w-full md:w-auto flex justify-center"
             >
-              <a href="https://discord.com/users/1099980838722088991" target="_blank" rel="noreferrer" className="inline-block brutal-box p-2 bg-[#0055FF] hover:-translate-y-2 transition-transform">
-                <img src="https://discord-catwidget.koyeb.app/widget/1099980838722088991.png" alt="Discord Status Widget" className="w-full max-w-[280px] md:max-w-[320px] border-2 border-black bg-black" />
+              <a href="https://discord.com/users/1099980838722088991" target="_blank" rel="noreferrer" className="inline-block brutal-box p-1.5 md:p-2 bg-[#0055FF] hover:-translate-y-1 md:hover:-translate-y-2 transition-transform">
+                <img src="https://discord-catwidget.koyeb.app/widget/1099980838722088991.png" alt="Discord Status Widget" className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] border-2 border-black bg-black" />
               </a>
             </motion.div>
           </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="flex justify-center gap-4 md:gap-6 mb-12 flex-wrap"
+            className="flex justify-center gap-3 sm:gap-4 md:gap-6 mb-8 md:mb-12 flex-wrap"
           >
-            <motion.a whileHover={{ y: -5 }} href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
-              <Github size={24} />
+            <motion.a whileHover={{ y: -5 }} href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
+              <Github className="w-4 h-4 md:w-6 md:h-6" />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="https://instagram.com/mizephyr" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#E1306C] hover:text-white transition-colors">
-              <Instagram size={24} />
+            <motion.a whileHover={{ y: -5 }} href="https://instagram.com/mizephyr" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#E1306C] hover:text-white transition-colors">
+              <Instagram className="w-4 h-4 md:w-6 md:h-6" />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#5865F2] hover:text-white transition-colors">
+            <motion.a whileHover={{ y: -5 }} href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#5865F2] hover:text-white transition-colors">
               <DiscordIcon />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="https://tiktok.com/@mizephyrz" target="_blank" rel="noreferrer" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
+            <motion.a whileHover={{ y: -5 }} href="https://tiktok.com/@mizephyrz" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
               <TiktokIcon />
             </motion.a>
-            <motion.a whileHover={{ y: -5 }} href="mailto:contact@mifahmi.my.id" className="w-12 h-12 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#0055FF] hover:text-white transition-colors">
-              <Mail size={24} />
+            <motion.a whileHover={{ y: -5 }} href="mailto:contact@mifahmi.my.id" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#0055FF] hover:text-white transition-colors">
+              <Mail className="w-4 h-4 md:w-6 md:h-6" />
             </motion.a>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs font-black tracking-widest uppercase border-t-4 border-black pt-6 md:pt-8 text-black">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-[9px] md:text-xs font-black tracking-widest uppercase border-t-2 md:border-t-4 border-black pt-4 md:pt-8 text-black">
             <p>© 2026 M.K FAHMI.</p>
             <div className="flex items-center gap-1">
-              <MapPin size={14} />
+              <MapPin className="w-3 h-3 md:w-3.5 md:h-3.5" />
               <p>KRANGKENG, INDRAMAYU BASE</p>
             </div>
           </div>
