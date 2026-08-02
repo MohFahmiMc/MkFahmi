@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Code2, Server, Globe, Database, Zap, CheckCircle2, Mail, 
-  ArrowRight, ShieldCheck, Layers, Cpu, Star, Instagram, 
-  MessageSquare, ExternalLink, Home, HelpCircle, Check, 
-  Sparkles, Smartphone, Terminal, DollarSign, Clock, Layout, Plus,
-  PhoneCall
+  Globe, Database, Zap, CheckCircle2, Mail, 
+  ArrowRight, Cpu, Home, HelpCircle, 
+  Sparkles, Smartphone, Terminal, Plus
 } from 'lucide-react';
 
 const DiscordIcon = () => (
@@ -29,10 +27,7 @@ const WhatsappIcon = () => (
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } }
 };
 
 const fadeUpVariant = {
@@ -42,14 +37,11 @@ const fadeUpVariant = {
 
 const floatingAnimation = {
   y: ["-5%", "5%"],
-  transition: {
-    y: { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }
-  }
+  transition: { y: { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } }
 };
 
 export default function ServicesView({ navigate }) {
   const [activeFaq, setActiveFaq] = useState(null);
-
   const WA_NUMBER = "6283896234669";
 
   const pricingPlans = [
@@ -126,38 +118,22 @@ export default function ServicesView({ navigate }) {
   ];
 
   const faqs = [
-    {
-      q: "Apakah saya perlu membayar biaya server/hosting bulanan?",
-      a: "Sama sekali tidak! Semua website di-deploy ke serverless hosting gratis (seperti Vercel atau Netlify) sehingga Anda cukup bayar sekali untuk pengerjaan tanpa ada tagihan bulanan."
-    },
-    {
-      q: "Apakah bisa membuat website undangan pernikahan / acara?",
-      a: "Bisa banget! Saya melayani pembuatan Web Undangan Digital modern interaktif yang hemat, estetik, responsif di HP, dan dilengkapi fitur RSVP/buku tamu."
-    },
-    {
-      q: "Apakah saya perlu membeli domain sendiri?",
-      a: "Ya, Anda bisa membeli nama domain pilihan Anda di registrar seperti Niagahoster, Domainesia, Namecheap, dll. Saya akan membantu proses penyambungan DNS ke website secara GRATIS!"
-    },
-    {
-      q: "Berapa lama proses pembuatan websitenya?",
-      a: "Waktu pengerjaan berkisar antara 1 hingga 3 hari tergantung pada kompleksitas fitur dan antrean project yang sedang berjalan."
-    },
-    {
-      q: "Bagaimana cara melakukan pemesanan?",
-      a: "Anda cukup klik tombol order via WhatsApp (083896234669) atau kirim pesan langsung via Discord DM, Instagram, atau Email yang tertera di halaman ini."
-    }
+    { q: "Apakah saya perlu membayar biaya server/hosting bulanan?", a: "Sama sekali tidak! Semua website di-deploy ke serverless hosting gratis (seperti Vercel atau Netlify) sehingga Anda cukup bayar sekali untuk pengerjaan tanpa ada tagihan bulanan." },
+    { q: "Apakah bisa membuat website undangan pernikahan / acara?", a: "Bisa banget! Saya melayani pembuatan Web Undangan Digital modern interaktif yang hemat, estetik, responsif di HP, dan dilengkapi fitur RSVP/buku tamu." },
+    { q: "Apakah saya perlu membeli domain sendiri?", a: "Ya, Anda bisa membeli nama domain pilihan Anda di registrar seperti Niagahoster, Domainesia, Namecheap, dll. Saya akan membantu proses penyambungan DNS ke website secara GRATIS!" },
+    { q: "Berapa lama proses pembuatan websitenya?", a: "Waktu pengerjaan berkisar antara 1 hingga 3 hari tergantung pada kompleksitas fitur dan antrean project yang sedang berjalan." },
+    { q: "Bagaimana cara melakukan pemesanan?", a: "Anda cukup klik tombol order via WhatsApp (083896234669) atau kirim pesan langsung via Discord DM, Instagram, atau Email yang tertera di halaman ini." }
   ];
 
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] text-black selection:bg-[#FF007F] selection:text-white overflow-hidden">
       
-      {/* Dynamic Open Graph Embed untuk Halaman Services */}
+      {/* Dynamic Open Graph Embed via Helmet */}
       <Helmet>
         <title>Jasa Pembuatan Website & Developer | M.K Fahmi</title>
         <meta name="description" content="Jasa pembuatan website profesional, cepat, dan terjangkau oleh M.K Fahmi. Bebas konsultasi, tampilan 100% responsif mobile, modern, dan siap pakai." />
         <meta name="keywords" content="Jasa Pembuatan Website, Jasa Web Murah, M.K Fahmi, Web Developer Indonesia, React JS, Next.js, Website Portofolio, Web Dashboard" />
 
-        {/* Open Graph (Discord, WhatsApp, FB) */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="M.K Fahmi - Layanan Web Dev" />
         <meta property="og:title" content="Jasa Pembuatan Website & Developer | M.K Fahmi" />
@@ -168,7 +144,6 @@ export default function ServicesView({ navigate }) {
         <meta property="og:image:height" content="630" />
         <meta name="theme-color" content="#0055FF" />
 
-        {/* Twitter Embed */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Jasa Pembuatan Website & Developer | M.K Fahmi" />
         <meta name="twitter:description" content="Buat website impian Anda sekarang! Layanan pembuatan web interaktif, responsif, dan performa tinggi dengan harga terjangkau." />
@@ -335,14 +310,13 @@ export default function ServicesView({ navigate }) {
                     <span className="text-gray-800">{plan.recommendedFor}</span>
                   </div>
 
-                  {/* Tombol Order WhatsApp */}
                   <motion.a 
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.95 }}
                     href={`https://wa.me/${WA_NUMBER}?text=Halo%20M.K%20Fahmi,%20saya%20tertarik%20untuk%20pesan%20*${encodeURIComponent(plan.name)}*%20seharga%20*${plan.price}*.%20Bisa%20bantu%20jelaskan%20prosesnya?`}
                     target="_blank" 
                     rel="noreferrer"
-                    className={`w-full py-3 sm:py-4 font-black text-xs sm:text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[4px_4px_0_0_#000] md:shadow-[6px_6px_0_0_#000] transition-colors mb-2.5 bg-[#25D366] text-white border-3 sm:border-4 border-black hover:bg-black`}
+                    className="w-full py-3 sm:py-4 font-black text-xs sm:text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[4px_4px_0_0_#000] md:shadow-[6px_6px_0_0_#000] transition-colors mb-2.5 bg-[#25D366] text-white border-3 sm:border-4 border-black hover:bg-black"
                   >
                     <WhatsappIcon />
                     <span>Order via WhatsApp</span>
@@ -389,7 +363,7 @@ export default function ServicesView({ navigate }) {
                   Saya Tidak Menjual Domain
                 </p>
                 <p className="text-gray-800 text-[11px] sm:text-xs md:text-sm leading-relaxed">
-                  Beli domain Anda sendiri di Niagahoster, Domainesia, dsb. Saya akan bantu *setup* & hubungkan DNS ke web Anda <span className="bg-[#FF007F] text-white px-1">100% GRATIS!</span>
+                  Beli domain Anda sendiri di Niagahoster, Domainesia, dsb. Saya akan bantu setup & hubungkan DNS ke web Anda <span className="bg-[#FF007F] text-white px-1">100% GRATIS!</span>
                 </p>
               </motion.div>
             </div>
@@ -461,7 +435,7 @@ export default function ServicesView({ navigate }) {
           </div>
         </section>
 
-        {/* FAQ Section with Interactive Animations */}
+        {/* FAQ Section */}
         <section className="mb-16 sm:mb-24 md:mb-32">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="inline-block text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2 sm:mb-4 border-b-4 sm:border-b-8 border-black pb-1 sm:pb-2">Pertanyaan Umum</h2>
@@ -519,7 +493,6 @@ export default function ServicesView({ navigate }) {
             viewport={{ once: true }}
             className="p-6 sm:p-10 md:p-20 bg-[#FFD700] border-3 sm:border-4 border-black shadow-[8px_8px_0_0_#000000] md:shadow-[16px_16px_0_0_#000000] relative overflow-hidden"
           >
-            {/* Dekorasi Background */}
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#FF007F] rounded-full opacity-20 blur-2xl"></div>
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#0055FF] rounded-full opacity-20 blur-2xl"></div>
 
@@ -532,7 +505,6 @@ export default function ServicesView({ navigate }) {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mb-8 sm:mb-12 relative z-10">
-              {/* Tombol Utama WhatsApp */}
               <motion.a 
                 whileHover={{ scale: 1.08, y: -3 }}
                 whileTap={{ scale: 0.95 }}
