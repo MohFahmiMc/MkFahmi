@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  CheckCircle2, ArrowRight, Sparkles, Heart, 
-  Music, MapPin, CalendarHeart, Image as ImageIcon, 
-  Clock, ShieldCheck, HelpCircle, Plus, ChevronLeft,
-  MessageCircle, Star
+  Code2, Server, Globe, Database, Zap, CheckCircle2, Mail, 
+  ArrowRight, ShieldCheck, Layers, Cpu, Star, Instagram, 
+  MessageSquare, ExternalLink, Home, HelpCircle, Check, 
+  Sparkles, Smartphone, Terminal, DollarSign, Clock, Layout, Plus
 } from 'lucide-react';
 
-// Animasi Khusus
+const DiscordIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+  </svg>
+);
+
+const TiktokIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74a2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.82.11V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.02z"/>
+  </svg>
+);
+
+// Varian Animasi Khusus
 const staggerContainer = {
   hidden: { opacity: 0 },
   show: {
@@ -17,327 +29,443 @@ const staggerContainer = {
 };
 
 const fadeUpVariant = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } }
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
 };
 
-export default function DigitalInvitationService({ navigate }) {
-  const [activeFaq, setActiveFaq] = useState(null);
+const floatingAnimation = {
+  y: ["-5%", "5%"],
+  transition: {
+    y: { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }
+  }
+};
 
-  // Nomor WA Anda (Format Internasional tanpa +)
-  const waNumber = "6283896234669";
-  
-  // Fungsi pembuat link WA otomatis
-  const getWaLink = (paket, harga) => {
-    const text = `Halo Kak Fahmi, saya tertarik ingin membuat Undangan Digital untuk *${paket}* (Harga ${harga}). Boleh minta info lebih lanjut?`;
-    return `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
-  };
+export default function ServicesView({ navigate }) {
+  const [activeFaq, setActiveFaq] = useState(null);
 
   const pricingPlans = [
     {
-      id: "hemat",
-      name: "Paket Hemat",
-      price: "20",
-      tag: "Paling Murah",
-      tagColor: "bg-gray-100 text-gray-600",
-      desc: "Solusi cepat dan hemat untuk undangan simple yang tetap terlihat elegan dan modern.",
+      id: "starter",
+      name: "Paket Starter",
+      price: "50K",
+      period: "sekali bayar",
+      tag: "Paling Hemat",
+      tagColor: "bg-[#FFD700] text-black border-2 border-black",
+      badgeIcon: <Zap size={16} />,
+      desc: "Solusi cepat dan hemat untuk landing page, portofolio pribadi, atau situs promosi acara.",
       features: [
-        "Desain Tema Basic",
-        "Detail Acara & Mempelai",
-        "Navigasi Lokasi (Google Maps)",
-        "Galeri Maksimal 3 Foto",
-        "Revisi 1x Minor",
-        "Pengerjaan 2-3 Hari"
+        "Teknologi: HTML, CSS, JavaScript Vanilla",
+        "Tampilan 100% Responsif (Mobile & Desktop)",
+        "Desain Interaktif / Neobrutalism Modern",
+        "Dukungan Custom Domain milik Anda",
+        "Free Hosting Deployment (Vercel / Netlify)",
+        "Fitur Custom Ringan Sesuai Permintaan"
       ],
-      color: "from-gray-50 to-gray-100",
-      btnColor: "bg-gray-800 text-white hover:bg-gray-900 hover:shadow-lg hover:shadow-gray-900/20"
+      recommendedFor: "Portofolio, Undangan Digital, Landing Page",
+      ctaColor: "bg-[#FFD700] text-black border-4 border-black hover:bg-black hover:text-white"
     },
     {
-      id: "populer",
-      name: "Paket Populer",
-      price: "35",
+      id: "pro",
+      name: "Paket Pro Dynamic",
+      price: "100K",
+      period: "sekali bayar",
+      tag: "Paling Populer",
+      tagColor: "bg-[#FF007F] text-white border-2 border-black",
+      badgeIcon: <Sparkles size={16} />,
       popular: true,
-      tag: "Rekomendasi",
-      tagColor: "bg-rose-100 text-rose-600",
-      desc: "Pilihan favorit dengan fitur lengkap. Cocok untuk memukau para tamu undangan Anda.",
+      desc: "Pilihan terbaik untuk website dinamis dengan integrasi database cepat dan performa tinggi.",
       features: [
-        "Desain Tema Premium (Bebas Pilih)",
-        "Detail Acara, Mempelai & Maps",
-        "Buku Tamu & RSVP via WhatsApp",
-        "Galeri Maksimal 10 Foto",
-        "Backsound Musik Pilihan",
-        "Hitung Mundur (Countdown)",
-        "Revisi 3x Minor",
-        "Pengerjaan 1-2 Hari"
+        "Teknologi: React JS / Next.js",
+        "Termasuk Integrasi Database (MongoDB)",
+        "Sistem CRUD / Manajemen Data Dinamis",
+        "UI/UX Interaktif dengan Animasi Smooth",
+        "Responsif Mobile-First & Performa Cepat",
+        "Free Hosting Setup & Konfigurasi DNS Domain",
+        "Fitur Custom Sesuai Permintaan"
       ],
-      color: "from-rose-50 to-pink-50",
-      btnColor: "bg-gradient-to-r from-rose-500 to-pink-500 text-white hover:shadow-lg hover:shadow-rose-500/30"
+      recommendedFor: "Dashboard, Web App, Blog Dinamis, Project Kuliah",
+      ctaColor: "bg-[#FF007F] text-white border-4 border-black hover:bg-black"
     },
     {
-      id: "eksklusif",
-      name: "Paket Eksklusif",
-      price: "50",
-      tag: "Paling Lengkap",
-      tagColor: "bg-indigo-100 text-indigo-600",
-      desc: "Paket dengan fitur maksimal dan prioritas pengerjaan untuk hari spesial Anda.",
+      id: "ultimate",
+      name: "Paket Ultimate Fullstack",
+      price: "300K",
+      period: "sekali bayar",
+      tag: "Komplit & Spesial",
+      tagColor: "bg-[#0055FF] text-white border-2 border-black",
+      badgeIcon: <Cpu size={16} />,
+      desc: "Solusi fullstack profesional tanpa batas fitur untuk kebutuhan sistem kompleks dan bisnis.",
       features: [
-        "Tema Custom Eksklusif",
-        "Detail Acara & Navigasi Interaktif",
-        "RSVP Dinamis & Ucapan di Website",
-        "Galeri Foto Unlimited (Bebas)",
-        "Backsound Musik & Video Autoplay",
-        "Filter Instagram / QR Code",
-        "Revisi Sepuasnya (Unlimited)",
-        "Prioritas Pengerjaan (24 Jam)"
+        "Teknologi: Next.js / React + Node.js Backend",
+        "Database MongoDB / PostgreSQL Kompleks",
+        "Sistem Otentikasi & Role Pengguna",
+        "Desain Custom Eksklusif + Full Animasi",
+        "Integrasi API Pihak Ketiga",
+        "Optimasi SEO Maksimal & Loading Super Cepat",
+        "Prioritas Support & Free Maintenance Awal"
       ],
-      color: "from-indigo-50 to-purple-50",
-      btnColor: "bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:shadow-lg hover:shadow-indigo-500/30"
+      recommendedFor: "E-Commerce, Web Panel Panel, Sistem Informasi",
+      ctaColor: "bg-[#0055FF] text-white border-4 border-black hover:bg-black"
+    }
+  ];
+
+  const domainEstimates = [
+    { name: ".my.id", price: "± Rp 15.000 / thn", popular: true, desc: "Identitas Indonesia, Murah & Cepat Diproses" },
+    { name: ".com", price: "± Rp 160.000 / thn", popular: false, desc: "Standar Global, Profesional & Terpercaya" },
+    { name: ".xyz", price: "± Rp 30.000 / thn", popular: false, desc: "Unik, Modern & Cocok Untuk Web Dev/Teknologi" },
+    { name: ".site / .tech", price: "± Rp 25.000 / thn", popular: false, desc: "Alternatif Developer & Project Khusus" }
+  ];
+
+  const testimonials = [
+    {
+      name: "Rian Developer",
+      role: "Pengguna Discord Bot",
+      text: "Pesan website paket 100k dapet Next.js + MongoDB. Tampilannya keren brutalist, proses cepat dan dibantu hubungin domain .my.id milik saya!",
+      rating: 5,
+      avatarBg: "bg-[#FFD700]"
+    },
+    {
+      name: "Aditya K.",
+      role: "Pelajar / Portofolio",
+      text: "Cuma 50k tapi dapet landing page portofolio yang responsif banget dan keren di HP. Recomended banget buat yang budget terjangkau!",
+      rating: 5,
+      avatarBg: "bg-[#FF007F]"
+    },
+    {
+      name: "Bagas Pratama",
+      role: "Pemilik Komunitas",
+      text: "Sewa jasa paket 300k buat bikin dashboard Discord bot terintegrasi database. Hasilnya rapi, full animasi, dan diajari cara pakainya.",
+      rating: 5,
+      avatarBg: "bg-[#0055FF]"
     }
   ];
 
   const faqs = [
     {
-      q: "Apakah saya perlu menyiapkan domain sendiri?",
-      a: "Tidak perlu! Semua paket sudah termasuk sub-domain gratis (contoh: nama-kamu.mifahmi.my.id) dan hosting selamanya untuk undangan Anda."
+      q: "Apakah saya perlu membeli domain sendiri?",
+      a: "Ya, Anda bisa membeli nama domain pilihan Anda di registrar seperti Niagahoster, Domainesia, Namecheap, dll. Saya tidak menjual domain langsung, namun saya akan membantu proses penyambungan DNS ke website secara GRATIS!"
     },
     {
-      q: "Bagaimana cara mengirimkan data dan foto?",
-      a: "Setelah Anda memilih paket dan menghubungi via WhatsApp, saya akan mengirimkan formulir pengisian data mempelai, jadwal acara, dan link untuk upload foto."
+      q: "Berapa lama proses pembuatan websitenya?",
+      a: "Waktu pengerjaan berkisar antara 1 hingga 3 hari tergantung pada kompleksitas fitur dan antrean project yang sedang berjalan."
     },
     {
-      q: "Apakah bisa request lagu backsound?",
-      a: "Tentu saja! Untuk paket Populer dan Eksklusif, Anda bisa bebas memilih lagu apa saja (dari YouTube/Spotify) untuk dijadikan musik latar undangan digital Anda."
+      q: "Apakah saya bisa meminta fitur kustom sesuai keinginan?",
+      a: "Tentu saja! Semua paket mendukung kustomisasi. Anda cukup menjelaskan konsep atau memberikan rujukan website yang Anda sukai."
     },
     {
-      q: "Jika acaranya mundur/berubah tanggal, apakah bisa direvisi?",
-      a: "Bisa, pergantian tanggal, waktu, atau lokasi (reschedule) akan dibantu ubah secara GRATIS tanpa memotong jatah kuota revisi Anda."
+      q: "Bagaimana cara melakukan pemesanan?",
+      a: "Anda cukup klik tombol order atau kirim pesan langsung via Discord DM, Instagram, atau Email yang tertera di bagian bawah halaman ini."
     }
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-rose-200 selection:text-rose-900 overflow-hidden">
+    <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] text-black selection:bg-[#FF007F] selection:text-white overflow-hidden">
       
-      {/* Background Ornamen Lembut */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-rose-200/40 blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-200/40 blur-[100px] pointer-events-none"></div>
-
-      {/* Top Bar Navigation - Glassmorphism */}
+      {/* Top Bar Navigation - Peningkatan Kontras */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className="fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto"
       >
-        <div className="bg-white/70 backdrop-blur-md border border-white/50 rounded-full px-4 py-3 flex items-center justify-between shadow-sm">
+        <div className="bg-white border-4 border-black px-5 py-3 flex items-center justify-between shadow-[6px_6px_0_0_#000000]">
           <motion.button 
-            whileHover={{ x: -2 }}
+            whileHover={{ scale: 1.05, x: 2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate ? navigate('/') : window.location.href = '/'}
-            className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-rose-500 transition-colors"
+            className="flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-wider text-black hover:text-[#0055FF] transition-colors"
           >
-            <div className="p-1.5 bg-slate-100 rounded-full text-slate-600">
-              <ChevronLeft size={16} />
+            <div className="p-1 bg-black text-white border-2 border-black">
+              <Home size={16} />
             </div>
-            <span>Kembali</span>
+            <span>Kembali ke Beranda</span>
           </motion.button>
           
-          <div className="flex items-center gap-2 pr-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="font-semibold text-xs text-slate-600">
-              Open Order
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-[#FF007F] border-2 border-black animate-pulse"></span>
+            <span className="font-black text-[10px] md:text-xs uppercase tracking-widest bg-[#FFD700] px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
+              Layanan Web
             </span>
           </div>
         </div>
       </motion.nav>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-8 pt-32 md:pt-40 pb-20 relative z-10">
+      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-40 pb-20">
 
         {/* Hero Section */}
-        <section className="mb-24 md:mb-32 text-center flex flex-col items-center">
+        <section className="mb-20 md:mb-32 text-center relative">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-rose-100 shadow-sm text-rose-500 font-semibold text-xs md:text-sm mb-8"
+            animate={floatingAnimation}
+            className="inline-flex items-center gap-2 px-5 py-2 bg-[#FFD700] border-4 border-black font-black text-xs md:text-sm uppercase tracking-widest mb-8 shadow-[6px_6px_0_0_#000000]"
           >
-            <Heart size={16} className="animate-pulse" />
-            <span>Spesialis Undangan Digital Modern</span>
+            <Sparkles size={18} className="text-black" />
+            <span>Jasa Pembuatan Website Profesional & Terjangkau</span>
           </motion.div>
 
           <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, type: "spring" }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6 leading-tight max-w-4xl"
+            transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-8 leading-none"
           >
-            Sebarkan Momen Bahagia dengan <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-indigo-500">
-              Cara yang Lebih Elegan
-            </span>
+            Wujudkan Web <br/>
+            <span className="inline-block bg-[#0055FF] text-white px-4 py-2 mt-2 border-4 border-black shadow-[8px_8px_0_0_#FF007F] -rotate-2 hover:rotate-0 transition-transform cursor-default">
+              Impian Anda
+            </span> 
+            <br className="md:hidden" /> Tanpa Mahal.
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10"
+            className="text-sm md:text-xl font-bold max-w-3xl mx-auto text-gray-800 leading-relaxed mb-10 bg-white p-4 border-4 border-black shadow-[6px_6px_0_0_#FFD700]"
           >
-            Buat undangan digital impianmu dengan desain kekinian, responsif di HP, hemat biaya, dan ramah lingkungan. Mulai dari <strong>20 Ribu</strong> saja!
+            Dapatkan website interaktif, modern, dan responsif menggunakan teknologi mutakhir seperti HTML/CSS/JS, React JS, atau Next.js dengan dukungan database dan hosting gratis!
           </motion.p>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-4"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+            className="flex flex-wrap items-center justify-center gap-3 font-black text-xs md:text-sm uppercase"
           >
-            <a 
-              href="#pricing"
-              className="px-8 py-3.5 bg-slate-900 text-white rounded-full font-semibold hover:bg-slate-800 transition-all hover:shadow-lg hover:shadow-slate-900/20"
-            >
-              Lihat Pilihan Harga
-            </a>
-            <a 
-              href={getWaLink("Konsultasi Custom", "Tanya-tanya")}
-              target="_blank"
-              rel="noreferrer"
-              className="px-8 py-3.5 bg-white text-slate-700 rounded-full border border-slate-200 font-semibold flex items-center gap-2 hover:bg-slate-50 transition-all shadow-sm"
-            >
-              <MessageCircle size={18} className="text-green-500" />
-              Tanya via WhatsApp
-            </a>
-          </motion.div>
-        </section>
-
-        {/* Features Section */}
-        <section className="mb-24 md:mb-32">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">Mengapa Memilih Kami?</h2>
-            <p className="text-slate-500">Fitur lengkap untuk melengkapi hari istimewa Anda.</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { icon: <CalendarHeart size={28} />, title: "Desain Elegan", desc: "Tampilan modern & tidak kaku" },
-              { icon: <MapPin size={28} />, title: "Navigasi Akurat", desc: "Terhubung Google Maps" },
-              { icon: <Music size={28} />, title: "Latar Musik", desc: "Bebas pilih lagu favorit" },
-              { icon: <Clock size={28} />, title: "Proses Cepat", desc: "Jadi dalam 1-2 hari kerja" }
-            ].map((feat, i) => (
-              <motion.div 
+              { text: "HTML & CSS", color: "bg-[#0055FF] text-white" },
+              { text: "JavaScript Vanilla", color: "bg-[#FFD700] text-black" },
+              { text: "React JS", color: "bg-black text-white" },
+              { text: "Next.js", color: "bg-[#FF007F] text-white" },
+              { text: "MongoDB", color: "bg-emerald-400 text-black" }
+            ].map((tech, i) => (
+              <motion.span 
                 key={i}
-                whileHover={{ y: -5 }}
-                className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center"
+                variants={fadeUpVariant}
+                whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 3 : -3 }}
+                className={`px-4 py-2 border-4 border-black shadow-[4px_4px_0_0_#000] cursor-pointer ${tech.color}`}
               >
-                <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mb-4">
-                  {feat.icon}
-                </div>
-                <h3 className="font-semibold text-slate-800 mb-1">{feat.title}</h3>
-                <p className="text-sm text-slate-500">{feat.desc}</p>
-              </motion.div>
+                {tech.text}
+              </motion.span>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         {/* Pricing Cards Section */}
         <section id="pricing" className="mb-24 md:mb-32">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Pilihan Paket Harga</h2>
-            <p className="text-slate-500">Pilih paket yang paling sesuai dengan kebutuhan Anda. Murah dan berkualitas.</p>
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Pilih Paket Layanan</h2>
+            <p className="font-bold text-sm md:text-lg bg-black text-white inline-block px-4 py-1 mx-auto mt-4 border-2 border-black">
+              Harga bersahabat dengan kualitas arsitektur modern
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={plan.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -8 }}
-                className={`p-1 relative bg-white rounded-3xl transition-all ${
+                whileHover={{ y: -10, scale: 1.02 }}
+                className={`p-6 md:p-8 flex flex-col justify-between bg-white border-4 border-black relative transition-shadow duration-300 ${
                   plan.popular 
-                  ? 'shadow-xl shadow-rose-500/10 border-0 bg-gradient-to-b from-rose-400 to-pink-500' 
-                  : 'shadow-sm border border-slate-200'
+                  ? 'shadow-[12px_12px_0_0_#FF007F]' 
+                  : 'shadow-[8px_8px_0_0_#000000] hover:shadow-[12px_12px_0_0_#000000]'
                 }`}
               >
-                <div className={`h-full bg-white rounded-[22px] p-6 md:p-8 flex flex-col justify-between`}>
-                  
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold text-xs uppercase tracking-wide px-4 py-1.5 rounded-full flex items-center gap-1 shadow-lg shadow-rose-500/30">
-                      <Star size={14} fill="currentColor" /> Paling Laris
-                    </div>
-                  )}
+                {plan.popular && (
+                  <motion.div 
+                    animate={floatingAnimation}
+                    className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#FF007F] text-white font-black text-xs md:text-sm uppercase tracking-widest px-6 py-2 border-4 border-black shadow-[4px_4px_0_0_#000] flex items-center gap-2 z-10 w-max"
+                  >
+                    <Sparkles size={16} /> REKOMENDASI UTAMA
+                  </motion.div>
+                )}
 
-                  <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-md ${plan.tagColor}`}>
-                        {plan.tag}
-                      </span>
-                    </div>
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-6 pt-2">
+                    <span className={`px-3 py-1 font-black text-[10px] uppercase tracking-wider flex items-center gap-1 ${plan.tagColor}`}>
+                      {plan.badgeIcon} {plan.tag}
+                    </span>
+                    <span className="text-xs font-black bg-gray-200 px-2 py-1 border-2 border-black uppercase">{plan.period}</span>
+                  </div>
 
-                    <h3 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
-                    <p className="text-sm text-slate-500 min-h-[40px] mb-6">{plan.desc}</p>
+                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-3">{plan.name}</h3>
+                  <p className="text-sm font-bold text-gray-700 min-h-[48px] mb-6">{plan.desc}</p>
 
-                    <div className="flex items-baseline gap-1 mb-8">
-                      <span className="text-slate-500 font-medium">Rp</span>
-                      <span className="text-4xl font-extrabold text-slate-900">{plan.price}</span>
-                      <span className="text-slate-500 font-medium">.000</span>
-                    </div>
-
-                    <div className="space-y-3 mb-8">
-                      <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4">Termasuk Layanan:</p>
-                      {plan.features.map((feat, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-3">
-                          <div className="mt-0.5">
-                            <CheckCircle2 size={18} className={plan.popular ? "text-rose-500" : "text-slate-400"} />
-                          </div>
-                          <span className="text-sm text-slate-600">{feat}</span>
-                        </div>
-                      ))}
+                  <div className="mb-6 p-4 bg-[#f4f4f0] border-4 border-black relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-black opacity-5 rounded-bl-full group-hover:scale-150 transition-transform"></div>
+                    <span className="text-xs font-black uppercase block text-gray-600 mb-1">Mulai Dari</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl md:text-5xl font-black tracking-tight text-black">{plan.price}</span>
+                      <span className="text-sm font-black uppercase text-gray-800">Rupiah</span>
                     </div>
                   </div>
 
-                  <a 
-                    href={getWaLink(plan.name, `Rp ${plan.price}.000`)}
+                  <div className="space-y-4 mb-8">
+                    <span className="text-xs font-black uppercase block bg-black text-white px-2 py-1 w-max mb-4">Fitur Yang Didapat:</span>
+                    <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
+                      {plan.features.map((feat, fIdx) => (
+                        <motion.div variants={fadeUpVariant} key={fIdx} className="flex items-start gap-3 text-sm font-bold mb-3">
+                          <CheckCircle2 size={18} className="text-[#0055FF] shrink-0 mt-0.5 bg-white rounded-full" />
+                          <span className="text-gray-900">{feat}</span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-6 p-4 bg-yellow-100 border-4 border-black text-xs font-bold shadow-[4px_4px_0_0_#000]">
+                    <span className="font-black text-black block mb-1 uppercase underline">Cocok Untuk:</span>
+                    <span className="text-gray-800">{plan.recommendedFor}</span>
+                  </div>
+
+                  <motion.a 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    href="https://discord.com/users/1099980838722088991" 
                     target="_blank" 
                     rel="noreferrer"
-                    className={`w-full py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${plan.btnColor}`}
+                    className={`w-full py-4 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[6px_6px_0_0_#000] transition-colors ${plan.ctaColor}`}
                   >
-                    <span>Pesan Sekarang</span>
+                    <span>Pesan Paket Ini</span>
                     <ArrowRight size={18} />
-                  </a>
+                  </motion.a>
                 </div>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="mb-24">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">Pertanyaan Umum</h2>
+        {/* Section Domain Reference */}
+        <section className="mb-24 md:mb-32">
+          <motion.div 
+            initial={{ opacity: 0, rotate: -1 }}
+            whileInView={{ opacity: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            className="p-8 md:p-12 bg-[#FFD700] border-4 border-black text-black shadow-[12px_12px_0_0_#000000]"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white font-black text-xs uppercase tracking-wider mb-4 border-2 border-white shadow-[4px_4px_0_0_#0055FF]">
+                  <Globe size={16} /> Informasi Kustom Domain
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight bg-white p-2 border-4 border-black inline-block">Estimasi Harga Domain</h2>
+              </div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="p-5 bg-white border-4 border-black text-xs font-bold max-w-md shadow-[6px_6px_0_0_#FF007F]"
+              >
+                <p className="font-black mb-2 flex items-center gap-2 text-sm">
+                  <span className="p-1 bg-[#0055FF] text-white"><HelpCircle size={16} /></span> 
+                  Saya Tidak Menjual Domain
+                </p>
+                <p className="text-gray-800 text-xs md:text-sm leading-relaxed">
+                  Beli domain Anda sendiri di Niagahoster, Domainesia, dsb. Saya akan bantu *setup* & hubungkan DNS ke web Anda <span className="bg-[#FF007F] text-white px-1">100% GRATIS!</span>
+                </p>
+              </motion.div>
+            </div>
+
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {domainEstimates.map((dom, dIdx) => (
+                <motion.div 
+                  variants={fadeUpVariant}
+                  whileHover={{ y: -5, scale: 1.05 }}
+                  key={dIdx} 
+                  className="p-6 bg-white border-4 border-black flex flex-col justify-between shadow-[6px_6px_0_0_#000] relative overflow-hidden"
+                >
+                  <div className="absolute -right-4 -top-4 w-16 h-16 bg-[#f4f4f0] rounded-full z-0"></div>
+                  <div className="z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-black text-2xl text-black bg-[#FFD700] px-2 border-2 border-black">{dom.name}</span>
+                    </div>
+                    <p className="text-xs font-bold text-gray-700 mb-6">{dom.desc}</p>
+                  </div>
+                  <div className="z-10 mt-auto">
+                    {dom.popular && (
+                      <span className="text-[10px] inline-block font-black bg-[#FF007F] text-white px-2 py-1 border-2 border-black uppercase mb-2">Paling Laris</span>
+                    )}
+                    <div className="p-3 bg-black text-white font-black text-sm text-center border-2 border-black">
+                      {dom.price}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Section Capabilities */}
+        <section className="mb-24 md:mb-32">
+          <div className="text-center mb-16">
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Fitur & Keunggulan</h2>
+            <p className="font-bold text-sm md:text-lg bg-black text-white inline-block px-4 py-1 mx-auto mt-4 border-2 border-black">
+              Jaminan mutu terbaik dengan pengerjaan transparan.
+            </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: <Smartphone size={32} />, title: "100% Responsif Mobile", desc: "Tampilan otomatis menyesuaikan dengan sempurna di layar Smartphone, Tablet, hingga Layar Desktop lebar.", color: "bg-[#0055FF]", shadow: "shadow-[8px_8px_0_0_#0055FF]" },
+              { icon: <Database size={32} />, title: "Database MongoDB", desc: "Khusus paket Pro dan Ultimate dilengkapi integrasi basis data modern untuk keamanan dan kecepatan akses.", color: "bg-[#FF007F]", shadow: "shadow-[8px_8px_0_0_#FF007F]" },
+              { icon: <Zap size={32} />, title: "Free Instant Hosting", desc: "Website Anda langsung di-deploy secara publik menggunakan platform server modern seperti Vercel.", color: "bg-[#FFD700]", textCol: "text-black", shadow: "shadow-[8px_8px_0_0_#FFD700]" }
+            ].map((feat, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ y: -8, scale: 1.03 }}
+                className={`p-8 bg-white border-4 border-black ${feat.shadow} transition-shadow cursor-default`}
+              >
+                <div className={`w-16 h-16 border-4 border-black ${feat.color} ${feat.textCol || "text-white"} flex items-center justify-center mb-6 shadow-[4px_4px_0_0_#000]`}>
+                  {feat.icon}
+                </div>
+                <h3 className="font-black text-2xl uppercase mb-3 leading-tight">{feat.title}</h3>
+                <p className="text-sm font-bold text-gray-700 leading-relaxed">
+                  {feat.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section with Interactive Animations */}
+        <section className="mb-24 md:mb-32">
+          <div className="text-center mb-16">
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Pertanyaan Umum</h2>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-6">
             {faqs.map((faq, fIdx) => (
               <motion.div 
                 key={fIdx} 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+                transition={{ delay: fIdx * 0.1 }}
+                className="bg-white border-4 border-black shadow-[6px_6px_0_0_#000000] overflow-hidden"
               >
                 <button 
                   onClick={() => setActiveFaq(activeFaq === fIdx ? null : fIdx)}
-                  className="w-full p-5 text-left font-semibold text-slate-800 flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
+                  className="w-full p-6 text-left font-black text-sm md:text-lg uppercase flex items-center justify-between gap-4 hover:bg-yellow-50 transition-colors"
                 >
-                  <span className="flex items-center gap-3 text-sm md:text-base">
+                  <span className="flex items-center gap-3">
+                    <span className="p-2 bg-[#0055FF] text-white border-2 border-black shrink-0">
+                      <HelpCircle size={20} />
+                    </span>
                     {faq.q}
                   </span>
                   <motion.div 
                     animate={{ rotate: activeFaq === fIdx ? 45 : 0 }}
-                    className="p-1.5 bg-slate-100 rounded-full text-slate-500 shrink-0"
+                    className="p-2 bg-black text-white border-2 border-black shrink-0"
                   >
-                    <Plus size={18} />
+                    <Plus size={20} />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -346,7 +474,7 @@ export default function DigitalInvitationService({ navigate }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="px-5 pb-5 pt-0 text-sm text-slate-500 leading-relaxed"
+                      className="px-6 pb-6 pt-2 text-sm md:text-base font-bold text-gray-800 border-t-4 border-black bg-[#f4f4f0] leading-relaxed"
                     >
                       {faq.a}
                     </motion.div>
@@ -357,33 +485,76 @@ export default function DigitalInvitationService({ navigate }) {
           </div>
         </section>
 
+        {/* CTA Contact Section - Kontras Ditingkatkan */}
+        <section id="contact-order" className="pt-16 border-t-8 border-black text-center relative">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="p-10 md:p-20 bg-[#FFD700] border-4 border-black shadow-[16px_16px_0_0_#000000] relative overflow-hidden"
+          >
+            {/* Dekorasi Background */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#FF007F] rounded-full opacity-20 blur-2xl"></div>
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#0055FF] rounded-full opacity-20 blur-2xl"></div>
+
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6 text-black relative z-10">
+              Siap Buat Web <br className="hidden md:block"/>
+              <span className="bg-white px-4 py-1 border-4 border-black inline-block transform rotate-1 mt-2">Sekarang?</span>
+            </h2>
+            <p className="font-bold text-sm md:text-lg max-w-2xl mx-auto text-black bg-white p-4 border-4 border-black shadow-[6px_6px_0_0_#000] mb-12 relative z-10">
+              Hubungi saya secara langsung untuk berkonsultasi mengenai ide project, pilihan paket, atau custom fitur yang Anda inginkan.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-12 relative z-10">
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
+                href="https://discord.com/users/1099980838722088991" 
+                target="_blank" 
+                rel="noreferrer"
+                className="px-8 py-5 bg-[#5865F2] text-white border-4 border-black font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] transition-shadow"
+              >
+                <div className="bg-white text-[#5865F2] p-1 border-2 border-black rounded-full"><DiscordIcon /></div>
+                <span>DM Discord</span>
+              </motion.a>
+
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
+                href="mailto:contact@mifahmi.my.id"
+                className="px-8 py-5 bg-[#0055FF] text-white border-4 border-black font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] transition-shadow"
+              >
+                <div className="bg-white text-[#0055FF] p-1 border-2 border-black rounded-full"><Mail size={20} /></div>
+                <span>Kirim Email</span>
+              </motion.a>
+
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
+                href="https://tiktok.com/@mizephyrz" 
+                target="_blank" 
+                rel="noreferrer"
+                className="px-8 py-5 bg-black text-white border-4 border-white font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#FF007F] hover:shadow-[2px_2px_0_0_#FF007F] transition-shadow"
+              >
+                <div className="bg-white text-black p-1 rounded-full"><TiktokIcon /></div>
+                <span>TikTok</span>
+              </motion.a>
+            </div>
+
+            <div className="pt-8 border-t-8 border-black flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-black uppercase text-black relative z-10 bg-white p-4 shadow-[4px_4px_0_0_#000]">
+              <p className="flex items-center gap-2">
+                <Globe size={16} className="text-[#0055FF]"/>
+                Portal Utama: <a href="https://jasa.mifahmi.my.id" target="_blank" rel="noreferrer" className="text-[#FF007F] hover:text-black hover:bg-[#FFD700] px-2 py-0.5 border-2 border-transparent hover:border-black transition-all">jasa.mifahmi.my.id</a>
+              </p>
+              <p className="flex items-center gap-2">
+                <Terminal size={16} /> 
+                © 2026 M.K FAHMI • WEB DEV
+              </p>
+            </div>
+          </motion.div>
+        </section>
+
       </main>
-
-      {/* Footer / Floating CTA Mobile */}
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-slate-500 text-sm">
-        <p className="flex items-center justify-center gap-2 mb-2">
-          Dibuat dengan <Heart size={14} className="text-rose-500 fill-rose-500" /> oleh M.K FAHMI
-        </p>
-        <p>© 2026 Layanan Undangan Digital. All rights reserved.</p>
-      </footer>
-
-      {/* Floating WhatsApp Button (Selalu tampil di pojok kanan bawah) */}
-      <motion.a
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        href={getWaLink("Konsultasi Pembuatan", "Tanya-tanya")}
-        target="_blank"
-        rel="noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-green-500/30 flex items-center justify-center gap-2 group"
-      >
-        <MessageCircle size={28} />
-        <span className="max-w-0 overflow-hidden whitespace-nowrap font-medium transition-all duration-300 group-hover:max-w-xs group-hover:ml-2">
-          Chat Sekarang
-        </span>
-      </motion.a>
     </div>
   );
 }
