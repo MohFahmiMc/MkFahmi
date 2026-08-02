@@ -28,8 +28,8 @@ export default function Navbar({ navigate, scrollToSection, handleNavSecretClick
         </div>
       </nav>
 
-      {/* NAVBAR DESKTOP / MONITOR */}
-      <nav className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-[9999] flex-col items-center gap-4 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111] pointer-events-auto transform-gpu select-none">
+      {/* NAVBAR DESKTOP / MONITOR - POSISI TERKUNCI STABIL TANPA BISA BERGESER */}
+      <nav className="hidden md:flex fixed right-8 inset-y-0 my-auto h-fit z-[9999] flex-col items-center gap-4 brutal-box p-4 bg-white/90 backdrop-blur-md rounded-full shadow-[6px_6px_0_0_#111111] pointer-events-auto select-none">
          <motion.button 
             type="button"
             whileHover={{ scale: 1.15, x: -2 }}
