@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { HelmetProvider } from 'react-helmet-async'; // Wajib di-import agar Helmet berfungsi
 import HomeView from './pages/Home';
 import AllProjects from './pages/AllProjects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -23,7 +24,42 @@ function App() {
     window.scrollTo(0, 0);
   };
 
-  if (currentPath === '/' || currentPath === '') {
+  // Kita buat fungsi render terpisah agar mudah dibungkus HelmetProvider
+  const renderContent = () => {
+    if (currentPath === '/' || currentPath === '') {
+      return (
+        <HomeView 
+          navigate={navigate} 
+          isRootAccess={isRootAccess} 
+          setIsRootAccess={setIsRootAccess} 
+        />
+      );
+    } else if (currentPath === '/project') {
+      return (
+        <AllProjects 
+          navigate={navigate} 
+          isRootAccess={isRootAccess} 
+        />
+      );
+    } else if (currentPath.startsWith('/project/')) {
+      const projectId = currentPath.split('/project/')[1];
+      return (
+        <ProjectDetail 
+          projectId={projectId} 
+          navigate={navigate} 
+          isRootAccess={isRootAccess} 
+        />
+      );
+    } else if (currentPath === '/service' || currentPath === '/services') {
+      return (
+        <ServicesView 
+          navigate={navigate} 
+          isRootAccess={isRootAccess} 
+        />
+      );
+    }
+
+    // Fallback jika route tidak ditemukan (kembali ke Home)
     return (
       <HomeView 
         navigate={navigate} 
@@ -31,37 +67,13 @@ function App() {
         setIsRootAccess={setIsRootAccess} 
       />
     );
-  } else if (currentPath === '/project') {
-    return (
-      <AllProjects 
-        navigate={navigate} 
-        isRootAccess={isRootAccess} 
-      />
-    );
-  } else if (currentPath.startsWith('/project/')) {
-    const projectId = currentPath.split('/project/')[1];
-    return (
-      <ProjectDetail 
-        projectId={projectId} 
-        navigate={navigate} 
-        isRootAccess={isRootAccess} 
-      />
-    );
-  } else if (currentPath === '/service' || currentPath === '/services') {
-    return (
-      <ServicesView 
-        navigate={navigate} 
-        isRootAccess={isRootAccess} 
-      />
-    );
-  }
+  };
 
   return (
-    <HomeView 
-      navigate={navigate} 
-      isRootAccess={isRootAccess} 
-      setIsRootAccess={setIsRootAccess} 
-    />
+    // Bungkus seluruh aplikasi dengan HelmetProvider di sini
+    <HelmetProvider>
+      {renderContent()}
+    </HelmetProvider>
   );
 }
 
