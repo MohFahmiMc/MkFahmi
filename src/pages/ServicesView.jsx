@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code2, Server, Globe, Database, Zap, CheckCircle2, Mail, 
@@ -150,6 +151,30 @@ export default function ServicesView({ navigate }) {
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] text-black selection:bg-[#FF007F] selection:text-white overflow-hidden">
       
+      {/* Dynamic Open Graph Embed untuk Halaman Services */}
+      <Helmet>
+        <title>Jasa Pembuatan Website & Developer | M.K Fahmi</title>
+        <meta name="description" content="Jasa pembuatan website profesional, cepat, dan terjangkau oleh M.K Fahmi. Bebas konsultasi, tampilan 100% responsif mobile, modern, dan siap pakai." />
+        <meta name="keywords" content="Jasa Pembuatan Website, Jasa Web Murah, M.K Fahmi, Web Developer Indonesia, React JS, Next.js, Website Portofolio, Web Dashboard" />
+
+        {/* Open Graph (Discord, WhatsApp, FB) */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="M.K Fahmi - Layanan Web Dev" />
+        <meta property="og:title" content="Jasa Pembuatan Website & Developer | M.K Fahmi" />
+        <meta property="og:description" content="Buat website impian Anda sekarang! Layanan pembuatan web interaktif, responsif, dan performa tinggi dengan harga terjangkau." />
+        <meta property="og:url" content="https://mifahmi.my.id/services" />
+        <meta property="og:image" content="https://mifahmi.my.id/service.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="theme-color" content="#0055FF" />
+
+        {/* Twitter Embed */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Jasa Pembuatan Website & Developer | M.K Fahmi" />
+        <meta name="twitter:description" content="Buat website impian Anda sekarang! Layanan pembuatan web interaktif, responsif, dan performa tinggi dengan harga terjangkau." />
+        <meta name="twitter:image" content="https://mifahmi.my.id/service.png" />
+      </Helmet>
+
       {/* Top Bar Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
