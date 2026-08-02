@@ -4,7 +4,7 @@ import {
   Code2, Server, Globe, Database, Zap, CheckCircle2, Mail, 
   ArrowRight, ShieldCheck, Layers, Cpu, Star, Instagram, 
   MessageSquare, ExternalLink, Home, HelpCircle, Check, 
-  Sparkles, Smartphone, Terminal, DollarSign, Clock, Layout
+  Sparkles, Smartphone, Terminal, DollarSign, Clock, Layout, Plus
 } from 'lucide-react';
 
 const DiscordIcon = () => (
@@ -19,6 +19,27 @@ const TiktokIcon = () => (
   </svg>
 );
 
+// Varian Animasi Khusus
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+};
+
+const floatingAnimation = {
+  y: ["-5%", "5%"],
+  transition: {
+    y: { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }
+  }
+};
+
 export default function ServicesView({ navigate }) {
   const [activeFaq, setActiveFaq] = useState(null);
 
@@ -29,7 +50,7 @@ export default function ServicesView({ navigate }) {
       price: "50K",
       period: "sekali bayar",
       tag: "Paling Hemat",
-      tagColor: "bg-[#FFD700] text-black",
+      tagColor: "bg-[#FFD700] text-black border-2 border-black",
       badgeIcon: <Zap size={16} />,
       desc: "Solusi cepat dan hemat untuk landing page, portofolio pribadi, atau situs promosi acara.",
       features: [
@@ -40,8 +61,8 @@ export default function ServicesView({ navigate }) {
         "Free Hosting Deployment (Vercel / Netlify)",
         "Fitur Custom Ringan Sesuai Permintaan"
       ],
-      recommendedFor: "Portofolio, Undangan Digital, Landing Page Sederhana",
-      ctaColor: "bg-white text-black hover:bg-[#FFD700]"
+      recommendedFor: "Portofolio, Undangan Digital, Landing Page",
+      ctaColor: "bg-[#FFD700] text-black border-4 border-black hover:bg-black hover:text-white"
     },
     {
       id: "pro",
@@ -49,7 +70,7 @@ export default function ServicesView({ navigate }) {
       price: "100K",
       period: "sekali bayar",
       tag: "Paling Populer",
-      tagColor: "bg-[#FF007F] text-white",
+      tagColor: "bg-[#FF007F] text-white border-2 border-black",
       badgeIcon: <Sparkles size={16} />,
       popular: true,
       desc: "Pilihan terbaik untuk website dinamis dengan integrasi database cepat dan performa tinggi.",
@@ -62,8 +83,8 @@ export default function ServicesView({ navigate }) {
         "Free Hosting Setup & Konfigurasi DNS Domain",
         "Fitur Custom Sesuai Permintaan"
       ],
-      recommendedFor: "Dashboard, Web App Sederhana, Blog Dinamis, Project Sekolah/Kuliah",
-      ctaColor: "bg-[#FF007F] text-white hover:bg-black"
+      recommendedFor: "Dashboard, Web App, Blog Dinamis, Project Kuliah",
+      ctaColor: "bg-[#FF007F] text-white border-4 border-black hover:bg-black"
     },
     {
       id: "ultimate",
@@ -71,20 +92,20 @@ export default function ServicesView({ navigate }) {
       price: "300K",
       period: "sekali bayar",
       tag: "Komplit & Spesial",
-      tagColor: "bg-[#0055FF] text-white",
+      tagColor: "bg-[#0055FF] text-white border-2 border-black",
       badgeIcon: <Cpu size={16} />,
       desc: "Solusi fullstack profesional tanpa batas fitur untuk kebutuhan sistem kompleks dan bisnis.",
       features: [
         "Teknologi: Next.js / React + Node.js Backend",
         "Database MongoDB / PostgreSQL Kompleks",
-        "Sistem Otentikasi & Role Pengguna (Login/Register)",
-        "Desain Custom Eksklusif + Full Animasi Interaktif",
-        "Integrasi API Pihak Ketiga (Discord/Payment/dll)",
+        "Sistem Otentikasi & Role Pengguna",
+        "Desain Custom Eksklusif + Full Animasi",
+        "Integrasi API Pihak Ketiga",
         "Optimasi SEO Maksimal & Loading Super Cepat",
         "Prioritas Support & Free Maintenance Awal"
       ],
-      recommendedFor: "E-Commerce, Discord Bot Web Panel, Sistem Manajemen Informasi, Full Web App",
-      ctaColor: "bg-[#0055FF] text-white hover:bg-black"
+      recommendedFor: "E-Commerce, Web Panel Panel, Sistem Informasi",
+      ctaColor: "bg-[#0055FF] text-white border-4 border-black hover:bg-black"
     }
   ];
 
@@ -139,80 +160,103 @@ export default function ServicesView({ navigate }) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] text-black">
+    <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px] text-black selection:bg-[#FF007F] selection:text-white overflow-hidden">
       
-      {/* Top Bar Navigation */}
-      <nav className="fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto">
-        <div className="brutal-box bg-white px-5 py-3 flex items-center justify-between rounded-full shadow-[4px_4px_0_0_#111111]">
-          <button 
+      {/* Top Bar Navigation - Peningkatan Kontras */}
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className="fixed top-4 left-4 right-4 z-50 max-w-6xl mx-auto"
+      >
+        <div className="bg-white border-4 border-black px-5 py-3 flex items-center justify-between shadow-[6px_6px_0_0_#000000]">
+          <motion.button 
+            whileHover={{ scale: 1.05, x: 2 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => navigate ? navigate('/') : window.location.href = '/'}
-            className="flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-wider hover:text-[#0055FF] transition-colors"
+            className="flex items-center gap-2 font-black text-xs md:text-sm uppercase tracking-wider text-black hover:text-[#0055FF] transition-colors"
           >
-            <Home size={18} />
+            <div className="p-1 bg-black text-white border-2 border-black">
+              <Home size={16} />
+            </div>
             <span>Kembali ke Beranda</span>
-          </button>
+          </motion.button>
           
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#FF007F] border border-black animate-pulse"></span>
-            <span className="font-black text-[10px] md:text-xs uppercase tracking-widest bg-[#FFD700] px-3 py-1 border border-black">
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-[#FF007F] border-2 border-black animate-pulse"></span>
+            <span className="font-black text-[10px] md:text-xs uppercase tracking-widest bg-[#FFD700] px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
               Layanan Web
             </span>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-28 md:pt-36 pb-20">
+      <main className="max-w-6xl mx-auto px-5 md:px-12 pt-32 md:pt-40 pb-20">
 
         {/* Hero Section */}
-        <section className="mb-16 md:mb-24 text-center">
+        <section className="mb-20 md:mb-32 text-center relative">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#FFD700] border-4 border-black font-black text-xs md:text-sm uppercase tracking-widest mb-6 shadow-[4px_4px_0_0_#111111]"
+            animate={floatingAnimation}
+            className="inline-flex items-center gap-2 px-5 py-2 bg-[#FFD700] border-4 border-black font-black text-xs md:text-sm uppercase tracking-widest mb-8 shadow-[6px_6px_0_0_#000000]"
           >
-            <Sparkles size={18} />
+            <Sparkles size={18} className="text-black" />
             <span>Jasa Pembuatan Website Profesional & Terjangkau</span>
           </motion.div>
 
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase mb-6 leading-none"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-8 leading-none"
           >
-            Wujudkan Website <br/>
-            <span className="text-[#0055FF] underline decoration-4 md:decoration-8 decoration-[#FF007F]">Impian Anda</span> Tanpa Mahal.
+            Wujudkan Web <br/>
+            <span className="inline-block bg-[#0055FF] text-white px-4 py-2 mt-2 border-4 border-black shadow-[8px_8px_0_0_#FF007F] -rotate-2 hover:rotate-0 transition-transform cursor-default">
+              Impian Anda
+            </span> 
+            <br className="md:hidden" /> Tanpa Mahal.
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-sm md:text-lg font-bold max-w-2xl mx-auto opacity-90 leading-relaxed mb-8"
+            className="text-sm md:text-xl font-bold max-w-3xl mx-auto text-gray-800 leading-relaxed mb-10 bg-white p-4 border-4 border-black shadow-[6px_6px_0_0_#FFD700]"
           >
-            Dapatkan website interaktif, modern, dan responsif menggunakan teknologi mutakhir seperti HTML/CSS/JS Vanilla, React JS, atau Next.js dengan dukungan database MongoDB dan hosting gratis!
+            Dapatkan website interaktif, modern, dan responsif menggunakan teknologi mutakhir seperti HTML/CSS/JS, React JS, atau Next.js dengan dukungan database dan hosting gratis!
           </motion.p>
 
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-3 font-black text-xs uppercase"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+            className="flex flex-wrap items-center justify-center gap-3 font-black text-xs md:text-sm uppercase"
           >
-            <span className="px-3 py-1 bg-[#0055FF] text-white border-2 border-black">HTML & CSS</span>
-            <span className="px-3 py-1 bg-[#FFD700] text-black border-2 border-black">JavaScript Vanilla</span>
-            <span className="px-3 py-1 bg-black text-white border-2 border-black">React JS</span>
-            <span className="px-3 py-1 bg-[#FF007F] text-white border-2 border-black">Next.js</span>
-            <span className="px-3 py-1 bg-emerald-400 text-black border-2 border-black">MongoDB</span>
+            {[
+              { text: "HTML & CSS", color: "bg-[#0055FF] text-white" },
+              { text: "JavaScript Vanilla", color: "bg-[#FFD700] text-black" },
+              { text: "React JS", color: "bg-black text-white" },
+              { text: "Next.js", color: "bg-[#FF007F] text-white" },
+              { text: "MongoDB", color: "bg-emerald-400 text-black" }
+            ].map((tech, i) => (
+              <motion.span 
+                key={i}
+                variants={fadeUpVariant}
+                whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 3 : -3 }}
+                className={`px-4 py-2 border-4 border-black shadow-[4px_4px_0_0_#000] cursor-pointer ${tech.color}`}
+              >
+                {tech.text}
+              </motion.span>
+            ))}
           </motion.div>
         </section>
 
         {/* Pricing Cards Section */}
-        <section id="pricing" className="mb-20 md:mb-32">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Pilih Paket Layanan</h2>
-            <p className="font-bold text-sm md:text-base opacity-80">Harga bersahabat dengan kualitas arsitektur modern & siap pakai.</p>
+        <section id="pricing" className="mb-24 md:mb-32">
+          <div className="text-center mb-16">
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Pilih Paket Layanan</h2>
+            <p className="font-bold text-sm md:text-lg bg-black text-white inline-block px-4 py-1 mx-auto mt-4 border-2 border-black">
+              Harga bersahabat dengan kualitas arsitektur modern
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -221,64 +265,74 @@ export default function ServicesView({ navigate }) {
                 key={plan.id}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                whileHover={{ y: -8 }}
-                className={`brutal-box p-6 md:p-8 flex flex-col justify-between bg-white relative ${
-                  plan.popular ? 'border-4 border-black shadow-[8px_8px_0_0_#FF007F]' : 'shadow-[6px_6px_0_0_#111111]'
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className={`p-6 md:p-8 flex flex-col justify-between bg-white border-4 border-black relative transition-shadow duration-300 ${
+                  plan.popular 
+                  ? 'shadow-[12px_12px_0_0_#FF007F]' 
+                  : 'shadow-[8px_8px_0_0_#000000] hover:shadow-[12px_12px_0_0_#000000]'
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#FF007F] text-white font-black text-xs uppercase tracking-widest px-4 py-1.5 border-2 border-black shadow-[2px_2px_0_0_#111111] flex items-center gap-1">
-                    <Sparkles size={14} /> REKOMENDASI UTAMA
-                  </div>
+                  <motion.div 
+                    animate={floatingAnimation}
+                    className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#FF007F] text-white font-black text-xs md:text-sm uppercase tracking-widest px-6 py-2 border-4 border-black shadow-[4px_4px_0_0_#000] flex items-center gap-2 z-10 w-max"
+                  >
+                    <Sparkles size={16} /> REKOMENDASI UTAMA
+                  </motion.div>
                 )}
 
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className={`px-3 py-1 border-2 border-black font-black text-[10px] uppercase tracking-wider flex items-center gap-1 ${plan.tagColor}`}>
+                  <div className="flex items-center justify-between gap-2 mb-6 pt-2">
+                    <span className={`px-3 py-1 font-black text-[10px] uppercase tracking-wider flex items-center gap-1 ${plan.tagColor}`}>
                       {plan.badgeIcon} {plan.tag}
                     </span>
-                    <span className="text-xs font-black opacity-60 uppercase">{plan.period}</span>
+                    <span className="text-xs font-black bg-gray-200 px-2 py-1 border-2 border-black uppercase">{plan.period}</span>
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase mb-2">{plan.name}</h3>
-                  <p className="text-xs font-bold opacity-80 min-h-[36px] mb-6">{plan.desc}</p>
+                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-3">{plan.name}</h3>
+                  <p className="text-sm font-bold text-gray-700 min-h-[48px] mb-6">{plan.desc}</p>
 
-                  <div className="mb-6 p-4 bg-[#f4f4f0] border-2 border-black">
-                    <span className="text-xs font-black uppercase block text-gray-500">Mulai Dari</span>
+                  <div className="mb-6 p-4 bg-[#f4f4f0] border-4 border-black relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-black opacity-5 rounded-bl-full group-hover:scale-150 transition-transform"></div>
+                    <span className="text-xs font-black uppercase block text-gray-600 mb-1">Mulai Dari</span>
                     <div className="flex items-baseline gap-1">
                       <span className="text-4xl md:text-5xl font-black tracking-tight text-black">{plan.price}</span>
-                      <span className="text-xs font-black uppercase text-gray-600">Rupiah</span>
+                      <span className="text-sm font-black uppercase text-gray-800">Rupiah</span>
                     </div>
                   </div>
 
-                  <div className="space-y-3 mb-8">
-                    <span className="text-xs font-black uppercase block border-b-2 border-black pb-1">Fitur Yang Didapat:</span>
-                    {plan.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2 text-xs font-bold">
-                        <CheckCircle2 size={16} className="text-[#0055FF] shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                  <div className="space-y-4 mb-8">
+                    <span className="text-xs font-black uppercase block bg-black text-white px-2 py-1 w-max mb-4">Fitur Yang Didapat:</span>
+                    <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
+                      {plan.features.map((feat, fIdx) => (
+                        <motion.div variants={fadeUpVariant} key={fIdx} className="flex items-start gap-3 text-sm font-bold mb-3">
+                          <CheckCircle2 size={18} className="text-[#0055FF] shrink-0 mt-0.5 bg-white rounded-full" />
+                          <span className="text-gray-900">{feat}</span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-6 p-3 bg-yellow-50 border-2 border-black text-[11px] font-bold">
-                    <span className="font-black text-black block mb-0.5">Cocok Untuk:</span>
-                    <span className="text-gray-700">{plan.recommendedFor}</span>
+                  <div className="mb-6 p-4 bg-yellow-100 border-4 border-black text-xs font-bold shadow-[4px_4px_0_0_#000]">
+                    <span className="font-black text-black block mb-1 uppercase underline">Cocok Untuk:</span>
+                    <span className="text-gray-800">{plan.recommendedFor}</span>
                   </div>
 
-                  <a 
+                  <motion.a 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     href="https://discord.com/users/1099980838722088991" 
                     target="_blank" 
                     rel="noreferrer"
-                    className={`w-full py-3 md:py-4 border-2 border-black font-black text-xs md:text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[4px_4px_0_0_#111111] transition-all active:translate-x-1 active:translate-y-1 ${plan.ctaColor}`}
+                    className={`w-full py-4 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-[6px_6px_0_0_#000] transition-colors ${plan.ctaColor}`}
                   >
                     <span>Pesan Paket Ini</span>
-                    <ArrowRight size={16} />
-                  </a>
+                    <ArrowRight size={18} />
+                  </motion.a>
                 </div>
               </motion.div>
             ))}
@@ -286,161 +340,133 @@ export default function ServicesView({ navigate }) {
         </section>
 
         {/* Section Domain Reference */}
-        <section className="mb-20 md:mb-32">
+        <section className="mb-24 md:mb-32">
           <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, rotate: -1 }}
+            whileInView={{ opacity: 1, rotate: 0 }}
             viewport={{ once: true }}
-            className="brutal-box p-8 md:p-12 bg-[#FFD700] text-black shadow-[8px_8px_0_0_#111111]"
+            className="p-8 md:p-12 bg-[#FFD700] border-4 border-black text-black shadow-[12px_12px_0_0_#000000]"
           >
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-black text-white font-black text-xs uppercase tracking-wider mb-2">
-                  <Globe size={14} /> Informasi Kustom Domain
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white font-black text-xs uppercase tracking-wider mb-4 border-2 border-white shadow-[4px_4px_0_0_#0055FF]">
+                  <Globe size={16} /> Informasi Kustom Domain
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">Estimasi Harga Domain</h2>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight bg-white p-2 border-4 border-black inline-block">Estimasi Harga Domain</h2>
               </div>
-              <div className="p-4 bg-white border-2 border-black text-xs font-bold max-w-md">
-                <p className="font-black mb-1 flex items-center gap-1">
-                  <HelpCircle size={14} className="text-[#0055FF]" /> Saya Tidak Menjual Domain Langsung
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="p-5 bg-white border-4 border-black text-xs font-bold max-w-md shadow-[6px_6px_0_0_#FF007F]"
+              >
+                <p className="font-black mb-2 flex items-center gap-2 text-sm">
+                  <span className="p-1 bg-[#0055FF] text-white"><HelpCircle size={16} /></span> 
+                  Saya Tidak Menjual Domain
                 </p>
-                <p className="text-gray-700 text-[11px] leading-snug">
-                  Anda bebas membeli domain di penyedia pihak ketiga (Niagahoster, Domainesia, Namecheap, dll). Saya akan membantu menghubungkan & mengonfigurasi DNS ke website Anda secara <b>GRATIS!</b>
+                <p className="text-gray-800 text-xs md:text-sm leading-relaxed">
+                  Beli domain Anda sendiri di Niagahoster, Domainesia, dsb. Saya akan bantu *setup* & hubungkan DNS ke web Anda <span className="bg-[#FF007F] text-white px-1">100% GRATIS!</span>
                 </p>
-              </div>
+              </motion.div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
               {domainEstimates.map((dom, dIdx) => (
-                <div key={dIdx} className="brutal-box p-5 bg-white flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-black text-xl text-black">{dom.name}</span>
-                      {dom.popular && (
-                        <span className="text-[9px] font-black bg-[#FF007F] text-white px-2 py-0.5 border border-black uppercase">Termurah</span>
-                      )}
+                <motion.div 
+                  variants={fadeUpVariant}
+                  whileHover={{ y: -5, scale: 1.05 }}
+                  key={dIdx} 
+                  className="p-6 bg-white border-4 border-black flex flex-col justify-between shadow-[6px_6px_0_0_#000] relative overflow-hidden"
+                >
+                  <div className="absolute -right-4 -top-4 w-16 h-16 bg-[#f4f4f0] rounded-full z-0"></div>
+                  <div className="z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-black text-2xl text-black bg-[#FFD700] px-2 border-2 border-black">{dom.name}</span>
                     </div>
-                    <p className="text-xs font-bold text-gray-600 mb-4">{dom.desc}</p>
+                    <p className="text-xs font-bold text-gray-700 mb-6">{dom.desc}</p>
                   </div>
-                  <div className="p-2 bg-[#f4f4f0] border border-black font-black text-xs text-center">
-                    {dom.price}
+                  <div className="z-10 mt-auto">
+                    {dom.popular && (
+                      <span className="text-[10px] inline-block font-black bg-[#FF007F] text-white px-2 py-1 border-2 border-black uppercase mb-2">Paling Laris</span>
+                    )}
+                    <div className="p-3 bg-black text-white font-black text-sm text-center border-2 border-black">
+                      {dom.price}
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </section>
 
-        {/* Section Capabilities / Mengapa Memilih */}
-        <section className="mb-20 md:mb-32">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Fitur & Keunggulan</h2>
-            <p className="font-bold text-sm md:text-base opacity-80">Jaminan mutu terbaik dengan pengerjaan transparan & fleksibel.</p>
+        {/* Section Capabilities */}
+        <section className="mb-24 md:mb-32">
+          <div className="text-center mb-16">
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Fitur & Keunggulan</h2>
+            <p className="font-bold text-sm md:text-lg bg-black text-white inline-block px-4 py-1 mx-auto mt-4 border-2 border-black">
+              Jaminan mutu terbaik dengan pengerjaan transparan.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div 
-              whileHover={{ y: -5 }}
-              className="brutal-box p-6 bg-white shadow-[6px_6px_0_0_#111111]"
-            >
-              <div className="w-12 h-12 brutal-box bg-[#0055FF] text-white flex items-center justify-center mb-4">
-                <Smartphone size={24} />
-              </div>
-              <h3 className="font-black text-xl uppercase mb-2">100% Responsif Mobile</h3>
-              <p className="text-xs font-bold text-gray-700 leading-relaxed">
-                Tampilan otomatis menyesuaikan dengan sempurna di layar Smartphone, Tablet, Monitor Laptop, maupun Desktop.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ y: -5 }}
-              className="brutal-box p-6 bg-white shadow-[6px_6px_0_0_#111111]"
-            >
-              <div className="w-12 h-12 brutal-box bg-[#FF007F] text-white flex items-center justify-center mb-4">
-                <Database size={24} />
-              </div>
-              <h3 className="font-black text-xl uppercase mb-2">Database MongoDB</h3>
-              <p className="text-xs font-bold text-gray-700 leading-relaxed">
-                Khusus paket 100k dan 300k sudah dilengkapi integrasi basis data MongoDB untuk menyimpan data secara dinamis dan aman.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ y: -5 }}
-              className="brutal-box p-6 bg-white shadow-[6px_6px_0_0_#111111]"
-            >
-              <div className="w-12 h-12 brutal-box bg-[#FFD700] text-black flex items-center justify-center mb-4">
-                <Zap size={24} />
-              </div>
-              <h3 className="font-black text-xl uppercase mb-2">Free Instant Hosting</h3>
-              <p className="text-xs font-bold text-gray-700 leading-relaxed">
-                Website Anda langsung di-deploy secara publik menggunakan platform server modern seperti Vercel atau Netlify.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="mb-20 md:mb-32">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Testimoni Klien</h2>
-            <p className="font-bold text-sm md:text-base opacity-80">Apa kata mereka yang telah menggunakan jasa pembuatan website ini.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((testi, tIdx) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: <Smartphone size={32} />, title: "100% Responsif Mobile", desc: "Tampilan otomatis menyesuaikan dengan sempurna di layar Smartphone, Tablet, hingga Layar Desktop lebar.", color: "bg-[#0055FF]", shadow: "shadow-[8px_8px_0_0_#0055FF]" },
+              { icon: <Database size={32} />, title: "Database MongoDB", desc: "Khusus paket Pro dan Ultimate dilengkapi integrasi basis data modern untuk keamanan dan kecepatan akses.", color: "bg-[#FF007F]", shadow: "shadow-[8px_8px_0_0_#FF007F]" },
+              { icon: <Zap size={32} />, title: "Free Instant Hosting", desc: "Website Anda langsung di-deploy secara publik menggunakan platform server modern seperti Vercel.", color: "bg-[#FFD700]", textCol: "text-black", shadow: "shadow-[8px_8px_0_0_#FFD700]" }
+            ].map((feat, i) => (
               <motion.div 
-                key={tIdx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: tIdx * 0.1 }}
-                className="brutal-box p-6 bg-white flex flex-col justify-between shadow-[6px_6px_0_0_#111111]"
+                key={i}
+                whileHover={{ y: -8, scale: 1.03 }}
+                className={`p-8 bg-white border-4 border-black ${feat.shadow} transition-shadow cursor-default`}
               >
-                <div>
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testi.rating)].map((_, i) => (
-                      <Star key={i} size={16} className="fill-[#FFD700] text-black" />
-                    ))}
-                  </div>
-                  <p className="text-xs font-bold text-gray-800 leading-relaxed mb-6 italic">
-                    "{testi.text}"
-                  </p>
+                <div className={`w-16 h-16 border-4 border-black ${feat.color} ${feat.textCol || "text-white"} flex items-center justify-center mb-6 shadow-[4px_4px_0_0_#000]`}>
+                  {feat.icon}
                 </div>
-
-                <div className="flex items-center gap-3 pt-4 border-t-2 border-black">
-                  <div className={`w-10 h-10 rounded-full border-2 border-black flex items-center justify-center font-black text-sm uppercase ${testi.avatarBg}`}>
-                    {testi.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-black text-sm uppercase text-black">{testi.name}</h4>
-                    <span className="text-[10px] font-bold text-gray-500 uppercase">{testi.role}</span>
-                  </div>
-                </div>
+                <h3 className="font-black text-2xl uppercase mb-3 leading-tight">{feat.title}</h3>
+                <p className="text-sm font-bold text-gray-700 leading-relaxed">
+                  {feat.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="mb-20 md:mb-32">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Pertanyaan Umum (FAQ)</h2>
-            <p className="font-bold text-sm md:text-base opacity-80">Jawaban cepat untuk hal-hal yang sering ditanyakan.</p>
+        {/* FAQ Section with Interactive Animations */}
+        <section className="mb-24 md:mb-32">
+          <div className="text-center mb-16">
+            <h2 className="inline-block text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 border-b-8 border-black pb-2">Pertanyaan Umum</h2>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-4">
+          <div className="max-w-4xl mx-auto space-y-6">
             {faqs.map((faq, fIdx) => (
-              <div key={fIdx} className="brutal-box bg-white overflow-hidden shadow-[4px_4px_0_0_#111111]">
+              <motion.div 
+                key={fIdx} 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: fIdx * 0.1 }}
+                className="bg-white border-4 border-black shadow-[6px_6px_0_0_#000000] overflow-hidden"
+              >
                 <button 
                   onClick={() => setActiveFaq(activeFaq === fIdx ? null : fIdx)}
-                  className="w-full p-5 text-left font-black text-sm md:text-base uppercase flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors"
+                  className="w-full p-6 text-left font-black text-sm md:text-lg uppercase flex items-center justify-between gap-4 hover:bg-yellow-50 transition-colors"
                 >
-                  <span className="flex items-center gap-2">
-                    <HelpCircle size={18} className="text-[#0055FF] shrink-0" />
+                  <span className="flex items-center gap-3">
+                    <span className="p-2 bg-[#0055FF] text-white border-2 border-black shrink-0">
+                      <HelpCircle size={20} />
+                    </span>
                     {faq.q}
                   </span>
-                  <span className="font-black text-lg">{activeFaq === fIdx ? '-' : '+'}</span>
+                  <motion.div 
+                    animate={{ rotate: activeFaq === fIdx ? 45 : 0 }}
+                    className="p-2 bg-black text-white border-2 border-black shrink-0"
+                  >
+                    <Plus size={20} />
+                  </motion.div>
                 </button>
                 <AnimatePresence>
                   {activeFaq === fIdx && (
@@ -448,76 +474,82 @@ export default function ServicesView({ navigate }) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="px-5 pb-5 pt-1 text-xs md:text-sm font-bold text-gray-700 border-t-2 border-black bg-yellow-50/50 leading-relaxed"
+                      className="px-6 pb-6 pt-2 text-sm md:text-base font-bold text-gray-800 border-t-4 border-black bg-[#f4f4f0] leading-relaxed"
                     >
                       {faq.a}
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
 
-        {/* CTA Contact Section */}
-        <section id="contact-order" className="pt-12 border-t-8 border-black text-center">
+        {/* CTA Contact Section - Kontras Ditingkatkan */}
+        <section id="contact-order" className="pt-16 border-t-8 border-black text-center relative">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="brutal-box p-8 md:p-14 bg-white shadow-[10px_10px_0_0_#111111]"
+            className="p-10 md:p-20 bg-[#FFD700] border-4 border-black shadow-[16px_16px_0_0_#000000] relative overflow-hidden"
           >
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-4 text-black">
-              Siap Buat Website <br className="hidden md:block"/>
-              <span className="text-[#FF007F]">Sekarang Juga?</span>
+            {/* Dekorasi Background */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#FF007F] rounded-full opacity-20 blur-2xl"></div>
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#0055FF] rounded-full opacity-20 blur-2xl"></div>
+
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6 text-black relative z-10">
+              Siap Buat Web <br className="hidden md:block"/>
+              <span className="bg-white px-4 py-1 border-4 border-black inline-block transform rotate-1 mt-2">Sekarang?</span>
             </h2>
-            <p className="font-bold text-sm md:text-base max-w-xl mx-auto text-gray-700 mb-8">
+            <p className="font-bold text-sm md:text-lg max-w-2xl mx-auto text-black bg-white p-4 border-4 border-black shadow-[6px_6px_0_0_#000] mb-12 relative z-10">
               Hubungi saya secara langsung untuk berkonsultasi mengenai ide project, pilihan paket, atau custom fitur yang Anda inginkan.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
-              <a 
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-12 relative z-10">
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
                 href="https://discord.com/users/1099980838722088991" 
                 target="_blank" 
                 rel="noreferrer"
-                className="px-6 py-4 brutal-box bg-[#5865F2] text-white font-black text-xs md:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-black transition-colors"
+                className="px-8 py-5 bg-[#5865F2] text-white border-4 border-black font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] transition-shadow"
               >
-                <DiscordIcon />
+                <div className="bg-white text-[#5865F2] p-1 border-2 border-black rounded-full"><DiscordIcon /></div>
                 <span>DM Discord</span>
-              </a>
+              </motion.a>
 
-              <a 
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
                 href="mailto:contact@mifahmi.my.id"
-                className="px-6 py-4 brutal-box bg-[#0055FF] text-white font-black text-xs md:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-black transition-colors"
+                className="px-8 py-5 bg-[#0055FF] text-white border-4 border-black font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#000] hover:shadow-[2px_2px_0_0_#000] transition-shadow"
               >
-                <Mail size={18} />
+                <div className="bg-white text-[#0055FF] p-1 border-2 border-black rounded-full"><Mail size={20} /></div>
                 <span>Kirim Email</span>
-              </a>
+              </motion.a>
 
-              <a 
-                href="https://instagram.com/mizephyr" 
-                target="_blank" 
-                rel="noreferrer"
-                className="px-6 py-4 brutal-box bg-[#E1306C] text-white font-black text-xs md:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-black transition-colors"
-              >
-                <Instagram size={18} />
-                <span>Instagram DM</span>
-              </a>
-
-              <a 
+              <motion.a 
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
                 href="https://tiktok.com/@mizephyrz" 
                 target="_blank" 
                 rel="noreferrer"
-                className="px-6 py-4 brutal-box bg-black text-white font-black text-xs md:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-[#FF007F] transition-colors"
+                className="px-8 py-5 bg-black text-white border-4 border-white font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[6px_6px_0_0_#FF007F] hover:shadow-[2px_2px_0_0_#FF007F] transition-shadow"
               >
-                <TiktokIcon />
+                <div className="bg-white text-black p-1 rounded-full"><TiktokIcon /></div>
                 <span>TikTok</span>
-              </a>
+              </motion.a>
             </div>
 
-            <div className="pt-6 border-t-2 border-black flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-black uppercase text-gray-600">
-              <p>Portal Utama Order: <a href="https://jasa.mifahmi.my.id" target="_blank" rel="noreferrer" className="text-[#0055FF] underline">jasa.mifahmi.my.id</a></p>
-              <p>© 2026 M.K FAHMI • WEB DEVELOPMENT SERVICES</p>
+            <div className="pt-8 border-t-8 border-black flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-black uppercase text-black relative z-10 bg-white p-4 shadow-[4px_4px_0_0_#000]">
+              <p className="flex items-center gap-2">
+                <Globe size={16} className="text-[#0055FF]"/>
+                Portal Utama: <a href="https://jasa.mifahmi.my.id" target="_blank" rel="noreferrer" className="text-[#FF007F] hover:text-black hover:bg-[#FFD700] px-2 py-0.5 border-2 border-transparent hover:border-black transition-all">jasa.mifahmi.my.id</a>
+              </p>
+              <p className="flex items-center gap-2">
+                <Terminal size={16} /> 
+                © 2026 M.K FAHMI • WEB DEV
+              </p>
             </div>
           </motion.div>
         </section>
