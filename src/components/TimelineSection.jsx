@@ -112,7 +112,7 @@ export default function TimelineSection({ timelineRef, timelineProgress }) {
             <div className="brutal-box p-4 md:p-8 bg-white flex flex-col w-full hover:-translate-y-1 md:hover:-translate-y-2 transition-transform relative overflow-hidden">
               <h3 className="font-black text-base sm:text-lg md:text-2xl uppercase mb-1 md:mb-2">SMK</h3>
               <p className="text-xs sm:text-sm md:text-base font-bold text-black/70 uppercase">SMK NU Kaplongan.</p>
-              <p className="text-[10px] sm:text-xs md:text-sm font-black text-[#0055FF] uppercase mt-1">Jurusan: Teknik Komputer dan Jaringan (TKJ)</p>
+              <p className="text-[10px] sm:text-xs md:text-sm font-black text-[#0055FF] uppercase mt-1">Jurusan: Teknik Jaringan Komputer Dan Telekomunikasi (TJKT)</p>
             </div>
           </motion.div>
 
