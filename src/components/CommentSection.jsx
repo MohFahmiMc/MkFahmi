@@ -1,13 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Send, User, Calendar, ShieldAlert } from 'lucide-react';
+import { MessageSquare, Send, User, Calendar, ShieldAlert, CheckCircle2, AlertTriangle, XCircle } from 'lucide-react';
+
+// Daftar kata kasar / terlarang
+const BAD_WORDS = ['anjing', 'babi', 'kontol', 'memek', 'asu', 'bangsat', 'taik', 'goblok', 'tolol', 'fuck', 'shit'];
 
 export default function CommentSection() {
   const [comments, setComments] = useState([]);
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
+  const [honeypot, setHoneypot] = useState(''); // Perangkap Bot
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
+  const [cooldown, setCooldown] = useState(0);
+
+  // Custom Toast Alert State
+  const [alert, setAlert] = useState({ show: false, type: '', message: '' });
+
+  const showAlert = (type, message) => {
+    setAlert({ show: true, type, message });
+    setTimeout(() => {
+      setAlert({ show: false, type: '', message: '' });
+    }, 4000);
+  };
+
+  // Timer Cooldown Anti-Spam
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
 
   const fetchComments = async () => {
     try {
@@ -17,7 +39,7 @@ export default function CommentSection() {
         setComments(data);
       }
     } catch (err) {
-      console.error("Gagal memuat komentar", err);
+      // Silent error handling
     } finally {
       setLoading(false);
     }
@@ -27,29 +49,60 @@ export default function CommentSection() {
     fetchComments();
   }, []);
 
+  const hasBadWords = (text) => {
+    const pattern = new RegExp(`\\b(${BAD_WORDS.join('|')})\\b`, 'gi');
+    return pattern.test(text);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name.trim() || !content.trim()) return;
+
+    // 1. Deteksi Bot via Honeypot
+    if (honeypot) {
+      showAlert('error', 'Aktivitas mencurigakan terdeteksi.');
+      return;
+    }
+
+    // 2. Cek Cooldown Anti-Spam
+    if (cooldown > 0) {
+      showAlert('warning', `Tunggu ${cooldown} detik sebelum milih kirim lagi.`);
+      return;
+    }
+
+    const cleanName = name.trim();
+    const cleanContent = content.trim();
+
+    if (!cleanName || !cleanContent) {
+      showAlert('warning', 'Nama dan komentar wajib diisi!');
+      return;
+    }
+
+    // 3. Filter Kata Kasar
+    if (hasBadWords(cleanName) || hasBadWords(cleanContent)) {
+      showAlert('error', 'Komentar mengandung kata tidak sopan!');
+      return;
+    }
 
     setSubmitting(true);
-    setMessage('');
 
     try {
       const res = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, content })
+        body: JSON.stringify({ name: cleanName, content: cleanContent })
       });
 
       if (res.ok) {
         setName('');
         setContent('');
+        showAlert('success', 'Komentar kamu berhasil terbit!');
+        setCooldown(15); // Delay 15 detik untuk pencegahan spam
         fetchComments();
       } else {
-        setMessage('Gagal mengirim komentar.');
+        showAlert('error', 'Gagal mengirim komentar ke server.');
       }
     } catch (err) {
-      setMessage('Terjadi kesalahan jaringan.');
+      showAlert('error', 'Terjadi masalah koneksi jaringan.');
     } finally {
       setSubmitting(false);
     }
@@ -67,23 +120,49 @@ export default function CommentSection() {
       });
 
       if (res.ok) {
+        showAlert('success', 'Komentar berhasil dihapus.');
         fetchComments();
       } else {
-        alert("Akses ditolak: Password salah.");
+        showAlert('error', 'Akses Ditolak: Password Salah.');
       }
     } catch (err) {
-      alert("Gagal menghapus komentar.");
+      showAlert('error', 'Gagal menghapus komentar.');
     }
   };
 
   return (
     <section id="comments" className="mb-24 md:mb-40 relative z-10">
-      <div className="brutal-box p-6 md:p-12 bg-white text-black shadow-[8px_8px_0_0_#111111]">
+      {/* Brutalist Custom Alert Notification */}
+      {alert.show && (
+        <div className={`fixed bottom-6 right-6 z-50 p-4 border-4 border-black font-black uppercase text-xs md:text-sm tracking-wider flex items-center gap-3 shadow-[6px_6px_0_0_#111111] animate-bounce ${
+          alert.type === 'success' ? 'bg-[#00FF66] text-black' :
+          alert.type === 'warning' ? 'bg-[#FFD700] text-black' : 'bg-[#FF0055] text-white'
+        }`}>
+          {alert.type === 'success' && <CheckCircle2 size={20} />}
+          {alert.type === 'warning' && <AlertTriangle size={20} />}
+          {alert.type === 'error' && <XCircle size={20} />}
+          <span>{alert.message}</span>
+        </div>
+      )}
+
+      <div className="brutal-box p-6 md:p-12 bg-white text-black shadow-[8px_8px_0_0_#111111] border-4 border-black">
         <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8 text-[#FF007F] flex items-center gap-3">
           <MessageSquare size={36} /> Umpan Balik.
         </h2>
 
         <form onSubmit={handleSubmit} className="mb-12 flex flex-col gap-4">
+          {/* Honeypot Field (Tersembunyi untuk Penjebak Bot) */}
+          <div className="hidden" aria-hidden="true">
+            <input 
+              type="text" 
+              name="website_url" 
+              tabIndex="-1" 
+              value={honeypot} 
+              onChange={(e) => setHoneypot(e.target.value)} 
+              autoComplete="off"
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
             <label className="font-black text-xs md:text-sm uppercase tracking-wider text-black flex items-center gap-2">
               <User size={14} /> Nama / Samaran
@@ -95,7 +174,7 @@ export default function CommentSection() {
               placeholder="Masukkan nama kamu..."
               maxLength={50}
               required
-              className="w-full p-3 border-4 border-black font-bold uppercase text-xs md:text-sm tracking-wider focus:outline-none bg-[#f4f4f0]"
+              className="w-full p-3 border-4 border-black font-bold uppercase text-xs md:text-sm tracking-wider focus:outline-none bg-[#f4f4f0] focus:bg-white"
             />
           </div>
 
@@ -110,22 +189,17 @@ export default function CommentSection() {
               rows={4}
               maxLength={500}
               required
-              className="w-full p-3 border-4 border-black font-bold text-xs md:text-sm tracking-wider focus:outline-none bg-[#f4f4f0]"
+              className="w-full p-3 border-4 border-black font-bold text-xs md:text-sm tracking-wider focus:outline-none bg-[#f4f4f0] focus:bg-white"
             />
           </div>
 
-          {message && (
-            <p className="text-xs font-black uppercase text-red-600 bg-red-100 p-2 border-2 border-black inline-block self-start">
-              {message}
-            </p>
-          )}
-
           <button 
             type="submit" 
-            disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#FFD700] text-black border-4 border-black font-black uppercase text-xs md:text-sm tracking-widest shadow-[4px_4px_0_0_#111111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#111111] transition-all disabled:opacity-50 self-start rounded-md"
+            disabled={submitting || cooldown > 0}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#FFD700] text-black border-4 border-black font-black uppercase text-xs md:text-sm tracking-widest shadow-[4px_4px_0_0_#111111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#111111] transition-all disabled:opacity-50 disabled:cursor-not-allowed self-start rounded-none"
           >
-            <Send size={16} /> {submitting ? 'Mengirim...' : 'Kirim Komentar'}
+            <Send size={16} /> 
+            {submitting ? 'Mengirim...' : cooldown > 0 ? `Tunggu (${cooldown}s)` : 'Kirim Komentar'}
           </button>
         </form>
 
@@ -141,19 +215,19 @@ export default function CommentSection() {
           ) : (
             <div className="flex flex-col gap-6 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
               {comments.map((comment) => (
-                <div key={comment._id} className="brutal-box p-4 bg-[#f4f4f0] border-2 border-black relative group">
-                  <div className="flex justify-between items-start mb-2 border-b-2 border-black/10 pb-1">
+                <div key={comment._id} className="brutal-box p-4 bg-[#f4f4f0] border-4 border-black relative group shadow-[4px_4px_0_0_#111111]">
+                  <div className="flex justify-between items-start mb-2 border-b-2 border-black/20 pb-2">
                     <span className="font-black text-xs md:text-sm uppercase tracking-wide text-[#0055FF]">
                       {comment.name}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-[10px] uppercase text-gray-500 flex items-center gap-1">
+                      <span className="font-bold text-[10px] uppercase text-gray-600 flex items-center gap-1">
                         <Calendar size={10} /> {new Date(comment.createdAt).toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       <button 
                         type="button"
                         onClick={() => handleDelete(comment._id)}
-                        className="w-2 h-2 rounded-full bg-transparent hover:bg-red-500/20 cursor-default select-none focus:outline-none"
+                        className="w-3 h-3 border border-black bg-transparent hover:bg-red-500 cursor-pointer focus:outline-none transition-colors"
                         title="System Node Control"
                       />
                     </div>
