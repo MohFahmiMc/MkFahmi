@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, memo } from 'react';
+import React, { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { 
   Github, Code2, Globe, Terminal, Server, Mail, Cpu, ArrowRight, Heart, 
   MapPin, FileJson, Palette, Zap, Cpu as BrainCircuit, Database, Cloud, Star, Instagram, Wrench, Sparkles, Play
@@ -15,7 +15,37 @@ import HeroLikeButton from '../components/HeroLikeButton';
 import Navbar from '../components/Navbar';
 import TimelineSection from '../components/TimelineSection';
 
-// Sub-komponen Facade Iframe untuk Hemat Memori Mobile
+// Static Data Constants (Mencegah re-allocation memori saat re-render)
+const TECH_STACK = [
+  { name: 'React / Vite', icon: Code2, color: 'text-[#0055FF]' },
+  { name: 'Node.js', icon: Server, color: 'text-[#FF007F]' },
+  { name: 'Vanilla JS', icon: FileJson, color: 'text-[#FFD700]' },
+  { name: 'Tailwind CSS', icon: Palette, color: 'text-[#00BFFF]' },
+  { name: 'HTML & CSS', icon: Globe, color: 'text-[#E34F26]' },
+  { name: 'Termux CLI', icon: Terminal, color: 'text-black' },
+];
+
+const SOCIAL_LINKS = [
+  { href: "https://github.com/MohFahmiMc", icon: Github, hover: "hover:bg-[#FFD700] hover:text-black" },
+  { href: "https://instagram.com/mizephyr", icon: Instagram, hover: "hover:bg-[#E1306C] hover:text-white" },
+  { href: "https://discord.scarily.my.id", icon: DiscordIcon, hover: "hover:bg-[#5865F2] hover:text-white" },
+  { href: "https://tiktok.com/@mizephyrz", icon: TiktokIcon, hover: "hover:bg-[#FF007F] hover:text-white" },
+  { href: "mailto:contact@mifahmi.my.id", icon: Mail, hover: "hover:bg-[#0055FF] hover:text-white" },
+];
+
+const FUSION_RULES = {
+  'BE+FE': { title: 'Fullstack', desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL', Icon: Zap },
+  'AI+PY': { title: 'AI Engineer', desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG', Icon: BrainCircuit },
+  'CLOUD+DB': { title: 'SysAdmin', desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS', Icon: Server },
+  'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', Icon: Globe },
+  'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', Icon: Code2 },
+  'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', Icon: Database },
+  'ARCH+AIDEV': { title: 'MKF CORE', Icon: Star, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
+  'ARCH+AIOPS': { title: 'MKF CORE', Icon: Star, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
+  'AIDEV+AIOPS': { title: 'MKF CORE', Icon: Star, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' }
+};
+
+// Facade Iframe Component
 const LazyProjectIframe = memo(({ url, title }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -48,6 +78,8 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
   const sandboxRef = useRef(null);
   const timelineRef = useRef(null);
   const blockRefs = useRef({});
+  const achievementTimeoutRef = useRef(null);
+  const fusionTimeoutRef = useRef(null);
   
   const [fusionMessage, setFusionMessage] = useState("");
   const [secretClicks, setSecretClicks] = useState(0);
@@ -69,6 +101,15 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
     offset: ["start 80%", "end 20%"]
   });
 
+  // Cleanup timeout saat unmount
+  useEffect(() => {
+    return () => {
+      if (achievementTimeoutRef.current) clearTimeout(achievementTimeoutRef.current);
+      if (fusionTimeoutRef.current) clearTimeout(fusionTimeoutRef.current);
+    };
+  }, []);
+
+  // Inisialisasi Blok Sandbox
   useEffect(() => {
     const isDesktop = window.innerWidth > 768;
     const initialBlocks = [
@@ -83,13 +124,15 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
       initialBlocks[1].x = 180; initialBlocks[1].y = 60;
       initialBlocks[2].x = 30; initialBlocks[2].y = 150;
       initialBlocks[3].x = 180; initialBlocks[3].y = 200;
-      initialBlocks.push({ id: '5', title: 'Database', icon: <Database size={18} />, desc: 'MongoDB', x: 380, y: 40, bg: 'bg-black', text: 'text-white', type: 'DB' });
-      initialBlocks.push({ id: '6', title: 'Cloud', icon: <Cloud size={18} />, desc: 'Hosting', x: 390, y: 180, bg: 'bg-gray-200', text: 'text-black', type: 'CLOUD' });
+      initialBlocks.push(
+        { id: '5', title: 'Database', icon: <Database size={18} />, desc: 'MongoDB', x: 380, y: 40, bg: 'bg-black', text: 'text-white', type: 'DB' },
+        { id: '6', title: 'Cloud', icon: <Cloud size={18} />, desc: 'Hosting', x: 390, y: 180, bg: 'bg-gray-200', text: 'text-black', type: 'CLOUD' }
+      );
     }
     setBlocks(initialBlocks);
   }, []);
 
-  const scrollToSection = (e, id) => {
+  const scrollToSection = useCallback((e, id) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -98,96 +141,95 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, []);
 
-  const triggerUnlockRoot = (sourceInfo) => {
+  const triggerUnlockRoot = useCallback((sourceInfo) => {
     setIsRootAccess(true);
     setAchievement({ 
       title: "ACHIEVEMENT UNLOCKED", 
       desc: `${sourceInfo}! Akses root terbuka, klik bar notifikasi ini atau isi About untuk mengedit.` 
     });
     
-    setTimeout(() => {
+    if (achievementTimeoutRef.current) clearTimeout(achievementTimeoutRef.current);
+    achievementTimeoutRef.current = setTimeout(() => {
       setAchievement(null);
     }, 5000);
-  };
+  }, [setIsRootAccess]);
 
-  const handleNavSecretClick = () => {
-    const nextClick = secretClicks + 1;
-    setSecretClicks(nextClick);
-    if (nextClick === 5) {
-      triggerUnlockRoot("Akses root diberikan dari Terminal Termux");
-      setSecretClicks(0);
-    }
-  };
+  const handleNavSecretClick = useCallback(() => {
+    setSecretClicks(prev => {
+      const nextClick = prev + 1;
+      if (nextClick === 5) {
+        triggerUnlockRoot("Akses root diberikan dari Terminal Termux");
+        return 0;
+      }
+      return nextClick;
+    });
+  }, [triggerUnlockRoot]);
 
-  const handleDesktopNameClick = () => {
+  const handleDesktopNameClick = useCallback(() => {
     if (window.innerWidth >= 768) {
       triggerUnlockRoot("Akses root diberikan via Monitor click nama");
     }
-  };
+  }, [triggerUnlockRoot]);
 
-  const handleAchievementClick = (e) => {
+  const handleAchievementClick = useCallback((e) => {
     if (e) e.preventDefault();
     setIsRootAccess(true);
     setIsEditingAbout(true);
-  };
+  }, [setIsRootAccess]);
 
-  const handleDragEnd = (event, info, draggedId) => {
+  const handleDragEnd = useCallback((event, info, draggedId) => {
     const draggedEl = blockRefs.current[draggedId];
     if (!draggedEl) return;
     const b1 = draggedEl.getBoundingClientRect();
-    let hasFused = false;
 
-    blocks.forEach(target => {
-      if (hasFused || target.id === draggedId) return;
-      
-      const targetEl = blockRefs.current[target.id];
-      if (!targetEl) return;
-      const b2 = targetEl.getBoundingClientRect();
+    setBlocks(prevBlocks => {
+      const draggedBlock = prevBlocks.find(b => b.id === draggedId);
+      if (!draggedBlock) return prevBlocks;
 
-      const isOverlap = !(b1.right < b2.left || b1.left > b2.right || b1.bottom < b2.top || b1.top > b2.bottom);
-
-      if (isOverlap) {
-        const type1 = blocks.find(b => b.id === draggedId).type;
-        const type2 = target.type;
-        const pair = [type1, type2].sort().join('+');
+      for (const target of prevBlocks) {
+        if (target.id === draggedId) continue;
         
-        let evolvedBlock = null;
+        const targetEl = blockRefs.current[target.id];
+        if (!targetEl) continue;
+        const b2 = targetEl.getBoundingClientRect();
 
-        const rules = {
-          'BE+FE': { title: 'Fullstack', desc: 'Web Master', bg: 'bg-black', text: 'text-[#FFD700]', type: 'FULL', icon: <Zap size={18}/> },
-          'AI+PY': { title: 'AI Engineer', desc: 'AI Systems', bg: 'bg-[#FF007F]', text: 'text-white', type: 'AI_ENG', icon: <BrainCircuit size={18}/> },
-          'CLOUD+DB': { title: 'SysAdmin', desc: 'Infrastructure', bg: 'bg-[#0055FF]', text: 'text-white', type: 'SYS', icon: <Server size={18}/> },
-          'FULL+SYS': { title: 'Architect', desc: 'Tech Lead', bg: 'bg-white', text: 'text-black', type: 'ARCH', icon: <Globe size={18}/> },
-          'AI_ENG+FULL': { title: 'AI Dev', desc: 'Smart Apps', bg: 'bg-[#FFD700]', text: 'text-black', type: 'AIDEV', icon: <Code2 size={18}/> },
-          'AI_ENG+SYS': { title: 'AI Ops', desc: 'Model Server', bg: 'bg-gray-800', text: 'text-white', type: 'AIOPS', icon: <Database size={18}/> },
-          'ARCH+AIDEV': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
-          'ARCH+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' },
-          'AIDEV+AIOPS': { title: 'MKF CORE', icon: <Star size={18}/>, desc: 'Singularity', bg: 'bg-black border-[#FF007F]', text: 'text-[#FF007F]', type: 'ULTIMATE' }
-        };
+        const isOverlap = !(b1.right < b2.left || b1.left > b2.right || b1.bottom < b2.top || b1.top > b2.bottom);
 
-        if (rules[pair]) {
-          evolvedBlock = { id: Date.now().toString(), ...rules[pair] };
-        }
+        if (isOverlap) {
+          const pair = [draggedBlock.type, target.type].sort().join('+');
+          const rule = FUSION_RULES[pair];
 
-        if (evolvedBlock) {
-          hasFused = true;
-          const sandboxRect = sandboxRef.current.getBoundingClientRect();
-          evolvedBlock.x = b2.left - sandboxRect.left;
-          evolvedBlock.y = b2.top - sandboxRect.top;
+          if (rule) {
+            const sandboxRect = sandboxRef.current ? sandboxRef.current.getBoundingClientRect() : { left: 0, top: 0 };
+            const IconComp = rule.Icon;
 
-          setFusionMessage(`EVOLUSI: ${evolvedBlock.title.toUpperCase()} TERBENTUK!`);
-          setTimeout(() => setFusionMessage(""), 4000);
+            const evolvedBlock = {
+              id: Date.now().toString(),
+              title: rule.title,
+              desc: rule.desc,
+              bg: rule.bg,
+              text: rule.text,
+              type: rule.type,
+              icon: <IconComp size={18} />,
+              x: b2.left - sandboxRect.left,
+              y: b2.top - sandboxRect.top,
+            };
 
-          setBlocks(prev => {
-            const filtered = prev.filter(b => b.id !== draggedId && b.id !== target.id);
-            return [...filtered, evolvedBlock];
-          });
+            if (fusionTimeoutRef.current) clearTimeout(fusionTimeoutRef.current);
+            setFusionMessage(`EVOLUSI: ${rule.title.toUpperCase()} TERBENTUK!`);
+            fusionTimeoutRef.current = setTimeout(() => setFusionMessage(""), 4000);
+
+            return prevBlocks
+              .filter(b => b.id !== draggedId && b.id !== target.id)
+              .concat(evolvedBlock);
+          }
         }
       }
+      return prevBlocks;
     });
-  };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-white bg-[radial-gradient(#d1d5db_2px,transparent_2px)] [background-size:32px_32px]">
@@ -310,30 +352,15 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
             <div className="mt-8 md:mt-12">
               <h3 className="font-black text-base sm:text-xl md:text-2xl uppercase mb-4 md:mb-6 text-black text-center md:text-left underline decoration-2 md:decoration-4 decoration-[#FFD700]">Tech Stack & Tools</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4">
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Code2 className="w-5 h-5 md:w-7 md:h-7 text-[#0055FF]" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">React / Vite</span>
-                </div>
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Server className="w-5 h-5 md:w-7 md:h-7 text-[#FF007F]" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Node.js</span>
-                </div>
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <FileJson className="w-5 h-5 md:w-7 md:h-7 text-[#FFD700]" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Vanilla JS</span>
-                </div>
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Palette className="w-5 h-5 md:w-7 md:h-7 text-[#00BFFF]" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Tailwind CSS</span>
-                </div>
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Globe className="w-5 h-5 md:w-7 md:h-7 text-[#E34F26]" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">HTML & CSS</span>
-                </div>
-                <div className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
-                  <Terminal className="w-5 h-5 md:w-7 md:h-7 text-black" />
-                  <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">Termux CLI</span>
-                </div>
+                {TECH_STACK.map((tech, idx) => {
+                  const Icon = tech.icon;
+                  return (
+                    <div key={idx} className="brutal-box p-2.5 md:p-4 bg-[#f4f4f0] text-black flex flex-col items-center justify-center gap-1.5 md:gap-3 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform cursor-pointer">
+                      <Icon className={`w-5 h-5 md:w-7 md:h-7 ${tech.color}`} />
+                      <span className="font-black text-[10px] sm:text-xs md:text-sm uppercase text-center">{tech.name}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
@@ -385,7 +412,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           </div>
         </section>
 
-        {/* PROJECTS (OPTIONAL LAZY IFRAME FOR SPEED) */}
+        {/* PROJECTS */}
         <section id="projects" className="mb-16 md:mb-40 relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-8 md:mb-16 uppercase text-center text-black drop-shadow-[2px_2px_0_#FF007F] md:drop-shadow-[3px_3px_0_#FF007F]">
             Live <br/> Architectures.
@@ -394,7 +421,7 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           <div className="flex flex-col gap-10 sm:gap-12 md:gap-24 mb-10 md:mb-16">
             {projectsData.slice(0, 3).map((project, index) => (
               <div 
-                key={index}
+                key={project.id || index}
                 className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center group"
               >
                 <div className="w-full lg:w-1/3">
@@ -426,7 +453,6 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
                     </div>
                   </div>
                   
-                  {/* Panggil Facade Iframe Lazy Load */}
                   <LazyProjectIframe url={project.url} title={project.title} />
                 </div>
               </div>
@@ -525,21 +551,20 @@ export default function HomeView({ navigate, isRootAccess, setIsRootAccess }) {
           </div>
 
           <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mb-8 md:mb-12 flex-wrap">
-            <a href="https://github.com/MohFahmiMc" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FFD700] transition-colors">
-              <Github className="w-4 h-4 md:w-6 md:h-6" />
-            </a>
-            <a href="https://instagram.com/mizephyr" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#E1306C] hover:text-white transition-colors">
-              <Instagram className="w-4 h-4 md:w-6 md:h-6" />
-            </a>
-            <a href="https://discord.scarily.my.id" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#5865F2] hover:text-white transition-colors">
-              <DiscordIcon />
-            </a>
-            <a href="https://tiktok.com/@mizephyrz" target="_blank" rel="noreferrer" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#FF007F] hover:text-white transition-colors">
-              <TiktokIcon />
-            </a>
-            <a href="mailto:contact@mifahmi.my.id" className="w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black hover:bg-[#0055FF] hover:text-white transition-colors">
-              <Mail className="w-4 h-4 md:w-6 md:h-6" />
-            </a>
+            {SOCIAL_LINKS.map((social, idx) => {
+              const Icon = social.icon;
+              return (
+                <a 
+                  key={idx} 
+                  href={social.href} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className={`w-10 h-10 md:w-14 md:h-14 brutal-box bg-white rounded-full flex items-center justify-center text-black ${social.hover} transition-colors`}
+                >
+                  <Icon className="w-4 h-4 md:w-6 md:h-6" />
+                </a>
+              );
+            })}
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-[9px] md:text-xs font-black tracking-widest uppercase border-t-2 md:border-t-4 border-black pt-4 md:pt-8 text-black">
